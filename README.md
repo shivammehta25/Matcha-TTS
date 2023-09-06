@@ -200,9 +200,14 @@ function play_audio(filename, audio_id,  condition_name, transcription){
 
 ## Stimuli from the listening test
 
-##### Click the buttons in the table to load and play the different stimuli.
+> Click the buttons in the table to load and play the different stimuli.
 
 Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="font-weight: bold;"> MAT-10 : Sentence 1</span>
+
+<p>Audio player: </p>
+  <audio id="stimuli-from-listening-test" controls>
+    <source id="stimuli-from-listening-test-src" src="stimuli/sample_from_test/MAT-10_1.wav" type="audio/wav">
+  </audio>
 
 <p> Transcription: </p>
 <blockquote style="height: 60px">
@@ -210,12 +215,6 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
     It had established periodic regular review of the status of four hundred individuals; 
   </p>
 </blockquote>
-
-<p>Audio player: </p>
-  <audio id="stimuli-from-listening-test" controls>
-    <source id="stimuli-from-listening-test-src" src="stimuli/sample_from_test/MAT-10_1.wav" type="audio/wav">
-  </audio>
-
 <table class="tg">
   <thead>
     <tr>
