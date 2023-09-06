@@ -35,6 +35,9 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
 [eva_profile]: https://www.kth.se/profile/szekely
 [gustav_profile]: https://people.kth.se/~ghe/
 [this_page]: https://shivammehta25.github.io/Matcha-TTS
+[grad_tts_paper]: https://arxiv.org/abs/2105.06337
+[vits_paper]: https://arxiv.org/abs/2106.06103
+[fastspeech2_paper]: https://arxiv.org/abs/2006.04558
 
 <style type="text/css">
     .tg {
@@ -68,7 +71,24 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
     color: #fff;
     font-family: Arial, sans-serif;
     font-size: 14px;
-    font-weight: normal;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0px 20px;
+    word-break: normal;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    margin: auto;
+  }
+
+  .tg th a {
+    background-color: #409cff;
+    color: #fff;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
     overflow: hidden;
     padding: 0px 20px;
     word-break: normal;
@@ -129,9 +149,9 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
   cursor: pointer;
 }
 
-audio {
+/* audio {
     width: 240px;
-}
+} */
 
 /* CSS */
 .button-12 {
@@ -158,7 +178,7 @@ audio {
 }
 
 audio {
-  margin: 0.51em;
+  margin: 0.5em;
 }
 
  .slider {
@@ -269,7 +289,7 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_6.wav', 'stimuli-from-listening-test', 'VOC , Sentence 6', transcript_listening_test[6])"/> </td>    
     </tr>
     <tr>
-        <th class="tg-0pky" rowspan="3">Matcha-TTS</th>
+        <th class="tg-0pky" rowspan="3"><a href="https://shivammehta25.github.io/Matcha-TTS"> Matcha-TTS</a></th>
         <th class="tg-0pky">MAT-10</th>
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_1.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 1', transcript_listening_test[1])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_2.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 2', transcript_listening_test[2])"/> </td> 
@@ -297,7 +317,7 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-2_6.wav', 'stimuli-from-listening-test', 'MAT-2 , Sentence 6', transcript_listening_test[6])"/> </td>       
     </tr>
     <tr>
-        <th class="tg-0pky" rowspan="2">Grad-TTS</th>
+        <th class="tg-0pky" rowspan="2"><a href="https://arxiv.org/abs/2105.06337">Grad-TTS</a></th>
         <th class="tg-0pky">GRAD-10</th>
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_1.wav', 'stimuli-from-listening-test', 'GRAD-10 , Sentence 1', transcript_listening_test[1])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_2.wav', 'stimuli-from-listening-test', 'GRAD-10 , Sentence 2', transcript_listening_test[2])"/> </td> 
@@ -326,7 +346,7 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_6.wav', 'stimuli-from-listening-test', 'GCFM-4 , Sentence 6', transcript_listening_test[6])"/> </td>       
     </tr>
     <tr>
-        <th class="tg-0pky">FastSpeech 2</th>
+        <th class="tg-0pky"><a href="https://arxiv.org/abs/2006.04558">FastSpeech 2</a></th>
         <th class="tg-0pky">FS2</th>
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_1.wav', 'stimuli-from-listening-test', 'FS2 , Sentence 1', transcript_listening_test[1])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_2.wav', 'stimuli-from-listening-test', 'FS2 , Sentence 2', transcript_listening_test[2])"/> </td> 
@@ -336,7 +356,7 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_6.wav', 'stimuli-from-listening-test', 'FS2 , Sentence 6', transcript_listening_test[6])"/> </td>       
     </tr>
     <tr>
-        <th class="tg-0pky">VITS</th>
+        <th class="tg-0pky"><a href="https://arxiv.org/abs/2106.06103">VITS</a></th>
         <th class="tg-0pky">VITS</th>
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_1.wav', 'stimuli-from-listening-test', 'VITS , Sentence 1', transcript_listening_test[1])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_2.wav', 'stimuli-from-listening-test', 'VITS , Sentence 2', transcript_listening_test[2])"/> </td> 
@@ -421,7 +441,7 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
   </thead>
   <tbody>
     <tr>
-      <th class="tg-0pky">Matcha-TTS</th>
+      <th class="tg-0pky"><a href="https://shivammehta25.github.io/Matcha-TTS">Matcha-TTS</a></th>
       <td>
         <audio id="MAT_sent_1" controls>
             <source id="MAT_sent_src_1" src="stimuli/number_of_ode_solver/MAT-10_1.wav" type="audio/wav">
@@ -439,7 +459,7 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
       </td>
     </tr>
     <tr>
-      <th class="tg-0pky">Grad-TTS</th>
+      <th class="tg-0pky"><a href="https://arxiv.org/abs/2105.06337">Grad-TTS</a></th>
       <td>
         <audio id="GRAD_sent_1" controls>
             <source id="GRAD_sent_src_1" src="stimuli/number_of_ode_solver/GRAD-10_1.wav" type="audio/wav">
@@ -478,4 +498,4 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
   </tbody>
 </table>
 
-[![MatchaTTS](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://shivammehta25.github.io/Matcha-TTS&count_bg=%23409CFF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Matcha-TTS&edge_flat=false)][this_page]
+<!-- [![MatchaTTS](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://shivammehta25.github.io/Matcha-TTS&count_bg=%23409CFF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Matcha-TTS&edge_flat=false)][this_page] -->
