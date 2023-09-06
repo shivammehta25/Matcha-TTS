@@ -198,7 +198,7 @@ function play_audio(filename, audio_id,  condition_name, transcription){
 
 </script>
 
-## Stimuli from the evaluation test
+## Stimuli from the listening test
 
 Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weight: bold;"> MAT-10 : Sentence 1</span>
 
@@ -208,14 +208,23 @@ Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weig
   </p>
 </blockquote>
 
-<audio id="stimuli-from-listening-test" controls>
-  <source id="stimuli-from-listening-test-src" src="stimuli/sample_from_test/MAT-10_1.wav" type="audio/wav">
-</audio>
+<table>
+  <tbody>
+    <tr>
+      <td style="border:none;">Audio player: </td>
+      <td style="border:none;">
+        <audio id="stimuli-from-listening-test" controls>
+          <source id="stimuli-from-listening-test-src" src="stimuli/sample_from_test/MAT-10_1.wav" type="audio/wav">
+        </audio>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <table class="tg">
   <thead>
     <tr>
-      <th class="tg-0pky">Model</th>
+      <th class="tg-0pky">System</th>
       <th class="tg-0pky">Condition</th>
       <th class="tg-0pky">Sentence 1</th>
       <th class="tg-0pky">Sentence 2</th>
@@ -294,7 +303,7 @@ Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weig
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_6.wav', 'stimuli-from-listening-test', 'GCFM-4 : Sentence 6', transcript_listening_test[6])"/> </td>       
     </tr>
     <tr>
-        <th class="tg-0pky">FastSpeech</th>
+        <th class="tg-0pky">FastSpeech 2</th>
         <th class="tg-0pky">FS2</th>
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_1.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 1', transcript_listening_test[1])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_2.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 2', transcript_listening_test[2])"/> </td> 
@@ -315,5 +324,5 @@ Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weig
     </tr>
   </tbody>
 </table>
-
-[![MatchaTTS](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://shivammehta25.github.io/Matcha-TTS&count_bg=%23409CFF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Matcha-TTS&edge_flat=false)][this_page]
+<!-- 
+[![MatchaTTS](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://shivammehta25.github.io/Matcha-TTS&count_bg=%23409CFF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Matcha-TTS&edge_flat=false)][this_page] -->
