@@ -158,7 +158,7 @@ audio {
 }
 
 audio {
-  margin: 0.5em;
+  margin: 0.51em;
 }
 
  .slider {
