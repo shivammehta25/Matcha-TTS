@@ -215,7 +215,7 @@ Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weig
 <table class="tg">
   <thead>
     <tr>
-      <th class="tg-0pky">Architecture</th>
+      <th class="tg-0pky">Model</th>
       <th class="tg-0pky">Condition</th>
       <th class="tg-0pky">Sentence 1</th>
       <th class="tg-0pky">Sentence 2</th>
@@ -227,7 +227,7 @@ Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weig
   </thead>
   <tbody>
     <tr>
-        <th class="tg-0pky">Vocoded</th>
+        <th class="tg-0pky">Vocoded <br> speech</th>
         <th class="tg-0pky">VOC</th>
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_1.wav', 'stimuli-from-listening-test', 'VOC : Sentence 1', transcript_listening_test[1])"/> </td>
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_2.wav', 'stimuli-from-listening-test', 'VOC : Sentence 2', transcript_listening_test[2])"/> </td>
