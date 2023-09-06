@@ -52,7 +52,7 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
     font-family: Arial, sans-serif;
     font-size: 14px;
     overflow: hidden;
-    padding: 10px 20px;
+    padding: 0px 20px;
     word-break: normal;
     font-weight: bold;
     vertical-align: middle;
@@ -70,7 +70,7 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
     font-size: 14px;
     font-weight: normal;
     overflow: hidden;
-    padding: 10px 20px;
+    padding: 0px 20px;
     word-break: normal;
     font-weight: bold;
     vertical-align: middle;
@@ -83,6 +83,14 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
     border-color: inherit;
     text-align: center;
     vertical-align: top,
+  }
+
+  td img {
+    position: relative;
+    margin: 0 auto;
+    max-width: 650px;
+    padding: 5px;
+    border: 0px;
   }
 
   .tg .tg-fymr {
