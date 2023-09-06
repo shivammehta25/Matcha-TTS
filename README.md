@@ -157,10 +157,39 @@ audio {
   outline: 0;
 }
 
-video {
-  margin: 1em;
+audio {
+  margin: 0.5em;
 }
 
+ .slider {
+  -webkit-appearance: none;
+  width: 75%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #409cff;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #409cff;
+  cursor: pointer;
+}
 
 </style>
 
@@ -318,5 +347,136 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
     </tr>
   </tbody>
 </table>
-<!-- 
+
+## Synthesis at different steps of the ODE solver
+
+<div class="slidecontainer">
+  <label for="itr_slider"><span style="font-weight:bold"> 1 </span></label>
+  <input type="range" min="1" max="12" value="6" class="slider" id="itr_slider">
+  <label for="itr_slider"><span style="font-weight:bold"> 500 </span> </label>
+  <p><span style="font-weight:bold">Steps:</span> <span class="itr_val"></span>
+  </p>
+</div>
+
+<script>
+
+  var itr_slider = document.getElementById("itr_slider");
+  var itr_vals = document.getElementsByClassName("itr_val");
+  
+  // Functions to update values
+  var iterations = {
+                     1: 1,
+                     2: 2,
+                     3: 3,
+                     4: 4,
+                     5: 5,
+                     6: 10,
+                     7: 15,
+                     8: 20,
+                     9: 25,
+                     10: 50,
+                     11: 100,
+                     12: 500,
+  };
+  function updateVals(classes, value){
+    for(var i=0; i < classes.length; i++) {
+        classes[i].innerHTML= iterations[parseInt(value)];
+    }
+  }
+
+  let systems = [
+      "MAT",
+      "GRAD",
+      "GCFM"
+  ]
+
+  updateVals(itr_vals, 6);
+  itr_slider.oninput = function() {
+    updateVals(itr_vals, this.value);
+    let iteration = iterations[parseInt(this.value)];
+    // Update sources
+
+
+    for (let sent=1; sent <= 3; sent++){
+      for (let system_idx = 0; system_idx < systems.length; system_idx++){
+        let audio = document.getElementById(systems[system_idx] + "_sent_" + sent);
+        let audio_src = document.getElementById( systems[system_idx] + "_sent_src_" + sent);
+
+        audio_src.src = "stimuli/number_of_ode_solver/" + systems[system_idx] + "-" + iteration + "_" + sent + ".wav";
+        audio.load();        
+
+      }
+    }
+  }
+</script>
+
+<table class="tg">
+  <thead>
+    <tr>
+      <th class="tg-0pky">System</th>
+      <th class="tg-0pky">Sentence 1</th>
+      <th class="tg-0pky">Sentence 2</th>
+      <th class="tg-0pky">Sentence 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th class="tg-0pky">Matcha-TTS</th>
+      <td>
+        <audio id="MAT_sent_1" controls>
+            <source id="MAT_sent_src_1" src="stimuli/number_of_ode_solver/MAT-10_1.wav" type="audio/wav">
+        </audio>
+      </td>
+      <td>
+        <audio id="MAT_sent_2" controls>
+            <source id="MAT_sent_src_2" src="stimuli/number_of_ode_solver/MAT-10_2.wav" type="audio/wav">
+        </audio>
+      </td>
+      <td>
+        <audio id="MAT_sent_3" controls>
+            <source id="MAT_sent_src_3" src="stimuli/sample_from_test/MAT-10_3.wav" type="audio/wav">
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <th class="tg-0pky">Grad-TTS</th>
+      <td>
+        <audio id="GRAD_sent_1" controls>
+            <source id="GRAD_sent_src_1" src="stimuli/number_of_ode_solver/GRAD-10_1.wav" type="audio/wav">
+        </audio>
+      </td>
+      <td>
+        <audio id="GRAD_sent_2" controls>
+            <source id="GRAD_sent_src_2" src="stimuli/number_of_ode_solver/GRAD-10_2.wav" type="audio/wav">
+        </audio>
+      </td>
+      <td>
+        <audio id="GRAD_sent_3" controls>
+            <source id="GRAD_sent_src_3" src="stimuli/number_of_ode_solver/GRAD-10_3.wav" type="audio/wav">
+        </audio>
+      </td>
+    </tr>
+    <tr>
+      <th class="tg-0pky">Grad-TTS + CFM</th>
+      <td>
+        <audio id="GCFM_sent_1" controls>
+            <source id="GCFM_sent_src_1" src="stimuli/number_of_ode_solver/GCFM-10_1.wav" type="audio/wav">
+        </audio>
+      </td>
+      <td>
+        <audio id="GCFM_sent_2" controls>
+            <source id="GCFM_sent_src_2" src="stimuli/number_of_ode_solver/GCFM-10_2.wav" type="audio/wav">
+        </audio>
+      </td>
+      <td>
+        <audio id="GCFM_sent_3" controls>
+            <source id="GCFM_sent_src_3" src="stimuli/number_of_ode_solver/GCFM-10_3.wav" type="audio/wav">
+        </audio>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<!--
 [![MatchaTTS](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://shivammehta25.github.io/Matcha-TTS&count_bg=%23409CFF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Matcha-TTS&edge_flat=false)][this_page] -->
