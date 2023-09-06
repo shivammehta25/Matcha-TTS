@@ -1,0 +1,312 @@
+# Matcha-TTS: A fast TTS architecture with conditional flow matching
+
+<head>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="Matcha-TTS: A fast TTS architecture with conditional flow matching" />
+  <meta name="og:description" content="We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching to speed up ODE-based speech synthesis. Our method is probabilistic, has compact memory footprint, sounds highly natural, is very fast to synthesise from">
+  <meta property="og:image" content="images/architecture.png" />
+  <meta property="twitter:image" content="images/architecture.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Matcha-TTS" />
+  <meta name="twitter:card" content="images/architecture.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="tts, text to speech, probabilistic machine learning, diffusion models, conditional flow matching, generative modelling, machine learning, deep learning, speech synthesis, research, phd">
+  <meta name="description" content="We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching to speed up ODE-based speech synthesis. Our method is probabilistic, has compact memory footprint, sounds highly natural, is very fast to synthesise from." />
+</head>
+
+##### [Shivam Mehta][shivam_profile], [Ruibo Tu][ruibo_profile], [Jonas Beskow][jonas_profile], [Éva Székely][eva_profile], and [Gustav Eje Henter][gustav_profile]
+
+We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching to speed up ODE-based speech synthesis. Our method:
+
+- Is probabilistic
+- Has compact memory footprint
+- Sounds highly natural
+- Is very fast to synthesise from
+
+Please check out the audio examples below and read our arXiv preprint for more details.
+Code and pre-trained models will be made available shortly after the ICASSP deadline.
+
+[shivam_profile]: https://www.kth.se/profile/smehta
+[ruibo_profile]: https://www.kth.se/profile/ruibo
+[jonas_profile]: https://www.kth.se/profile/beskow
+[eva_profile]: https://www.kth.se/profile/szekely
+[gustav_profile]: https://people.kth.se/~ghe/
+[this_page]: https://shivammehta25.github.io/Diff-TTSG/
+
+<style type="text/css">
+    .tg {
+    border-collapse: collapse;
+    border-color: #9ABAD9;
+    border-spacing: 0;
+  }
+
+  .tg td {
+    background-color: #EBF5FF;
+    border-color: #9ABAD9;
+    border-style: solid;
+    border-width: 1px;
+    color: #444;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 20px;
+    word-break: normal;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .tg th {
+    background-color: #409cff;
+    border-color: #9ABAD9;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 10px 20px;
+    word-break: normal;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    margin: auto;
+  }
+
+  .tg .tg-0pky {
+    border-color: inherit;
+    text-align: center;
+    vertical-align: top,
+  }
+
+  .tg .tg-fymr {
+    border-color: inherit;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: top
+  }
+  .slider {
+  -webkit-appearance: none;
+  width: 75%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #409cff;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #409cff;
+  cursor: pointer;
+}
+
+audio {
+    width: 240px;
+}
+
+/* CSS */
+.button-12 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 54px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
+
+  background: #6E6D70;
+  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+  color: #DFDEDF;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-12:focus {
+  box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1px rgba(0, 0, 0, 0.1), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
+  outline: 0;
+}
+
+video {
+  margin: 1em;
+}
+
+
+</style>
+
+<script src="transcripts.js"></script>
+
+## Architecture
+
+<img src="images/architecture.png" alt="Architecture of OverFlow" width="750"/>
+
+<script>
+
+transcript_listening_test = {
+ 1: "It had established periodic regular review of the status of four hundred individuals;",    //4
+ 2: "The narrative of these events is based largely on the recollections of the participants,", // 3
+ 3: "The jury did not believe him, and the verdict was for the defendants.",    //  7
+ 4: "One by one the huge uprights of black timber were fitted together,",        // 19
+ 5: "The position of this palmprint on the carton was parallel with the long axis of the box, and at right angles with the short axis;", //  23
+ 6: "The boy declared he saw no one, and accordingly passed through without paying the toll of a penny."    // 38
+}
+
+function play_audio(filename, audio_id,  condition_name, transcription){
+
+    audio = document.getElementById(audio_id);
+    audio_source = document.getElementById(audio_id + "-src");
+    block_quote = document.getElementById(audio_id + "-transcript");
+    stimulus_span = document.getElementById(audio_id + "-span");
+
+    audio.pause();
+    audio_source.src = filename;
+    block_quote.innerHTML = transcription;
+    stimulus_span.innerHTML = condition_name;
+    audio.load();
+    audio.play();
+}
+
+</script>
+
+## Stimuli from the evaluation test
+
+Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weight: bold;"> MAT-10 : Sentence 1</span>
+
+<blockquote>
+  <p id="stimuli-from-listening-test-transcript">
+    It had established periodic regular review of the status of four hundred individuals; 
+  </p>
+</blockquote>
+
+<audio id="stimuli-from-listening-test" controls>
+  <source id="stimuli-from-listening-test-src" src="stimuli/sample_from_test/MAT-10_1.wav" type="audio/wav">
+</audio>
+
+<table class="tg">
+  <thead>
+    <tr>
+      <th class="tg-0pky">Architecture</th>
+      <th class="tg-0pky">Condition</th>
+      <th class="tg-0pky">Sentence 1</th>
+      <th class="tg-0pky">Sentence 2</th>
+      <th class="tg-0pky">Sentence 3</th>
+      <th class="tg-0pky">Sentence 4</th>
+      <th class="tg-0pky">Sentence 5</th>
+      <th class="tg-0pky">Sentence 6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <th class="tg-0pky">Vocoded</th>
+        <th class="tg-0pky">VOC</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_1.wav', 'stimuli-from-listening-test', 'VOC : Sentence 1', transcript_listening_test[1])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_2.wav', 'stimuli-from-listening-test', 'VOC : Sentence 2', transcript_listening_test[2])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_3.wav', 'stimuli-from-listening-test', 'VOC : Sentence 3', transcript_listening_test[3])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_4.wav', 'stimuli-from-listening-test', 'VOC : Sentence 4', transcript_listening_test[4])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_5.wav', 'stimuli-from-listening-test', 'VOC : Sentence 5', transcript_listening_test[5])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_6.wav', 'stimuli-from-listening-test', 'VOC : Sentence 6', transcript_listening_test[6])"/> </td>    
+    </tr>
+    <tr>
+        <th class="tg-0pky" rowspan="3">Matcha-TTS</th>
+        <th class="tg-0pky">MAT-10</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_1.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_2.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_3.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_4.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_5.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_6.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 6', transcript_listening_test[6])"/> </td> 
+    </tr>
+    <tr>
+        <th class="tg-0pky">MAT-4</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_1.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_2.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_3.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_4.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_5.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_6.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 6', transcript_listening_test[6])"/> </td>        
+    </tr>
+    <tr>
+        <th class="tg-0pky">MAT-2</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-2_1.wav', 'stimuli-from-listening-test', 'MAT-2 : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-2_2.wav', 'stimuli-from-listening-test', 'MAT-2 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-2_3.wav', 'stimuli-from-listening-test', 'MAT-2 : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-2_4.wav', 'stimuli-from-listening-test', 'MAT-2 : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-2_5.wav', 'stimuli-from-listening-test', 'MAT-2 : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-2_6.wav', 'stimuli-from-listening-test', 'MAT-2 : Sentence 6', transcript_listening_test[6])"/> </td>       
+    </tr>
+    <tr>
+        <th class="tg-0pky" rowspan="2">Grad-TTS</th>
+        <th class="tg-0pky">GRAD-10</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_1.wav', 'stimuli-from-listening-test', 'GRAD-10 : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_2.wav', 'stimuli-from-listening-test', 'GRAD-10 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_3.wav', 'stimuli-from-listening-test', 'GRAD-10 : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_4.wav', 'stimuli-from-listening-test', 'GRAD-10 : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_5.wav', 'stimuli-from-listening-test', 'GRAD-10 : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-10_6.wav', 'stimuli-from-listening-test', 'GRAD-10 : Sentence 6', transcript_listening_test[6])"/> </td>       
+    </tr>
+    <tr>
+        <th class="tg-0pky">GRAD-4</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-4_1.wav', 'stimuli-from-listening-test', 'GRAD-4 : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-4_2.wav', 'stimuli-from-listening-test', 'GRAD-4 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-4_3.wav', 'stimuli-from-listening-test', 'GRAD-4 : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-4_4.wav', 'stimuli-from-listening-test', 'GRAD-4 : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-4_5.wav', 'stimuli-from-listening-test', 'GRAD-4 : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GRAD-4_6.wav', 'stimuli-from-listening-test', 'GRAD-4 : Sentence 6', transcript_listening_test[6])"/> </td>       
+    </tr>
+    <tr>
+        <th class="tg-0pky">Grad-TTS+CFM</th>
+        <th class="tg-0pky">GCFM-4</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_1.wav', 'stimuli-from-listening-test', 'GCFM-4 : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_2.wav', 'stimuli-from-listening-test', 'GCFM-4 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_3.wav', 'stimuli-from-listening-test', 'GCFM-4 : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_4.wav', 'stimuli-from-listening-test', 'GCFM-4 : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_5.wav', 'stimuli-from-listening-test', 'GCFM-4 : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/GCFM-4_6.wav', 'stimuli-from-listening-test', 'GCFM-4 : Sentence 6', transcript_listening_test[6])"/> </td>       
+    </tr>
+    <tr>
+        <th class="tg-0pky">FastSpeech</th>
+        <th class="tg-0pky">FS2</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_1.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_2.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_3.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_4.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_5.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/FS2_6.wav', 'stimuli-from-listening-test', 'FS2 : Sentence 6', transcript_listening_test[6])"/> </td>       
+    </tr>
+    <tr>
+        <th class="tg-0pky">VITS</th>
+        <th class="tg-0pky">VITS</th>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_1.wav', 'stimuli-from-listening-test', 'VITS : Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_2.wav', 'stimuli-from-listening-test', 'VITS : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_3.wav', 'stimuli-from-listening-test', 'VITS : Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_4.wav', 'stimuli-from-listening-test', 'VITS : Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_5.wav', 'stimuli-from-listening-test', 'VITS : Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VITS_6.wav', 'stimuli-from-listening-test', 'VITS : Sentence 6', transcript_listening_test[6])"/> </td>       
+    </tr>
+  </tbody>
+</table>
+
+<!--
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fshivammehta25.github.io%2FDiff-TTSG&count_bg=%23409CFF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)][this_page] -->
