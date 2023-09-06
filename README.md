@@ -200,26 +200,21 @@ function play_audio(filename, audio_id,  condition_name, transcription){
 
 ## Stimuli from the listening test
 
-Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weight: bold;"> MAT-10 : Sentence 1</span>
+##### Click the buttons in the table to load and play the different stimuli.
 
-<blockquote>
+Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="font-weight: bold;"> MAT-10 : Sentence 1</span>
+
+<p> Transcription: </p>
+<blockquote style="height: 60px">
   <p id="stimuli-from-listening-test-transcript">
     It had established periodic regular review of the status of four hundred individuals; 
   </p>
 </blockquote>
 
-<table>
-  <tbody>
-    <tr>
-      <td style="border:none;">Audio player: </td>
-      <td style="border:none;">
-        <audio id="stimuli-from-listening-test" controls>
-          <source id="stimuli-from-listening-test-src" src="stimuli/sample_from_test/MAT-10_1.wav" type="audio/wav">
-        </audio>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<p>Audio player: </p>
+  <audio id="stimuli-from-listening-test" controls>
+    <source id="stimuli-from-listening-test-src" src="stimuli/sample_from_test/MAT-10_1.wav" type="audio/wav">
+  </audio>
 
 <table class="tg">
   <thead>
@@ -238,27 +233,27 @@ Currently loaded => <span id="stimuli-from-listening-test-span" style="font-weig
     <tr>
         <th class="tg-0pky">Vocoded <br> speech</th>
         <th class="tg-0pky">VOC</th>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_1.wav', 'stimuli-from-listening-test', 'VOC : Sentence 1', transcript_listening_test[1])"/> </td>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_2.wav', 'stimuli-from-listening-test', 'VOC : Sentence 2', transcript_listening_test[2])"/> </td>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_3.wav', 'stimuli-from-listening-test', 'VOC : Sentence 3', transcript_listening_test[3])"/> </td>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_4.wav', 'stimuli-from-listening-test', 'VOC : Sentence 4', transcript_listening_test[4])"/> </td>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_5.wav', 'stimuli-from-listening-test', 'VOC : Sentence 5', transcript_listening_test[5])"/> </td>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_6.wav', 'stimuli-from-listening-test', 'VOC : Sentence 6', transcript_listening_test[6])"/> </td>    
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_1.wav', 'stimuli-from-listening-test', 'VOC , Sentence 1', transcript_listening_test[1])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_2.wav', 'stimuli-from-listening-test', 'VOC , Sentence 2', transcript_listening_test[2])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_3.wav', 'stimuli-from-listening-test', 'VOC , Sentence 3', transcript_listening_test[3])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_4.wav', 'stimuli-from-listening-test', 'VOC , Sentence 4', transcript_listening_test[4])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_5.wav', 'stimuli-from-listening-test', 'VOC , Sentence 5', transcript_listening_test[5])"/> </td>
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/VOC_6.wav', 'stimuli-from-listening-test', 'VOC , Sentence 6', transcript_listening_test[6])"/> </td>    
     </tr>
     <tr>
         <th class="tg-0pky" rowspan="3">Matcha-TTS</th>
         <th class="tg-0pky">MAT-10</th>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_1.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 1', transcript_listening_test[1])"/> </td> 
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_2.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 2', transcript_listening_test[2])"/> </td> 
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_3.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 3', transcript_listening_test[3])"/> </td> 
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_4.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 4', transcript_listening_test[4])"/> </td> 
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_5.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 5', transcript_listening_test[5])"/> </td> 
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_6.wav', 'stimuli-from-listening-test', 'MAT-10 : Sentence 6', transcript_listening_test[6])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_1.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_2.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_3.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 3', transcript_listening_test[3])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_4.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 4', transcript_listening_test[4])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_5.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 5', transcript_listening_test[5])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-10_6.wav', 'stimuli-from-listening-test', 'MAT-10 , Sentence 6', transcript_listening_test[6])"/> </td> 
     </tr>
     <tr>
         <th class="tg-0pky">MAT-4</th>
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_1.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 1', transcript_listening_test[1])"/> </td> 
-        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_2.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 2', transcript_listening_test[2])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_1.wav', 'stimuli-from-listening-test', 'MAT-4 , Sentence 1', transcript_listening_test[1])"/> </td> 
+        <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_2.wav', 'stimuli-from-listening-test', 'MAT-4 , Sentence 2', transcript_listening_test[2])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_3.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 3', transcript_listening_test[3])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_4.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 4', transcript_listening_test[4])"/> </td> 
         <td> <img src="images/play_button.png" height=40 style="cursor: pointer;" onclick="play_audio('stimuli/sample_from_test/MAT-4_5.wav', 'stimuli-from-listening-test', 'MAT-4 : Sentence 5', transcript_listening_test[5])"/> </td> 
