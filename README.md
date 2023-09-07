@@ -26,7 +26,7 @@ We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that use
 - Sounds highly natural
 - Is very fast to synthesise from
 
-Please check out the audio examples below and read our arXiv preprint for more details.
+Please check out the audio examples below and [read our arXiv preprint][arxiv_link] for more details.
 Code and pre-trained models will be made available shortly after the ICASSP deadline.
 
 [shivam_profile]: https://www.kth.se/profile/smehta
@@ -35,6 +35,7 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
 [eva_profile]: https://www.kth.se/profile/szekely
 [gustav_profile]: https://people.kth.se/~ghe/
 [this_page]: https://shivammehta25.github.io/Matcha-TTS
+[arxiv_link]: https://arxiv.org/abs/2309.03199
 [grad_tts_paper]: https://arxiv.org/abs/2105.06337
 [vits_paper]: https://arxiv.org/abs/2106.06103
 [fastspeech2_paper]: https://arxiv.org/abs/2006.04558
