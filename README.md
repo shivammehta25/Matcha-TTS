@@ -19,7 +19,9 @@
 
 ##### [Shivam Mehta][shivam_profile], [Ruibo Tu][ruibo_profile], [Jonas Beskow][jonas_profile], [Éva Székely][eva_profile], and [Gustav Eje Henter][gustav_profile]
 
-<img src="images/logo.png" height="128"/>
+<p style="text-align: center;">
+  <img src="images/logo.png" height="128"/>
+</p>
 
 We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching to speed up ODE-based speech synthesis. Our method:
 
