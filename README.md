@@ -26,7 +26,7 @@ We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that use
 - Sounds highly natural
 - Is very fast to synthesise from
 
-Please check out the audio examples below and [read our arXiv preprint][arxiv_link] for more details.
+Please check out the audio examples below and [read our arXiv preprint for more details][arxiv_link].
 Code and pre-trained models will be made available shortly after the ICASSP deadline.
 
 [shivam_profile]: https://www.kth.se/profile/smehta
