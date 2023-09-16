@@ -18,7 +18,7 @@ with open("README.md", "r", encoding="utf-8") as readme_file:
 
 setup(
     name="matcha-tts",
-    version="0.0.1",
+    version="0.0.0.1.dev0",
     description="🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching",
     long_description=README,
     long_description_content_type="text/markdown",
