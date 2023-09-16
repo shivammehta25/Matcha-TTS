@@ -11,11 +11,11 @@
 [![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
 [![isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
-</div>
-
 <p style="text-align: center;">
   <img src="https://shivammehta25.github.io/Matcha-TTS/images/logo.png" height="128"/>
 </p>
+
+</div>
 
 > This is the official code implementation of 🍵 Matcha-TTS.
 
