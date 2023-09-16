@@ -199,7 +199,10 @@ def get_user_data_dir(appname="matcha_tts"):
         ans = Path("~/Library/Application Support/").expanduser()
     else:
         ans = Path.home().joinpath(".local/share")
-    return ans.joinpath(appname)
+    
+    final_path = ans.joinpath(appname)
+    final_path.mkdir(parents=True, exist_ok=True)
+    return final_path
 
 
 def assert_model_downloaded(checkpoint_path, url, use_wget=False):

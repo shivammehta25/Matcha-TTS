@@ -17,8 +17,8 @@ with open("README.md", "r", encoding="utf-8") as readme_file:
 
 
 setup(
-    name="matcha_tts",
-    version="0.1.0",
+    name="matcha-tts",
+    version="0.0.1",
     description="🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -36,11 +36,11 @@ setup(
     entry_points={
         "console_scripts": [
             "matcha-data-stats=matcha.utils.generate_data_statistics:main",
-            "matcha_tts=matcha.cli:cli",
-            "matcha_tts-app=matcha.app:main",
+            "matcha-tts=matcha.cli:cli",
+            "matcha-tts-app=matcha.app:main",
         ]
     },
     ext_modules=cythonize(exts, language_level=3),
-    python_requires=">=3.10.0",
+    python_requires=">=3.9.0",
 
 )
