@@ -12,10 +12,16 @@ exts = [
     )
 ]
 
+with open("README.md", "r", encoding="utf-8") as readme_file:
+    README = readme_file.read()
+
+
 setup(
-    name="matcha",
+    name="matcha_tts",
     version="0.1.0",
-    description="A fast TTS architecture with conditional flow matching",
+    description="🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching",
+    long_description=README,
+    long_description_content_type="text/markdown",
     author="Shivam Mehta",
     author_email="shivam.mehta25@gmail.com",
     url="https://shivammehta25.github.io/Matcha-TTS",
@@ -24,14 +30,17 @@ setup(
         for r in open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
     ],
     include_dirs=[numpy.get_include()],
+    include_package_data=True,
     packages=find_packages(exclude=["tests", "tests/*", "examples", "examples/*"]),
     # use this to customize global commands available in the terminal after installing the package
     entry_points={
         "console_scripts": [
             "matcha-data-stats=matcha.utils.generate_data_statistics:main",
             "matcha_tts=matcha.cli:cli",
-            "matcha_tts_app=matcha.app:main",
+            "matcha_tts-app=matcha.app:main",
         ]
     },
     ext_modules=cythonize(exts, language_level=3),
+    python_requires=">=3.10.0",
+
 )

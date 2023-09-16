@@ -140,6 +140,22 @@ train_filelist_path: data/filelists/ljs_audio_text_train_filelist.txt
 valid_filelist_path: data/filelists/ljs_audio_text_val_filelist.txt
 ```
 
+5. Generate normalisation statistics with the yaml file of dataset configuration
+
+```bash
+matcha-data-stats -i ljspeech.yaml
+# Output:
+#{'mel_mean': -5.53662231756592, 'mel_std': 2.1161014277038574}
+```
+
+Update these values in `configs/data/ljspeech.yaml` under `data_statistics` key.
+
+```bash
+data_statistics:  # Computed for ljspeech dataset
+  mel_mean: -5.536622
+  mel_std: 2.116101
+```
+
 to the paths of your train and validation filelists.
 
 5. Run the training script
