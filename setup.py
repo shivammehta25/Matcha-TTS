@@ -2,7 +2,6 @@
 import os
 
 import numpy
-import pkg_resources
 from Cython.Build import cythonize
 from setuptools import Extension, find_packages, setup
 
@@ -22,7 +21,7 @@ setup(
     url="https://shivammehta25.github.io/Matcha-TTS",
     install_requires=[
         str(r)
-        for r in pkg_resources.parse_requirements(open(os.path.join(os.path.dirname(__file__), "requirements.txt")))
+        for r in open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
     ],
     include_dirs=[numpy.get_include()],
     packages=find_packages(exclude=["tests", "tests/*", "examples", "examples/*"]),

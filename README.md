@@ -154,7 +154,13 @@ or
 python matcha/train.py experiment=ljspeech
 ```
 
-for multi-gpu training, run
+- for a minimum memory run
+
+```bash
+python matcha/train.py experiment=ljspeech_min_memory
+```
+
+- for multi-gpu training, run
 
 ```bash
 python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
@@ -162,10 +168,11 @@ python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
 
 ## Acknowledgements
 
-Since this code uses: [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers attached to it.
+Since this code uses: [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers that comes with it.
 
 Other source codes I would like to acknowledge:
 
-- [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev)
-- [Grad-TTS](https://github.com/huawei-noah/Speech-Backbones/tree/main/Grad-TTS)
-- [torchdyn](https://github.com/DiffEqML/torchdyn)
+- [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev) : For helping me figure out how to make cython binaries pip installable
+- [Grad-TTS](https://github.com/huawei-noah/Speech-Backbones/tree/main/Grad-TTS): For source code of MAS
+- [torchdyn](https://github.com/DiffEqML/torchdyn): Useful for trying other ODE solvers during development
+- [labml.ai](https://nn.labml.ai/transformers/rope/index.html): For RoPE implementation
