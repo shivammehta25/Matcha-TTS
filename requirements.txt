@@ -34,12 +34,11 @@ scipy
 torchaudio
 matplotlib
 pandas
-conformer
-diffusers @ git+https://github.com/shivammehta25/diffusers.git@matcha_tts_version
+conformer==0.3.2
+diffusers==0.21.1
 notebook
 ipywidgets
 gradio
 gdown
 wget
 seaborn
-gradio

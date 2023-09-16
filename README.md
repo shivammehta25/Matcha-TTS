@@ -189,6 +189,7 @@ Since this code uses: [Lightning-Hydra-Template](https://github.com/ashleve/ligh
 Other source codes I would like to acknowledge:
 
 - [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev) : For helping me figure out how to make cython binaries pip installable
+- [Hugging Face Diffusers](https://huggingface.co/): For their awesome diffusers library and its components
 - [Grad-TTS](https://github.com/huawei-noah/Speech-Backbones/tree/main/Grad-TTS): For source code of MAS
 - [torchdyn](https://github.com/DiffEqML/torchdyn): Useful for trying other ODE solvers during development
 - [labml.ai](https://nn.labml.ai/transformers/rope/index.html): For RoPE implementation
