@@ -49,8 +49,8 @@ pip install git+https://github.com/shivammehta25/Matcha-TTS.git
 3. Run CLI / gradio app / jupyter notebook
 
 ```bash
-# This will download the required models and list available arguments
-matcha_tts --help
+# This will download the required models
+match_tts --text "<INPUT TEXT>"
 ```
 
 or
