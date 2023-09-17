@@ -23,15 +23,18 @@
   <img src="images/logo.png" height="128"/>
 </p>
 
-We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching to speed up ODE-based speech synthesis. Our method:
+We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching (similar to rectified flows) to speed up ODE-based speech synthesis. Our method:
 
-- Is probabilistic
-- Has compact memory footprint
-- Sounds highly natural
-- Is very fast to synthesise from
+* Is probabilistic
+* Has compact memory footprint
+* Sounds highly natural
+* Is very fast to synthesise from
 
-Please check out the audio examples below and [read our arXiv preprint for more details][arxiv_link].
-Code and pre-trained models will be made available shortly after the ICASSP deadline.
+
+Check out our [demo page][this_page]. Read our [arXiv preprint for more details][arxiv_link].
+Code is available in our [GitHub repository][github_link], along with pre-trained models.
+
+[Try 🍵 Matcha-TTS on HuggingFace 🤗 spaces!][hf_space]
 
 [shivam_profile]: https://www.kth.se/profile/smehta
 [ruibo_profile]: https://www.kth.se/profile/ruibo
@@ -43,6 +46,8 @@ Code and pre-trained models will be made available shortly after the ICASSP dead
 [grad_tts_paper]: https://arxiv.org/abs/2105.06337
 [vits_paper]: https://arxiv.org/abs/2106.06103
 [fastspeech2_paper]: https://arxiv.org/abs/2006.04558
+[github_link]: https://github.com/shivammehta25/Matcha-TTS
+[hf_space]: https://huggingface.co/spaces/shivammehta25/Matcha-TTS
 
 <style type="text/css">
     .tg {
