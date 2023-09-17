@@ -30,7 +30,7 @@ Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS). Read our 
 
 [Pretrained models](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing) will be auto downloaded with the CLI or gradio interface.
 
-[Try 🍵 Matcha-TTS it on HuggingFace spaces!](https://huggingface.co/spaces/shivammehta25/Matcha-TTS)
+[Try 🍵 Matcha-TTS on HuggingFace 🤗 spaces!](https://huggingface.co/spaces/shivammehta25/Matcha-TTS)
 
 <br>
 
