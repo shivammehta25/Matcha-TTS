@@ -16,14 +16,14 @@ from matcha.models.matcha_tts import MatchaTTS
 from matcha.text import sequence_to_text, text_to_sequence
 from matcha.utils.utils import assert_model_downloaded, get_user_data_dir, intersperse
 
-MATCHA_URLS = {"matcha_ljspeech": ""}  # , "matcha_vctk": ""}  # Coming soon
+MATCHA_URLS = {
+    "matcha_ljspeech": "https://drive.google.com/file/d/1BBzmMU7k3a_WetDfaFblMoN18GqQeHCg/view?usp=drive_link"
+}  # , "matcha_vctk": ""}  # Coming soon
 
 MULTISPEAKER_MODEL = {"matcha_vctk"}
 SINGLESPEAKER_MODEL = {"matcha_ljspeech"}
 
-VOCODER_URL = {
-    "hifigan_T2_v1": "https://drive.google.com/file/d/14NENd4equCBLyyCSke114Mv6YR_j_uFs/view?usp=drive_link",
-}
+VOCODER_URL = {"hifigan_T2_v1": "https://drive.google.com/file/d/14NENd4equCBLyyCSke114Mv6YR_j_uFs/view?usp=drive_link"}
 
 
 def plot_spectrogram_to_numpy(spectrogram, filename):
@@ -64,7 +64,7 @@ def assert_required_models_available(args):
     save_dir = get_user_data_dir()
     model_path = save_dir / f"{args.model}.ckpt"
     vocoder_path = save_dir / f"{args.vocoder}"
-    assert_model_downloaded(model_path, MATCHA_URLS[args.model], use_wget=True)
+    assert_model_downloaded(model_path, MATCHA_URLS[args.model])
     assert_model_downloaded(vocoder_path, VOCODER_URL[args.vocoder])
     return {"matcha": model_path, "vocoder": vocoder_path}
 

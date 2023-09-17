@@ -30,7 +30,7 @@ args = Namespace(
 MATCHA_TTS_LOC = LOCATION / f"{args.model}.ckpt"
 VOCODER_LOC = LOCATION / f"{args.vocoder}"
 LOGO_URL = "https://shivammehta25.github.io/Matcha-TTS/images/logo.png"
-assert_model_downloaded(MATCHA_TTS_LOC, MATCHA_URLS[args.model], use_wget=True)
+assert_model_downloaded(MATCHA_TTS_LOC, MATCHA_URLS[args.model])
 assert_model_downloaded(VOCODER_LOC, VOCODER_URL[args.vocoder])
 device = get_device(args)
 

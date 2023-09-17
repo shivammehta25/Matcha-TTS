@@ -28,6 +28,8 @@ We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, tha
 
 Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS). Read our [arXiv preprint for more details](https://arxiv.org/abs/2309.03199).
 
+[Pretrained models](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing) will be auto downloaded with the CLI or gradio interface.
+
 <br>
 
 ## Installation
@@ -35,8 +37,8 @@ Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS). Read our 
 1. Create an environment (suggested but optional)
 
 ```
-conda create -n matcha_tts python=3.10 -y
-conda activate matcha_tts
+conda create -n matcha-tts python=3.10 -y
+conda activate matcha-tts
 ```
 
 2. Install Matcha TTS using pip from source
@@ -50,13 +52,13 @@ pip install git+https://github.com/shivammehta25/Matcha-TTS.git
 
 ```bash
 # This will download the required models
-match_tts --text "<INPUT TEXT>"
+matcha-tts --text "<INPUT TEXT>"
 ```
 
 or
 
 ```bash
-matcha_tts_app
+matcha-tts_app
 ```
 
 or open `synthesis.ipynb` on jupyter notebook
@@ -66,19 +68,19 @@ or open `synthesis.ipynb` on jupyter notebook
 - To synthesise from given text, run:
 
 ```bash
-match_tts --text "<INPUT TEXT>"
+matcha-tts --text "<INPUT TEXT>"
 ```
 
 - To synthesise from a file, run:
 
 ```bash
-match_tts --file <PATH TO FILE>
+matcha-tts --file <PATH TO FILE>
 ```
 
 - To batch synthesise from a file, run:
 
 ```bash
-match_tts --file <PATH TO FILE> --batched
+matcha-tts --file <PATH TO FILE> --batched
 ```
 
 Additional arguments
@@ -86,19 +88,19 @@ Additional arguments
 - Speaking rate
 
 ```bash
-match_tts --text "<INPUT TEXT>" --speaking_rate 1.0
+matcha-tts --text "<INPUT TEXT>" --speaking_rate 1.0
 ```
 
 - Sampling temperature
 
 ```bash
-match_tts --text "<INPUT TEXT>" --temperature 0.667
+matcha-tts --text "<INPUT TEXT>" --temperature 0.667
 ```
 
 - Euler ODE solver steps
 
 ```bash
-match_tts --text "<INPUT TEXT>" --steps 10
+matcha-tts --text "<INPUT TEXT>" --steps 10
 ```
 
 ## Citation information
@@ -185,7 +187,7 @@ python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
 6. Synthesise from the custom trained model
 
 ```bash
-matcha_tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
+matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
 ```
 
 ## Acknowledgements

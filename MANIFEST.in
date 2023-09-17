@@ -3,6 +3,7 @@ include LICENSE.txt
 include requirements.*.txt
 include *.cff
 include requirements.txt
+include matcha/VERSION
 recursive-include matcha *.json
 recursive-include matcha *.html
 recursive-include matcha *.png
