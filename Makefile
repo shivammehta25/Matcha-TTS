@@ -36,3 +36,6 @@ train-ljspeech: ## Train the model
 
 train-ljspeech-min: ## Train the model with minimum memory
 	python matcha/train.py experiment=ljspeech_min_memory
+
+start_app: ## Start the app
+	python matcha/app.py

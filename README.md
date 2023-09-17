@@ -4,7 +4,7 @@
 
 ### [Shivam Mehta](https://www.kth.se/profile/smehta), [Ruibo Tu](https://www.kth.se/profile/ruibo), [Jonas Beskow](https://www.kth.se/profile/beskow), [Éva Székely](https://www.kth.se/profile/szekely), and [Gustav Eje Henter](https://people.kth.se/~ghe/)
 
-[![python](https://img.shields.io/badge/-Python_3.10-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![python](https://img.shields.io/badge/-Python_3.10-blue?logo=python&logoColor=white)](https://www.python.org/downloads/release/python-3100/)
 [![pytorch](https://img.shields.io/badge/PyTorch_2.0+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
 [![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white)](https://pytorchlightning.ai/)
 [![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
@@ -188,8 +188,8 @@ Since this code uses: [Lightning-Hydra-Template](https://github.com/ashleve/ligh
 
 Other source codes I would like to acknowledge:
 
-- [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev) : For helping me figure out how to make cython binaries pip installable
+- [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev) :For helping me figure out how to make cython binaries pip installable and encouragement
 - [Hugging Face Diffusers](https://huggingface.co/): For their awesome diffusers library and its components
 - [Grad-TTS](https://github.com/huawei-noah/Speech-Backbones/tree/main/Grad-TTS): For source code of MAS
-- [torchdyn](https://github.com/DiffEqML/torchdyn): Useful for trying other ODE solvers during development
+- [torchdyn](https://github.com/DiffEqML/torchdyn): Useful for trying other ODE solvers during research and development
 - [labml.ai](https://nn.labml.ai/transformers/rope/index.html): For RoPE implementation
