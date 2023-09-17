@@ -113,8 +113,8 @@ def main():
                 )
                 length_scale = gr.Slider(
                     label="Length scale (Speaking rate)",
-                    minimum=0.01,
-                    maximum=3.0,
+                    minimum=0.5,
+                    maximum=1.5,
                     step=0.05,
                     value=1.0,
                     interactive=True,
