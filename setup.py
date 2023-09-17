@@ -12,7 +12,7 @@ exts = [
     )
 ]
 
-with open("README.md", "r", encoding="utf-8") as readme_file:
+with open("README.md", encoding="utf-8") as readme_file:
     README = readme_file.read()
 
 
@@ -25,10 +25,7 @@ setup(
     author="Shivam Mehta",
     author_email="shivam.mehta25@gmail.com",
     url="https://shivammehta25.github.io/Matcha-TTS",
-    install_requires=[
-        str(r)
-        for r in open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
-    ],
+    install_requires=[str(r) for r in open(os.path.join(os.path.dirname(__file__), "requirements.txt"))],
     include_dirs=[numpy.get_include()],
     include_package_data=True,
     packages=find_packages(exclude=["tests", "tests/*", "examples", "examples/*"]),
@@ -42,5 +39,4 @@ setup(
     },
     ext_modules=cythonize(exts, language_level=3),
     python_requires=">=3.9.0",
-
 )

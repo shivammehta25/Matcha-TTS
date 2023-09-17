@@ -6,9 +6,16 @@ import gradio as gr
 import soundfile as sf
 import torch
 
-from matcha.cli import (MATCHA_URLS, VOCODER_URL, assert_model_downloaded,
-                        get_device, load_matcha, load_vocoder, process_text,
-                        to_waveform)
+from matcha.cli import (
+    MATCHA_URLS,
+    VOCODER_URL,
+    assert_model_downloaded,
+    get_device,
+    load_matcha,
+    load_vocoder,
+    process_text,
+    to_waveform,
+)
 from matcha.utils.utils import get_user_data_dir, plot_tensor
 
 LOCATION = Path(get_user_data_dir())
@@ -59,6 +66,7 @@ def run_full_synthesis(text, n_timesteps, mel_temp, length_scale):
     audio, mel_spectrogram = synthesise_mel(text, text_lengths, n_timesteps, mel_temp, length_scale)
     return phones, audio, mel_spectrogram
 
+
 def main():
     description = """# 🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching
     ### [Shivam Mehta](https://www.kth.se/profile/smehta), [Ruibo Tu](https://www.kth.se/profile/ruibo), [Jonas Beskow](https://www.kth.se/profile/beskow), [Éva Székely](https://www.kth.se/profile/szekely), and [Gustav Eje Henter](https://people.kth.se/~ghe/)
@@ -80,7 +88,6 @@ def main():
     with gr.Blocks(title="🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching") as demo:
         processed_text = gr.State(value=None)
         processed_text_len = gr.State(value=None)
-        mel_variable = gr.State(value=None)
 
         with gr.Box():
             with gr.Row():
@@ -136,7 +143,7 @@ def main():
                 audio = gr.Audio(interactive=False, label="Audio")
 
         with gr.Row():
-            examples = gr.Examples(
+            examples = gr.Examples(  # pylint: disable=unused-variable
                 examples=[
                     [
                         "We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching (similar to rectified flows) to speed up O D E-based speech synthesis.",
@@ -202,6 +209,7 @@ def main():
         )
 
         demo.queue(concurrency_count=5).launch(share=True)
-        
+
+
 if __name__ == "__main__":
     main()

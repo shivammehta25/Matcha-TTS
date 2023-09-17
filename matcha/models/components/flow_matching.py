@@ -46,7 +46,7 @@ class BASECFM(torch.nn.Module, ABC):
 
         Returns:
             sample: generated mel-spectrogram
-                shape: (batch_size, n_feats, mel_timesteps) 
+                shape: (batch_size, n_feats, mel_timesteps)
         """
         z = torch.randn_like(mu) * temperature
         t_span = torch.linspace(0, 1, n_timesteps + 1, device=mu.device)

@@ -69,6 +69,7 @@ class Downsample1D(nn.Module):
     def forward(self, x):
         return self.conv(x)
 
+
 class TimestepEmbedding(nn.Module):
     def __init__(
         self,
@@ -114,6 +115,7 @@ class TimestepEmbedding(nn.Module):
         if self.post_act is not None:
             sample = self.post_act(sample)
         return sample
+
 
 class Upsample1D(nn.Module):
     """A 1D upsampling layer with an optional convolution.

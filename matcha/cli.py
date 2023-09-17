@@ -14,8 +14,7 @@ from matcha.hifigan.env import AttrDict
 from matcha.hifigan.models import Generator as HiFiGAN
 from matcha.models.matcha_tts import MatchaTTS
 from matcha.text import sequence_to_text, text_to_sequence
-from matcha.utils.utils import (assert_model_downloaded, get_user_data_dir,
-                                intersperse)
+from matcha.utils.utils import assert_model_downloaded, get_user_data_dir, intersperse
 
 MATCHA_URLS = {"matcha_ljspeech": ""}  # , "matcha_vctk": ""}  # Coming soon
 
@@ -146,7 +145,9 @@ def validate_args(args):
 
 @torch.inference_mode()
 def cli():
-    parser = argparse.ArgumentParser(description=" 🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching")
+    parser = argparse.ArgumentParser(
+        description=" 🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching"
+    )
     parser.add_argument(
         "--model",
         type=str,
