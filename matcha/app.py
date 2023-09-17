@@ -105,7 +105,7 @@ def main():
             with gr.Row():
                 n_timesteps = gr.Slider(
                     label="Number of ODE steps",
-                    minimum=0,
+                    minimum=1,
                     maximum=100,
                     step=1,
                     value=10,
