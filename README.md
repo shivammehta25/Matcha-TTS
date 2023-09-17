@@ -41,8 +41,13 @@ conda create -n matcha-tts python=3.10 -y
 conda activate matcha-tts
 ```
 
-2. Install Matcha TTS using pip from source
-   (in future we plan to add it to PyPI)
+2. Install Matcha TTS using pip  or from source
+
+```bash
+pip install matcha-tts
+```
+
+from source
 
 ```bash
 pip install git+https://github.com/shivammehta25/Matcha-TTS.git
