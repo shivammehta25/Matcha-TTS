@@ -155,6 +155,14 @@ def cli():
         help="Model to use",
         choices=MATCHA_URLS.keys(),
     )
+
+    parser.add_argument(
+        "--checkpoint_path",
+        type=str,
+        default=None,
+        help="Path to the custom model checkpoint",
+    )
+
     parser.add_argument(
         "--vocoder",
         type=str,
@@ -200,6 +208,11 @@ def cli():
     device = get_device(args)
     print_config(args)
     paths = assert_required_models_available(args)
+
+    if args.checkpoint_path is not None:
+        print(f"[🍵] Loading custom model from {args.checkpoint_path}")
+        paths["matcha"] = args.checkpoint_path
+        args.model = "custom_model"
 
     model = load_matcha(args.model, paths["matcha"], device)
     vocoder, denoiser = load_vocoder(args.vocoder, paths["vocoder"], device)

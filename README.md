@@ -182,6 +182,12 @@ python matcha/train.py experiment=ljspeech_min_memory
 python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
 ```
 
+6. Synthesise from the custom trained model
+
+```bash
+matcha_tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
+```
+
 ## Acknowledgements
 
 Since this code uses: [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers that comes with it.
