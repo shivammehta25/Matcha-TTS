@@ -19,20 +19,18 @@
 
 > This is the official code implementation of 🍵 Matcha-TTS.
 
-We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching (similar to rectified flows) to speed up ODE-based speech synthesis. Our method:
+We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses [conditional flow matching](https://arxiv.org/abs/2210.02747) (similar to [rectified flows](https://arxiv.org/abs/2209.03003)) to speed up ODE-based speech synthesis. Our method:
 
 - Is probabilistic
 - Has compact memory footprint
 - Sounds highly natural
 - Is very fast to synthesise from
 
-Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS). Read our [arXiv preprint for more details](https://arxiv.org/abs/2309.03199).
+Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS) and read [our arXiv preprint](https://arxiv.org/abs/2309.03199) for more details.
 
-[Pretrained models](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing) will be auto downloaded with the CLI or gradio interface.
+[Pre-trained models](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing) will be automatically downloaded with the CLI or gradio interface.
 
 [Try 🍵 Matcha-TTS on HuggingFace 🤗 spaces!](https://huggingface.co/spaces/shivammehta25/Matcha-TTS)
-
-<br>
 
 ## Installation
 
@@ -110,26 +108,13 @@ matcha-tts --text "<INPUT TEXT>" --temperature 0.667
 matcha-tts --text "<INPUT TEXT>" --steps 10
 ```
 
-## Citation information
-
-If you find this work useful, please cite our paper:
-
-```text
-@article{mehta2023matcha,
-  title={Matcha-TTS: A fast TTS architecture with conditional flow matching},
-  author={Mehta, Shivam and Tu, Ruibo and Beskow, Jonas and Sz{\'e}kely, {\'E}va and Henter, Gustav Eje},
-  journal={arXiv preprint arXiv:2309.03199},
-  year={2023}
-}
-```
-
 ## Train with your own dataset
 
-Let's assume we are training with LJSpeech
+Let's assume we are training with LJ Speech
 
-1. Download the dataset from [here](https://keithito.com/LJ-Speech-Dataset/), extract it to `data/LJSpeech-1.1`, and prepare the filelists to point to the extracted data like the [5th point of setup in Tacotron2 repo](https://github.com/NVIDIA/tacotron2#setup).
+1. Download the dataset from [here](https://keithito.com/LJ-Speech-Dataset/), extract it to `data/LJSpeech-1.1`, and prepare the file lists to point to the extracted data like for [item 5 in the setup of the NVIDIA Tacotron 2 repo](https://github.com/NVIDIA/tacotron2#setup).
 
-2. Clone and enter this repository
+2. Clone and enter the Matcha-TTS repository
 
 ```bash
 git clone https://github.com/shivammehta25/Matcha-TTS.git
@@ -167,7 +152,7 @@ data_statistics:  # Computed for ljspeech dataset
 
 to the paths of your train and validation filelists.
 
-5. Run the training script
+6. Run the training script
 
 ```bash
 make train-ljspeech
@@ -191,20 +176,33 @@ python matcha/train.py experiment=ljspeech_min_memory
 python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
 ```
 
-6. Synthesise from the custom trained model
+7. Synthesise from the custom trained model
 
 ```bash
 matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
 ```
 
+## Citation information
+
+If you use our code or otherwise find this work useful, please cite our paper:
+
+```text
+@article{mehta2023matcha,
+  title={Matcha-TTS: A fast TTS architecture with conditional flow matching},
+  author={Mehta, Shivam and Tu, Ruibo and Beskow, Jonas and Sz{\'e}kely, {\'E}va and Henter, Gustav Eje},
+  journal={arXiv preprint arXiv:2309.03199},
+  year={2023}
+}
+```
+
 ## Acknowledgements
 
-Since this code uses: [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers that comes with it.
+Since this code uses [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers that come with it.
 
-Other source codes I would like to acknowledge:
+Other source code I would like to acknowledge:
 
-- [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev) :For helping me figure out how to make cython binaries pip installable and encouragement
+- [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev): For helping me figure out how to make cython binaries pip installable and encouragement
 - [Hugging Face Diffusers](https://huggingface.co/): For their awesome diffusers library and its components
-- [Grad-TTS](https://github.com/huawei-noah/Speech-Backbones/tree/main/Grad-TTS): For source code of MAS
+- [Grad-TTS](https://github.com/huawei-noah/Speech-Backbones/tree/main/Grad-TTS): For the monotonic alignment search source code
 - [torchdyn](https://github.com/DiffEqML/torchdyn): Useful for trying other ODE solvers during research and development
-- [labml.ai](https://nn.labml.ai/transformers/rope/index.html): For RoPE implementation
+- [labml.ai](https://nn.labml.ai/transformers/rope/index.html): For the RoPE implementation
