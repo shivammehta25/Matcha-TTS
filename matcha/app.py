@@ -8,7 +8,7 @@ import torch
 
 from matcha.cli import (
     MATCHA_URLS,
-    VOCODER_URL,
+    VOCODER_URLS,
     assert_model_downloaded,
     get_device,
     load_matcha,
@@ -31,7 +31,7 @@ MATCHA_TTS_LOC = LOCATION / f"{args.model}.ckpt"
 VOCODER_LOC = LOCATION / f"{args.vocoder}"
 LOGO_URL = "https://shivammehta25.github.io/Matcha-TTS/images/logo.png"
 assert_model_downloaded(MATCHA_TTS_LOC, MATCHA_URLS[args.model])
-assert_model_downloaded(VOCODER_LOC, VOCODER_URL[args.vocoder])
+assert_model_downloaded(VOCODER_LOC, VOCODER_URLS[args.vocoder])
 device = get_device(args)
 
 model = load_matcha(args.model, MATCHA_TTS_LOC, device)
