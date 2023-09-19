@@ -35,7 +35,7 @@ torchaudio
 matplotlib
 pandas
 conformer==0.3.2
-diffusers==0.21.1
+diffusers==0.21.2
 notebook
 ipywidgets
 gradio
