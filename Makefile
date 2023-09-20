@@ -17,7 +17,7 @@ create-package: ## Create wheel and tar gz
 	rm -rf dist/
 	python setup.py bdist_wheel --plat-name=manylinux1_x86_64
 	python setup.py sdist
-	python -m twine upload  dist/* --verbose
+	python -m twine upload  dist/* --verbose --skip-existing
 
 format: ## Run pre-commit hooks
 	pre-commit run -a
