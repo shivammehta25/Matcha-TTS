@@ -74,12 +74,21 @@ def load_model_ui(model_type, textbox):
         spk_slider = gr.update(visible=False, value=-1)
         single_speaker_examples = gr.update(visible=True)
         multi_speaker_examples = gr.update(visible=False)
+        length_scale = gr.update(value=0.95)
     else:
         spk_slider = gr.update(visible=True, value=0)
         single_speaker_examples = gr.update(visible=False)
         multi_speaker_examples = gr.update(visible=True)
+        length_scale = gr.update(value=0.85)
 
-    return textbox, gr.update(interactive=True), spk_slider, single_speaker_examples, multi_speaker_examples
+    return (
+        textbox,
+        gr.update(interactive=True),
+        spk_slider,
+        single_speaker_examples,
+        multi_speaker_examples,
+        length_scale,
+    )
 
 
 @torch.inference_mode()
@@ -220,43 +229,43 @@ def main():
                         "We propose Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching (similar to rectified flows) to speed up O D E-based speech synthesis.",
                         50,
                         0.677,
-                        1.0,
+                        0.95,
                     ],
                     [
                         "The Secret Service believed that it was very doubtful that any President would ride regularly in a vehicle with a fixed top, even though transparent.",
                         2,
                         0.677,
-                        1.0,
+                        0.95,
                     ],
                     [
                         "The Secret Service believed that it was very doubtful that any President would ride regularly in a vehicle with a fixed top, even though transparent.",
                         4,
                         0.677,
-                        1.0,
+                        0.95,
                     ],
                     [
                         "The Secret Service believed that it was very doubtful that any President would ride regularly in a vehicle with a fixed top, even though transparent.",
                         10,
                         0.677,
-                        1.0,
+                        0.95,
                     ],
                     [
                         "The Secret Service believed that it was very doubtful that any President would ride regularly in a vehicle with a fixed top, even though transparent.",
                         50,
                         0.677,
-                        1.0,
+                        0.95,
                     ],
                     [
                         "The narrative of these events is based largely on the recollections of the participants.",
                         10,
                         0.677,
-                        1.0,
+                        0.95,
                     ],
                     [
                         "The jury did not believe him, and the verdict was for the defendants.",
                         10,
                         0.677,
-                        1.0,
+                        0.95,
                     ],
                 ],
                 fn=ljspeech_example_cacher,
@@ -272,35 +281,35 @@ def main():
                         "Hello everyone! I am speaker 0 and I am here to tell you that Matcha-TTS is amazing!",
                         10,
                         0.677,
-                        1.0,
+                        0.85,
                         0,
                     ],
                     [
                         "Hello everyone! I am speaker 16 and I am here to tell you that Matcha-TTS is amazing!",
                         10,
                         0.677,
-                        1.0,
+                        0.85,
                         16,
                     ],
                     [
                         "Hello everyone! I am speaker 44 and I am here to tell you that Matcha-TTS is amazing!",
                         50,
                         0.677,
-                        1.0,
+                        0.85,
                         44,
                     ],
                     [
                         "Hello everyone! I am speaker 45 and I am here to tell you that Matcha-TTS is amazing!",
                         50,
                         0.677,
-                        1.0,
+                        0.85,
                         45,
                     ],
                     [
                         "Hello everyone! I am speaker 58 and I am here to tell you that Matcha-TTS is amazing!",
                         4,
                         0.677,
-                        1.0,
+                        0.85,
                         58,
                     ],
                 ],
@@ -314,7 +323,7 @@ def main():
         model_type.change(lambda x: gr.update(interactive=False), inputs=[synth_btn], outputs=[synth_btn]).then(
             load_model_ui,
             inputs=[model_type, text],
-            outputs=[text, synth_btn, spk_slider, example_row_lj_speech, example_row_multispeaker],
+            outputs=[text, synth_btn, spk_slider, example_row_lj_speech, example_row_multispeaker, length_scale],
         )
 
         synth_btn.click(
