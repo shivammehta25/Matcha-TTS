@@ -276,18 +276,18 @@ def main():
                         0,
                     ],
                     [
-                        "Hello everyone! I am speaker 13 and I am here to tell you that Matcha-TTS is amazing!",
-                        50,
-                        0.677,
-                        1.0,
-                        13,
-                    ],
-                    [
                         "Hello everyone! I am speaker 16 and I am here to tell you that Matcha-TTS is amazing!",
                         10,
                         0.677,
                         1.0,
                         16,
+                    ],
+                    [
+                        "Hello everyone! I am speaker 44 and I am here to tell you that Matcha-TTS is amazing!",
+                        50,
+                        0.677,
+                        1.0,
+                        44,
                     ],
                     [
                         "Hello everyone! I am speaker 45 and I am here to tell you that Matcha-TTS is amazing!",
@@ -331,7 +331,7 @@ def main():
             outputs=[audio, mel_spectrogram],
         )
 
-        demo.queue().launch(debug=True)
+        demo.queue().launch(share=True)
 
 
 if __name__ == "__main__":
