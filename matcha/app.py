@@ -323,11 +323,6 @@ def main():
                 label="Multi Speaker Examples",
             )
 
-        with gr.Row():
-            html = '<p /><iframe width="560" height="315" src="https://www.youtube.com/embed/xmvJkz3bqw0?si=jN7ILyDsbPwJCGoa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
-            gr.Markdown("### Watch our teaser video")
-            gr.HTML(html)
-
         model_type.change(lambda x: gr.update(interactive=False), inputs=[synth_btn], outputs=[synth_btn]).then(
             load_model_ui,
             inputs=[model_type, text],
