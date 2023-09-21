@@ -7,6 +7,9 @@ defaults:
 
 trainer:
   max_epochs: 1
-  profiler: "simple"
-  # profiler: "advanced"
+  # profiler: "simple"
+  profiler: "advanced"
   # profiler: "pytorch"
+  accelerator: gpu
+
+  limit_train_batches: 0.02

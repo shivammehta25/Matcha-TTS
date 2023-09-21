@@ -18,16 +18,20 @@ from matcha.text import sequence_to_text, text_to_sequence
 from matcha.utils.utils import assert_model_downloaded, get_user_data_dir, intersperse
 
 MATCHA_URLS = {
-    "matcha_ljspeech": "https://drive.google.com/file/d/1BBzmMU7k3a_WetDfaFblMoN18GqQeHCg/view?usp=drive_link"
-}  # , "matcha_vctk": ""}  # Coming soon
-
-MULTISPEAKER_MODEL = {"matcha_vctk"}
-SINGLESPEAKER_MODEL = {"matcha_ljspeech"}
+    "matcha_ljspeech": "https://drive.google.com/file/d/1BBzmMU7k3a_WetDfaFblMoN18GqQeHCg/view?usp=drive_link",
+    "matcha_vctk": "https://drive.google.com/file/d/1enuxmfslZciWGAl63WGh2ekVo00FYuQ9/view?usp=drive_link",
+}
 
 VOCODER_URLS = {
     "hifigan_T2_v1": "https://drive.google.com/file/d/14NENd4equCBLyyCSke114Mv6YR_j_uFs/view?usp=drive_link",
     "hifigan_univ_v1": "https://drive.google.com/file/d/1qpgI41wNXFcH-iKq1Y42JlBC9j0je8PW/view?usp=drive_link",
 }
+
+MULTISPEAKER_MODEL = {
+    "matcha_vctk": {"vocoder": "hifigan_univ_v1", "speaking_rate": 0.85, "spk": 0, "spk_range": (0, 107)}
+}
+
+SINGLESPEAKER_MODEL = {"matcha_ljspeech": {"vocoder": "hifigan_T2_v1", "speaking_rate": 0.95, "spk": None}}
 
 
 def plot_spectrogram_to_numpy(spectrogram, filename):
@@ -132,28 +136,70 @@ def validate_args(args):
         args.text or args.file
     ), "Either text or file must be provided Matcha-T(ea)TTS need sometext to whisk the waveforms."
     assert args.temperature >= 0, "Sampling temperature cannot be negative"
-    assert args.speaking_rate > 0, "Speaking rate must be greater than 0"
     assert args.steps > 0, "Number of ODE steps must be greater than 0"
-    if args.checkpoint_path is None:
-        if args.model in SINGLESPEAKER_MODEL:
-            assert args.spk is None, f"Speaker ID is not supported for {args.model}"
 
-        if args.spk is not None:
-            assert args.spk >= 0 and args.spk < 109, "Speaker ID must be between 0 and 108"
-            assert args.model in MULTISPEAKER_MODEL, "Speaker ID is only supported for multispeaker model"
+    if args.checkpoint_path is None:
+        # When using pretrained models
+        if args.model in SINGLESPEAKER_MODEL.keys():
+            args = validate_args_for_single_speaker_model(args)
 
         if args.model in MULTISPEAKER_MODEL:
-            if args.spk is None:
-                print("[!] Speaker ID not provided! Using speaker ID 0")
-                args.spk = 0
-            args.vocoder = "hifigan_univ_v1"
+            args = validate_args_for_multispeaker_model(args)
     else:
+        # When using a custom model
         if args.vocoder != "hifigan_univ_v1":
             warn_ = "[-] Using custom model checkpoint! I would suggest passing --vocoder hifigan_univ_v1, unless the custom model is trained on LJ Speech."
             warnings.warn(warn_, UserWarning)
+        if args.speaking_rate is None:
+            args.speaking_rate = 1.0
 
     if args.batched:
         assert args.batch_size > 0, "Batch size must be greater than 0"
+    assert args.speaking_rate > 0, "Speaking rate must be greater than 0"
+
+    return args
+
+
+def validate_args_for_multispeaker_model(args):
+    if args.vocoder is not None:
+        if args.vocoder != MULTISPEAKER_MODEL[args.model]["vocoder"]:
+            warn_ = f"[-] Using {args.model} model! I would suggest passing --vocoder {MULTISPEAKER_MODEL[args.model]['vocoder']}"
+            warnings.warn(warn_, UserWarning)
+    else:
+        args.vocoder = MULTISPEAKER_MODEL[args.model]["vocoder"]
+
+    if args.speaking_rate is None:
+        args.speaking_rate = MULTISPEAKER_MODEL[args.model]["speaking_rate"]
+
+    spk_range = MULTISPEAKER_MODEL[args.model]["spk_range"]
+    if args.spk is not None:
+        assert (
+            args.spk >= spk_range[0] and args.spk <= spk_range[-1]
+        ), f"Speaker ID must be between {spk_range} for this model."
+    else:
+        available_spk_id = MULTISPEAKER_MODEL[args.model]["spk"]
+        warn_ = f"[!] Speaker ID not provided! Using speaker ID {available_spk_id}"
+        warnings.warn(warn_, UserWarning)
+        args.spk = available_spk_id
+
+    return args
+
+
+def validate_args_for_single_speaker_model(args):
+    if args.vocoder is not None:
+        if args.vocoder != SINGLESPEAKER_MODEL[args.model]["vocoder"]:
+            warn_ = f"[-] Using {args.model} model! I would suggest passing --vocoder {SINGLESPEAKER_MODEL[args.model]['vocoder']}"
+            warnings.warn(warn_, UserWarning)
+    else:
+        args.vocoder = SINGLESPEAKER_MODEL[args.model]["vocoder"]
+
+    if args.speaking_rate is None:
+        args.speaking_rate = SINGLESPEAKER_MODEL[args.model]["speaking_rate"]
+
+    if args.spk != SINGLESPEAKER_MODEL[args.model]["spk"]:
+        warn_ = f"[-] Ignoring speaker id {args.spk} for {args.model}"
+        warnings.warn(warn_, UserWarning)
+        args.spk = SINGLESPEAKER_MODEL[args.model]["spk"]
 
     return args
 
@@ -181,8 +227,8 @@ def cli():
     parser.add_argument(
         "--vocoder",
         type=str,
-        default="hifigan_T2_v1",
-        help="Vocoder to use",
+        default=None,
+        help="Vocoder to use (default: will use the one suggested with the pretrained model))",
         choices=VOCODER_URLS.keys(),
     )
     parser.add_argument("--text", type=str, default=None, help="Text to synthesize")
@@ -197,7 +243,7 @@ def cli():
     parser.add_argument(
         "--speaking_rate",
         type=float,
-        default=1.0,
+        default=None,
         help="change the speaking rate, a higher value means slower speaking rate (default: 1.0)",
     )
     parser.add_argument("--steps", type=int, default=10, help="Number of ODE steps  (default: 10)")
@@ -214,8 +260,10 @@ def cli():
         default=os.getcwd(),
         help="Output folder to save results (default: current dir)",
     )
-    parser.add_argument("--batched", action="store_true")
-    parser.add_argument("--batch_size", type=int, default=32)
+    parser.add_argument("--batched", action="store_true", help="Batched inference (default: False)")
+    parser.add_argument(
+        "--batch_size", type=int, default=32, help="Batch size only useful when --batched (default: 32)"
+    )
 
     args = parser.parse_args()
 
@@ -348,6 +396,8 @@ def unbatched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
 
 def print_config(args):
     print("[!] Configurations: ")
+    print(f"\t- Model: {args.model}")
+    print(f"\t- Vocoder: {args.vocoder}")
     print(f"\t- Temperature: {args.temperature}")
     print(f"\t- Speaking rate: {args.speaking_rate}")
     print(f"\t- Number of ODE steps: {args.steps}")
