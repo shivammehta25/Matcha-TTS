@@ -19,7 +19,7 @@ from matcha.utils.utils import assert_model_downloaded, get_user_data_dir, inter
 
 MATCHA_URLS = {
     "matcha_ljspeech": "https://drive.google.com/file/d/1BBzmMU7k3a_WetDfaFblMoN18GqQeHCg/view?usp=drive_link",
-    "matcha_vctk": "",  # Coming soon
+    "matcha_vctk": "https://drive.google.com/file/d/1enuxmfslZciWGAl63WGh2ekVo00FYuQ9/view?usp=drive_link",
 }
 
 VOCODER_URLS = {
@@ -28,7 +28,7 @@ VOCODER_URLS = {
 }
 
 MULTISPEAKER_MODEL = {
-    "matcha_vctk": {"vocoder": "hifigan_univ_v1", "speaking_rate": 0.85, "spk": 0, "spk_range": (0, 108)}
+    "matcha_vctk": {"vocoder": "hifigan_univ_v1", "speaking_rate": 0.85, "spk": 0, "spk_range": (0, 107)}
 }
 
 SINGLESPEAKER_MODEL = {"matcha_ljspeech": {"vocoder": "hifigan_T2_v1", "speaking_rate": 0.95, "spk": None}}

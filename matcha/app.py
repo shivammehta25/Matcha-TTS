@@ -177,7 +177,7 @@ def main():
             with gr.Row():
                 text = gr.Textbox(value="", lines=2, label="Text to synthesise", scale=3)
                 spk_slider = gr.Slider(
-                    minimum=0, maximum=108, step=1, value=args.spk, label="Speaker ID", interactive=True, scale=1
+                    minimum=0, maximum=107, step=1, value=args.spk, label="Speaker ID", interactive=True, scale=1
                 )
 
             with gr.Row():
