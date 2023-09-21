@@ -32,6 +32,11 @@ Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS) and read [
 
 [Try 🍵 Matcha-TTS on HuggingFace 🤗 spaces!](https://huggingface.co/spaces/shivammehta25/Matcha-TTS)
 
+## Watch the teaser
+
+[![Watch the video](https://img.youtube.com/vi/xmvJkz3bqw0/hqdefault.jpg)](https://youtu.be/xmvJkz3bqw0)
+
+
 ## Installation
 
 1. Create an environment (suggested but optional)
