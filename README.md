@@ -56,6 +56,8 @@ from source
 
 ```bash
 pip install git+https://github.com/shivammehta25/Matcha-TTS.git
+cd Matcha-TTS
+pip install -e .
 ```
 
 3. Run CLI / gradio app / jupyter notebook
