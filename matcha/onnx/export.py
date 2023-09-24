@@ -127,7 +127,7 @@ def main():
         assert (
             args.vocoder_name and args.vocoder_checkpoint_path
         ), "Both vocoder_name and vocoder-checkpoint are required when embedding the vocoder in the ONNX graph."
-        vocoder = load_vocoder(args.vocoder_name, args.vocoder_checkpoint_path, "cpu")
+        vocoder, _ = load_vocoder(args.vocoder_name, args.vocoder_checkpoint_path, "cpu")
     else:
         vocoder = None
 
