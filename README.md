@@ -221,6 +221,12 @@ You can also control synthesis parameters:
 python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --temperature 0.4 --speaking_rate 0.9 --spk 0
 ```
 
+To run inference on **GPU**, make sure to install **onnxruntime-gpu** package, and then pass `--gpu` to the inference command:
+
+```bash
+python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --gpu
+```
+
 If you exported only Matcha to ONNX, this will write mel-spectrogram as graphs and `numpy` arrays to the output directory.
 If you embedded the vocoder in the exported graph, this will write `.wav` audio files to the output directory.
 
