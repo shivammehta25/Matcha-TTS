@@ -14,10 +14,10 @@ def sequence_mask(length, max_length=None):
 def fix_len_compatibility(length, num_downsamplings_in_unet=2):
     factor = torch.scalar_tensor(2).pow(num_downsamplings_in_unet)
     length = (length / factor).ceil() * factor
-    if torch.jit.is_tracing():
-        return length
-    else:
+    if not torch.onnx.is_in_onnx_export():
         return length.int().item()
+    else:
+        return length
 
 
 def convert_pad_shape(pad_shape):
