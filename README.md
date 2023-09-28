@@ -227,7 +227,7 @@ audio {
 
 ## Architecture
 
-<img src="images/architecture.png" alt="Architecture of OverFlow" width="750"/>
+<img src="images/architecture.png" alt="Architecture of Matcha-TTS" width="750"/>
 
 <script>
 
