@@ -189,6 +189,55 @@ python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
 matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
 ```
 
+## ONNX support
+
+It is possible to export Matcha checkpoints to [ONNX](https://onnx.ai/), and run inference on the exported ONNX graph.
+
+### ONNX export
+
+To export a checkpoint to ONNX, run the following:
+
+```bash
+python3 -m matcha.onnx.export matcha.ckpt model.onnx --n-timesteps 5
+```
+
+Optionally, the ONNX exporter accepts **vocoder-name** and **vocoder-checkpoint** arguments. This enables you to embed the vocoder in the exported graph and generate waveforms in a single run (similar to end-to-end TTS systems).
+
+**Note** that `n_timesteps` is treated as a hyper-parameter rather than a model input. This means you should specify it during export (not during inference). If not specified, `n_timesteps` is set to **5**.
+
+**Important**: for now, torch>=2.1.0 is needed for export since the `scaled_product_attention` operator  is not exportable in older versions. Until the final version is released, those who want to export their models must install torch>=2.1.0 manually as a pre-release.
+
+### ONNX Inference
+
+To run inference on the exported model, use the following:
+
+```bash
+python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs
+```
+
+You can also control synthesis parameters:
+
+```bash
+python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --temperature 0.4 --speaking_rate 0.9 --spk 0
+```
+
+To run inference on **GPU**, make sure to install **onnxruntime-gpu** package, and then pass `--gpu` to the inference command:
+
+```bash
+python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --gpu
+```
+
+If you exported only Matcha to ONNX, this will write mel-spectrogram as graphs and `numpy` arrays to the output directory.
+If you embedded the vocoder in the exported graph, this will write `.wav` audio files to the output directory.
+
+If you exported only Matcha to ONNX, and you want to run a full TTS pipeline, you can pass a path to a vocoder model in `ONNX` format:
+
+```bash
+python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --vocoder hifigan.small.onnx
+```
+
+This will write `.wav` audio files to the output directory.
+
 ## Citation information
 
 If you use our code or otherwise find this work useful, please cite our paper:

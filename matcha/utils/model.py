@@ -7,15 +7,17 @@ import torch
 def sequence_mask(length, max_length=None):
     if max_length is None:
         max_length = length.max()
-    x = torch.arange(int(max_length), dtype=length.dtype, device=length.device)
+    x = torch.arange(max_length, dtype=length.dtype, device=length.device)
     return x.unsqueeze(0) < length.unsqueeze(1)
 
 
 def fix_len_compatibility(length, num_downsamplings_in_unet=2):
-    while True:
-        if length % (2**num_downsamplings_in_unet) == 0:
-            return length
-        length += 1
+    factor = torch.scalar_tensor(2).pow(num_downsamplings_in_unet)
+    length = (length / factor).ceil() * factor
+    if not torch.onnx.is_in_onnx_export():
+        return length.int().item()
+    else:
+        return length
 
 
 def convert_pad_shape(pad_shape):
