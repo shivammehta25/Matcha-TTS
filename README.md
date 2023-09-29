@@ -36,7 +36,6 @@ Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS) and read [
 
 [![Watch the video](https://img.youtube.com/vi/xmvJkz3bqw0/hqdefault.jpg)](https://youtu.be/xmvJkz3bqw0)
 
-
 ## Installation
 
 1. Create an environment (suggested but optional)
@@ -46,7 +45,7 @@ conda create -n matcha-tts python=3.10 -y
 conda activate matcha-tts
 ```
 
-2. Install Matcha TTS using pip  or from source
+2. Install Matcha TTS using pip or from source
 
 ```bash
 pip install matcha-tts
@@ -191,11 +190,19 @@ matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
 
 ## ONNX support
 
+> Special thanks to @mush42 for implementing ONNX export and inference support.
+
 It is possible to export Matcha checkpoints to [ONNX](https://onnx.ai/), and run inference on the exported ONNX graph.
 
 ### ONNX export
 
-To export a checkpoint to ONNX, run the following:
+To export a checkpoint to ONNX, first install ONNX with
+
+```bash
+pip install onnx
+```
+
+then run the following:
 
 ```bash
 python3 -m matcha.onnx.export matcha.ckpt model.onnx --n-timesteps 5
@@ -205,11 +212,18 @@ Optionally, the ONNX exporter accepts **vocoder-name** and **vocoder-checkpoint*
 
 **Note** that `n_timesteps` is treated as a hyper-parameter rather than a model input. This means you should specify it during export (not during inference). If not specified, `n_timesteps` is set to **5**.
 
-**Important**: for now, torch>=2.1.0 is needed for export since the `scaled_product_attention` operator  is not exportable in older versions. Until the final version is released, those who want to export their models must install torch>=2.1.0 manually as a pre-release.
+**Important**: for now, torch>=2.1.0 is needed for export since the `scaled_product_attention` operator is not exportable in older versions. Until the final version is released, those who want to export their models must install torch>=2.1.0 manually as a pre-release.
 
 ### ONNX Inference
 
-To run inference on the exported model, use the following:
+To run inference on the exported model, first install `onnxruntime` using
+
+```bash
+pip install onnxruntime
+pip install onnxruntime-gpu  # for GPU inference
+```
+
+then use the following:
 
 ```bash
 python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs
