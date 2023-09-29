@@ -190,7 +190,7 @@ matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
 
 ## ONNX support
 
-> Special thanks to @mush42 for implementing ONNX export and inference support.
+> Special thanks to [@mush42](https://github.com/mush42) for implementing ONNX export and inference support.
 
 It is possible to export Matcha checkpoints to [ONNX](https://onnx.ai/), and run inference on the exported ONNX graph.
 
