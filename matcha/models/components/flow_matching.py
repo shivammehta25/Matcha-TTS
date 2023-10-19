@@ -111,8 +111,9 @@ class BASECFM(torch.nn.Module, ABC):
         # sample noise p(x_0)
         z = torch.randn_like(x1)
 
-        y = (1 - (1 - self.sigma_min) * t) * z + t * x1
+        # y = (1 - (1 - self.sigma_min) * t) * z + t * x1
         u = x1 - (1 - self.sigma_min) * z
+        y = u * t + z
 
         loss = F.mse_loss(self.estimator(y, mask, mu, t.squeeze(), spks), u, reduction="sum") / (
             torch.sum(mask) * u.shape[1]
