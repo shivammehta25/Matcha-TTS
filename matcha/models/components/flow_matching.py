@@ -84,7 +84,7 @@ class BASECFM(torch.nn.Module, ABC):
         #         dt = t_span[steps + 1] - t
         #     steps += 1
 
-        for _ in range(len(t_span) - 1):
+        for steps in range(len(t_span) - 1):
             dphi_dt = self.estimator(x, mask, mu, t, spks, cond)
             x = x + dt * dphi_dt
             t = t + dt
