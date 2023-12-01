@@ -42,3 +42,4 @@ gradio
 gdown
 wget
 seaborn
+piper_phonemize
