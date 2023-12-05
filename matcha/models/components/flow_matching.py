@@ -73,16 +73,14 @@ class BASECFM(torch.nn.Module, ABC):
         # Or in future might add like a return_all_steps flag
         sol = []
 
-        steps = 1
-        while steps <= len(t_span) - 1:
+        for step in range(1, len(t_span)):
             dphi_dt = self.estimator(x, mask, mu, t, spks, cond)
 
             x = x + dt * dphi_dt
             t = t + dt
             sol.append(x)
-            if steps < len(t_span) - 1:
-                dt = t_span[steps + 1] - t
-            steps += 1
+            if step < len(t_span) - 1:
+                dt = t_span[step + 1] - t
 
         return sol[-1]
 
