@@ -1,0 +1,7 @@
+defaults:
+  - deterministic.yaml
+  - _self_
+
+sigma_min: 1e-4
+n_steps: 10
+name: flow_matching

@@ -1,0 +1,7 @@
+name: deterministic
+n_spks: ${model.n_spks}
+spk_emb_dim: ${model.spk_emb_dim}
+filter_channels: 256
+kernel_size: 3
+n_channels: ${model.encoder.encoder_params.n_channels}
+p_dropout: ${model.encoder.encoder_params.p_dropout}
