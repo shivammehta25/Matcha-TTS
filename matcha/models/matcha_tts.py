@@ -121,7 +121,8 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         logw = self.dp(enc_output, x_mask)
 
         w = torch.exp(logw) * x_mask
-        w_ceil = torch.ceil(w) * length_scale
+        w_ceil = torch.round(w) * length_scale
+        # print(w_ceil)
         y_lengths = torch.clamp_min(torch.sum(w_ceil, [1, 2]), 1).long()
         y_max_length = y_lengths.max()
         y_max_length_ = fix_len_compatibility(y_max_length)
