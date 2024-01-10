@@ -25,11 +25,10 @@
 
 We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching (similar to rectified flows) to speed up ODE-based speech synthesis. Our method:
 
-* Is probabilistic
-* Has compact memory footprint
-* Sounds highly natural
-* Is very fast to synthesise from
-
+- Is probabilistic
+- Has compact memory footprint
+- Sounds highly natural
+- Is very fast to synthesise from
 
 Check out our [demo page][this_page]. Read our [arXiv preprint for more details][arxiv_link].
 Code is available in our [GitHub repository][github_link], along with pre-trained models.
@@ -225,9 +224,9 @@ audio {
 
 <script src="transcripts.js"></script>
 
-## Architecture
+<!-- ## Architecture
 
-<img src="images/architecture.png" alt="Architecture of Matcha-TTS" width="750"/>
+<img src="images/architecture.png" alt="Architecture of Matcha-TTS" width="750"/> -->
 
 <script>
 
@@ -518,7 +517,5 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
   year={2023}
 }
 ```
-
-
 
 [![MatchaTTS](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://shivammehta25.github.io/Matcha-TTS&count_bg=%23409CFF&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Matcha-TTS&edge_flat=false)][this_page]
