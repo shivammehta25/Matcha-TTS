@@ -29,8 +29,15 @@ args = Namespace(
 
 CURRENTLY_LOADED_MODEL = args.model
 
-MATCHA_TTS_LOC = lambda x: LOCATION / f"{x}.ckpt"  # noqa: E731
-VOCODER_LOC = lambda x: LOCATION / f"{x}"  # noqa: E731
+
+def MATCHA_TTS_LOC(x):
+    return LOCATION / f"{x}.ckpt"
+
+
+def VOCODER_LOC(x):
+    return LOCATION / f"{x}"
+
+
 LOGO_URL = "https://shivammehta25.github.io/Matcha-TTS/images/logo.png"
 RADIO_OPTIONS = {
     "Multi Speaker (VCTK)": {
