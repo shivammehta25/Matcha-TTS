@@ -205,7 +205,7 @@ def get_user_data_dir(appname="matcha_tts"):
     return final_path
 
 
-def assert_model_downloaded(checkpoint_path, url, use_wget=False):
+def assert_model_downloaded(checkpoint_path, url, use_wget=True):
     if Path(checkpoint_path).exists():
         log.debug(f"[+] Model already present at {checkpoint_path}!")
         print(f"[+] Model already present at {checkpoint_path}!")

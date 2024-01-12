@@ -23,8 +23,8 @@ MATCHA_URLS = {
 }
 
 VOCODER_URLS = {
-    "hifigan_T2_v1": "https://drive.google.com/file/d/14NENd4equCBLyyCSke114Mv6YR_j_uFs/view?usp=drive_link",
-    "hifigan_univ_v1": "https://drive.google.com/file/d/1qpgI41wNXFcH-iKq1Y42JlBC9j0je8PW/view?usp=drive_link",
+    "hifigan_T2_v1": "https://github.com/shivammehta25/Matcha-TTS-checkpoints/releases/download/v1.0/generator_v1",  # Old url: https://drive.google.com/file/d/14NENd4equCBLyyCSke114Mv6YR_j_uFs/view?usp=drive_link
+    "hifigan_univ_v1": "https://github.com/shivammehta25/Matcha-TTS-checkpoints/releases/download/v1.0/g_02500000",  # Old url: https://drive.google.com/file/d/1qpgI41wNXFcH-iKq1Y42JlBC9j0je8PW/view?usp=drive_link
 }
 
 MULTISPEAKER_MODEL = {
@@ -74,7 +74,7 @@ def assert_required_models_available(args):
         model_path = args.checkpoint_path
     else:
         model_path = save_dir / f"{args.model}.ckpt"
-        assert_model_downloaded(model_path, MATCHA_URLS[args.model], use_wget=True)
+        assert_model_downloaded(model_path, MATCHA_URLS[args.model])
 
     vocoder_path = save_dir / f"{args.vocoder}"
     assert_model_downloaded(vocoder_path, VOCODER_URLS[args.vocoder])
