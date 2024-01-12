@@ -81,7 +81,7 @@ class BaseLightningClass(LightningModule, ABC):
             "step",
             float(self.global_step),
             on_step=True,
-            on_epoch=True,
+            prog_bar=True,
             logger=True,
             sync_dist=True,
         )

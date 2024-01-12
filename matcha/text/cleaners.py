@@ -15,6 +15,7 @@ import logging
 import re
 
 import phonemizer
+import piper_phonemize
 from unidecode import unidecode
 
 # To avoid excessive logging we set the log level of the phonemizer package to Critical
@@ -101,5 +102,15 @@ def english_cleaners2(text):
     text = lowercase(text)
     text = expand_abbreviations(text)
     phonemes = global_phonemizer.phonemize([text], strip=True, njobs=1)[0]
+    phonemes = collapse_whitespace(phonemes)
+    return phonemes
+
+
+def english_cleaners_piper(text):
+    """Pipeline for English text, including abbreviation expansion. + punctuation + stress"""
+    text = convert_to_ascii(text)
+    text = lowercase(text)
+    text = expand_abbreviations(text)
+    phonemes = "".join(piper_phonemize.phonemize_espeak(text=text, voice="en-US")[0])
     phonemes = collapse_whitespace(phonemes)
     return phonemes
