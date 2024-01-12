@@ -18,8 +18,8 @@ from matcha.text import sequence_to_text, text_to_sequence
 from matcha.utils.utils import assert_model_downloaded, get_user_data_dir, intersperse
 
 MATCHA_URLS = {
-    "matcha_ljspeech": "https://drive.google.com/file/d/1BBzmMU7k3a_WetDfaFblMoN18GqQeHCg/view?usp=drive_link",
-    "matcha_vctk": "https://drive.google.com/file/d/1enuxmfslZciWGAl63WGh2ekVo00FYuQ9/view?usp=drive_link",
+    "matcha_ljspeech": "https://github.com/shivammehta25/Matcha-TTS-checkpoints/releases/download/v1.0/matcha_ljspeech.ckpt",
+    "matcha_vctk": "https://github.com/shivammehta25/Matcha-TTS-checkpoints/releases/download/v1.0/matcha_vctk.ckpt",
 }
 
 VOCODER_URLS = {
@@ -63,7 +63,7 @@ def get_texts(args):
     if args.text:
         texts = [args.text]
     else:
-        with open(args.file) as f:
+        with open(args.file, encoding="utf-8") as f:
             texts = f.readlines()
     return texts
 
@@ -140,7 +140,7 @@ def validate_args(args):
 
     if args.checkpoint_path is None:
         # When using pretrained models
-        if args.model in SINGLESPEAKER_MODEL.keys():
+        if args.model in SINGLESPEAKER_MODEL:
             args = validate_args_for_single_speaker_model(args)
 
         if args.model in MULTISPEAKER_MODEL:
