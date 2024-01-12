@@ -18,7 +18,7 @@ repos:
 
   # python code formatting
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 23.9.1
     hooks:
       - id: black
         args: [--line-length, "120"]
@@ -32,14 +32,14 @@ repos:
 
   # python upgrading syntax to newer version
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
+    rev: v3.14.0
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
 
   # python check (PEP8), programming errors and code complexity
   - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+    rev: 6.1.0
     hooks:
       - id: flake8
         args:
@@ -54,6 +54,6 @@ repos:
 
   # pylint
   - repo: https://github.com/pycqa/pylint
-    rev: v2.8.2
+    rev: v3.0.0
     hooks:
     -   id: pylint

@@ -26,13 +26,13 @@ We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, tha
 - Sounds highly natural
 - Is very fast to synthesise from
 
-Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS) and read [our arXiv preprint](https://arxiv.org/abs/2309.03199) for more details.
+Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS) and read [our ICASSP 2024 paper](https://arxiv.org/abs/2309.03199) for more details.
 
 [Pre-trained models](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing) will be automatically downloaded with the CLI or gradio interface.
 
-[Try 🍵 Matcha-TTS on HuggingFace 🤗 spaces!](https://huggingface.co/spaces/shivammehta25/Matcha-TTS)
+You can also [try 🍵 Matcha-TTS in your browser on HuggingFace 🤗 spaces](https://huggingface.co/spaces/shivammehta25/Matcha-TTS).
 
-## Watch the teaser
+## Teaser video
 
 [![Watch the video](https://img.youtube.com/vi/xmvJkz3bqw0/hqdefault.jpg)](https://youtu.be/xmvJkz3bqw0)
 
@@ -257,11 +257,11 @@ This will write `.wav` audio files to the output directory.
 If you use our code or otherwise find this work useful, please cite our paper:
 
 ```text
-@article{mehta2023matcha,
-  title={Matcha-TTS: A fast TTS architecture with conditional flow matching},
+@inproceedings{mehta2024matcha,
+  title={Matcha-{TTS}: A fast {TTS} architecture with conditional flow matching},
   author={Mehta, Shivam and Tu, Ruibo and Beskow, Jonas and Sz{\'e}kely, {\'E}va and Henter, Gustav Eje},
-  journal={arXiv preprint arXiv:2309.03199},
-  year={2023}
+  booktitle={Proc. ICASSP},
+  year={2024}
 }
 ```
 
@@ -269,7 +269,7 @@ If you use our code or otherwise find this work useful, please cite our paper:
 
 Since this code uses [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers that come with it.
 
-Other source code I would like to acknowledge:
+Other source code we would like to acknowledge:
 
 - [Coqui-TTS](https://github.com/coqui-ai/TTS/tree/dev): For helping me figure out how to make cython binaries pip installable and encouragement
 - [Hugging Face Diffusers](https://huggingface.co/): For their awesome diffusers library and its components
