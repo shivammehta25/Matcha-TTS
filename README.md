@@ -17,7 +17,7 @@
 
 </div>
 
-> This is the official code implementation of 🍵 Matcha-TTS.
+> This is the official code implementation of 🍵 Matcha-TTS [ICASSP 2024].
 
 We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses [conditional flow matching](https://arxiv.org/abs/2210.02747) (similar to [rectified flows](https://arxiv.org/abs/2209.03003)) to speed up ODE-based speech synthesis. Our method:
 
