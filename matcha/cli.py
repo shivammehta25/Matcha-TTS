@@ -74,7 +74,7 @@ def assert_required_models_available(args):
         model_path = args.checkpoint_path
     else:
         model_path = save_dir / f"{args.model}.ckpt"
-        assert_model_downloaded(model_path, MATCHA_URLS[args.model])
+        assert_model_downloaded(model_path, MATCHA_URLS[args.model], use_wget=True)
 
     vocoder_path = save_dir / f"{args.vocoder}"
     assert_model_downloaded(vocoder_path, VOCODER_URLS[args.vocoder])
