@@ -23,17 +23,17 @@
   <img src="images/logo.png" height="128"/>
 </p>
 
-We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses conditional flow matching (similar to rectified flows) to speed up ODE-based speech synthesis. Our method:
+We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses [conditional flow matching](https://arxiv.org/abs/2210.02747) (similar to [rectified flows](https://arxiv.org/abs/2209.03003)) to speed up ODE-based speech synthesis. Our method:
 
 - Is probabilistic
 - Has compact memory footprint
 - Sounds highly natural
 - Is very fast to synthesise from
 
-Check out our [demo page][this_page]. Read our [arXiv preprint for more details][arxiv_link].
+See below for audio examples, or read [our ICASSP 2024 paper][arxiv_link] for more details.
 Code is available in our [GitHub repository][github_link], along with pre-trained models.
 
-[Try 🍵 Matcha-TTS on HuggingFace 🤗 spaces!][hf_space]
+You can also [try 🍵 Matcha-TTS in your browser on HuggingFace 🤗 spaces][hf_space].
 
 [shivam_profile]: https://www.kth.se/profile/smehta
 [ruibo_profile]: https://www.kth.se/profile/ruibo
@@ -510,11 +510,11 @@ Currently loaded stimulus: <span id="stimuli-from-listening-test-span" style="fo
 ## Citation information
 
 ```
-@article{mehta2023matcha,
-  title={Matcha-TTS: A fast TTS architecture with conditional flow matching},
+@inproceedings{mehta2024matcha,
+  title={Matcha-{TTS}: A fast {TTS} architecture with conditional flow matching},
   author={Mehta, Shivam and Tu, Ruibo and Beskow, Jonas and Sz{\'e}kely, {\'E}va and Henter, Gustav Eje},
-  journal={arXiv preprint arXiv:2309.03199},
-  year={2023}
+  booktitle={Proc. ICASSP},
+  year={2024}
 }
 ```
 
