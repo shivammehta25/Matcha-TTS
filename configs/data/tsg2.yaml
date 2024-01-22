@@ -1,0 +1,10 @@
+defaults:
+  - ljspeech
+  - _self_
+
+name: tsg2
+train_filelist_path: data/filelists/cormac_train.txt
+valid_filelist_path: data/filelists/cormac_val.txt
+data_statistics:
+  mel_mean: -5.536622
+  mel_std: 2.116101
