@@ -42,7 +42,7 @@ def compute_durations(data_loader: torch.utils.data.DataLoader, model: nn.Module
         device (torch.device): GPU or CPU
     """
 
-    for batch in tqdm(data_loader, leave=False):
+    for batch in tqdm(data_loader, desc="🍵 Computing durations 🍵:"):
         x, x_lengths = batch["x"], batch["x_lengths"]
         y, y_lengths = batch["y"], batch["y_lengths"]
         spks = batch["spks"]
@@ -171,4 +171,9 @@ def main():
 
 
 if __name__ == "__main__":
+    # Helps with generating durations for the dataset to train other architectures
+    # that cannot learn to align due to limited size of dataset
+    # Example usage:
+    # python python matcha/utils/get_durations_from_trained_model.py -i ljspeech.yaml -c pretrained_model
+    # This will create a folder in data/processed_data/durations/ljspeech with the durations
     main()
