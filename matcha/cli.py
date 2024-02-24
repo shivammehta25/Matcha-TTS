@@ -227,7 +227,7 @@ def cli():
     parser.add_argument(
         "--vocoder",
         type=str,
-        default=None,
+        default="hifigan_univ_v1",
         help="Vocoder to use (default: will use the one suggested with the pretrained model))",
         choices=VOCODER_URLS.keys(),
     )

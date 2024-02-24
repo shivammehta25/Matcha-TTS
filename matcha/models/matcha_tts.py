@@ -4,7 +4,7 @@ import random
 
 import torch
 
-import matcha.utils.monotonic_align as monotonic_align
+import matcha.utils.monotonic_align as monotonic_align  # pylint: disable=consider-using-from-import
 from matcha import utils
 from matcha.models.baselightningmodule import BaseLightningClass
 from matcha.models.components.duration_predictors import DP
@@ -241,4 +241,4 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         else:
             prior_loss = 0
 
-        return dur_loss, prior_loss, diff_loss
+        return dur_loss, prior_loss, diff_loss, attn
