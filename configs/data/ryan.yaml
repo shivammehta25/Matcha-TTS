@@ -1,0 +1,10 @@
+defaults:
+  - ljspeech
+  - _self_
+
+name: ryan
+train_filelist_path: data/filelists/ryan_train.csv
+valid_filelist_path: data/filelists/ryan_val.csv
+data_statistics:
+  mel_mean: -4.715779
+  mel_std: 2.124502

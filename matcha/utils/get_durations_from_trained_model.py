@@ -131,7 +131,7 @@ def main():
     if args.output_folder is not None:
         output_folder = Path(args.output_folder)
     else:
-        output_folder = Path("data") / "processed_data" / "durations" / cfg["name"]
+        output_folder = Path("data") / "processed_data" / cfg["name"] / "durations"
 
     if os.path.exists(output_folder) and not args.force:
         print("Folder already exists. Use -f to force overwrite")

@@ -1,0 +1,20 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=multispeaker
+
+defaults:
+  - override /data: joe_spont_only.yaml
+  - override /model/duration_predictor: flow_matching.yaml
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["joe"]
+
+
+run_name: joe_stoc_dur
+
+model:
+  duration_predictor:
+    p_dropout: 0.2

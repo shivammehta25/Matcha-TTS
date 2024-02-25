@@ -1,0 +1,10 @@
+defaults:
+  - ljspeech
+  - _self_
+
+name: joe_spont_only
+train_filelist_path: data/filelists/joe_spontonly_train.txt
+valid_filelist_path: data/filelists/joe_spontonly_val.txt
+data_statistics:
+  mel_mean: -5.882903
+  mel_std: 2.458284
