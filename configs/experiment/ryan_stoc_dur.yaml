@@ -4,7 +4,7 @@
 # python train.py experiment=multispeaker
 
 defaults:
-  - override /data: joe_spont_only.yaml
+  - override /data: ryan.yaml
   - override /model/duration_predictor: flow_matching.yaml
 
 # all parameters below will be merged with parameters from default configurations set above
