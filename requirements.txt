@@ -38,7 +38,7 @@ conformer==0.3.2
 diffusers==0.25.0
 notebook
 ipywidgets
-gradio
+gradio==3.43.2
 gdown
 wget
 seaborn
