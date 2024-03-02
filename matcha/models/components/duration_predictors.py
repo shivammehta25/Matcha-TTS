@@ -126,7 +126,7 @@ class FlowMatchingDurationPrediction(nn.Module):
         self.n_steps = params.n_steps
 
     @torch.inference_mode()
-    def forward(self, enc_outputs, mask, n_timesteps=None, temperature=1):
+    def forward(self, enc_outputs, mask, n_timesteps=500, temperature=1):
         """Forward diffusion
 
         Args:

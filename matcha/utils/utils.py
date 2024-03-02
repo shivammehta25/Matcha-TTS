@@ -2,6 +2,7 @@ import os
 import sys
 import warnings
 from importlib.util import find_spec
+from math import ceil
 from pathlib import Path
 from typing import Any, Callable, Dict, Tuple
 
@@ -217,3 +218,42 @@ def assert_model_downloaded(checkpoint_path, url, use_wget=True):
         gdown.download(url=url, output=checkpoint_path, quiet=False, fuzzy=True)
     else:
         wget.download(url=url, out=checkpoint_path)
+
+
+def get_phoneme_durations(durations, phones):
+    prev = durations[0]
+    merged_durations = []
+    # Convolve with stride 2
+    for i in range(1, len(durations), 2):
+        if i == len(durations) - 2:
+            # if it is last take full value
+            next_half = durations[i + 1]
+        else:
+            next_half = ceil(durations[i + 1] / 2)
+
+        curr = prev + durations[i] + next_half
+        prev = durations[i + 1] - next_half
+        merged_durations.append(curr)
+
+    assert len(phones) == len(merged_durations)
+    assert len(merged_durations) == (len(durations) - 1) // 2
+
+    merged_durations = torch.cumsum(torch.tensor(merged_durations), 0, dtype=torch.long)
+    start = torch.tensor(0)
+    duration_json = []
+    for i, duration in enumerate(merged_durations):
+        duration_json.append(
+            {
+                phones[i]: {
+                    "starttime": start.item(),
+                    "endtime": duration.item(),
+                    "duration": duration.item() - start.item(),
+                }
+            }
+        )
+        start = duration
+
+    assert list(duration_json[-1].values())[0]["endtime"] == sum(
+        durations
+    ), f"{list(duration_json[-1].values())[0]['endtime'],  sum(durations)}"
+    return duration_json

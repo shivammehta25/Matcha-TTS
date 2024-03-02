@@ -164,10 +164,10 @@ class TextMelDataset(torch.utils.data.Dataset):
             filepath, text = filepath_and_text[0], filepath_and_text[1]
             spk = None
 
-        text = self.get_text(text, add_blank=self.add_blank)
+        text, cleaned_text = self.get_text(text, add_blank=self.add_blank)
         mel = self.get_mel(filepath)
 
-        return {"x": text, "y": mel, "spk": spk, "filepath": filepath}
+        return {"x": text, "y": mel, "spk": spk, "filepath": filepath, "x_text": cleaned_text}
 
     def get_mel(self, filepath):
         audio, sr = ta.load(filepath)
@@ -187,11 +187,11 @@ class TextMelDataset(torch.utils.data.Dataset):
         return mel
 
     def get_text(self, text, add_blank=True):
-        text_norm = text_to_sequence(text, self.cleaners)
+        text_norm, cleaned_text = text_to_sequence(text, self.cleaners)
         if self.add_blank:
             text_norm = intersperse(text_norm, 0)
         text_norm = torch.IntTensor(text_norm)
-        return text_norm
+        return text_norm, cleaned_text
 
     def __getitem__(self, index):
         datapoint = self.get_datapoint(self.filepaths_and_text[index])
@@ -216,7 +216,7 @@ class TextMelBatchCollate:
         x = torch.zeros((B, x_max_length), dtype=torch.long)
         y_lengths, x_lengths = [], []
         spks = []
-        filepaths = []
+        filepaths, x_texts = [], []
         for i, item in enumerate(batch):
             y_, x_ = item["y"], item["x"]
             y_lengths.append(y_.shape[-1])
@@ -225,9 +225,18 @@ class TextMelBatchCollate:
             x[i, : x_.shape[-1]] = x_
             spks.append(item["spk"])
             filepaths.append(item["filepath"])
+            x_texts.append(item["x_text"])
 
         y_lengths = torch.tensor(y_lengths, dtype=torch.long)
         x_lengths = torch.tensor(x_lengths, dtype=torch.long)
         spks = torch.tensor(spks, dtype=torch.long) if self.n_spks > 1 else None
 
-        return {"x": x, "x_lengths": x_lengths, "y": y, "y_lengths": y_lengths, "spks": spks, "filepaths": filepaths}
+        return {
+            "x": x,
+            "x_lengths": x_lengths,
+            "y": y,
+            "y_lengths": y_lengths,
+            "spks": spks,
+            "filepaths": filepaths,
+            "x_texts": x_texts,
+        }
