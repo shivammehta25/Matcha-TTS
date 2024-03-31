@@ -7,6 +7,7 @@ import torch
 from huggingface_hub import hf_hub_download
 
 from typing import Optional
+# add to the requirements
 from omegaconf import OmegaConf
 
 import matcha.utils.monotonic_align as monotonic_align
