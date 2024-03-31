@@ -7,7 +7,6 @@ import torch
 from huggingface_hub import hf_hub_download
 
 from typing import Optional
-# add to the requirements
 from omegaconf import OmegaConf
 
 import matcha.utils.monotonic_align as monotonic_align
@@ -77,20 +76,7 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         )
 
         self.update_data_statistics(data_statistics)
-    '''
-    @classmethod
-    def from_hparams(cls, config_path: str):
-        """
-        Class method to create a new Vocos model instance from hyperparameters stored in a yaml configuration file.
-        """
-        with open(config_path, "r") as f:
-            config = yaml.safe_load(f)
-        feature_extractor = instantiate_class(args=(), init=config["feature_extractor"])
-        backbone = instantiate_class(args=(), init=config["backbone"])
-        head = instantiate_class(args=(), init=config["head"])
-        model = cls(feature_extractor=feature_extractor, backbone=backbone, head=head)
-        return model
-    '''
+
     @classmethod
     def from_hparams(cls, cfg: str):
         """
