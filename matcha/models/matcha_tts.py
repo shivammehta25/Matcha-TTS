@@ -236,4 +236,4 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         else:
             prior_loss = 0
 
-        return dur_loss, prior_loss, diff_loss
+        return dur_loss, prior_loss, diff_loss, attn
