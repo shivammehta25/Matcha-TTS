@@ -252,6 +252,43 @@ python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --vo
 
 This will write `.wav` audio files to the output directory.
 
+## Extract phoneme alignments from Matcha-TTS
+
+If the dataset is structured as
+
+```bash
+data/
+└── LJSpeech-1.1
+    ├── metadata.csv
+    ├── README
+    ├── test.txt
+    ├── train.txt
+    ├── val.txt
+    └── wavs
+```
+Then you can extract the phoneme level alignments from a Trained Matcha-TTS model using:
+```bash
+python  matcha/utils/get_durations_from_trained_model.py -i dataset_yaml -c <checkpoint>
+```
+Example:
+```bash
+python  matcha/utils/get_durations_from_trained_model.py -i ljspeech.yaml -c matcha_ljspeech.ckpt
+```
+or simply:
+```bash
+matcha-tts-get-durations -i ljspeech.yaml -c matcha_ljspeech.ckpt
+```
+---
+## Train using extracted alignments
+
+In the datasetconfig turn on load duration.
+Example: `ljspeech.yaml`
+```
+load_durations: True
+```
+or see an examples in configs/experiment/ljspeech_from_durations.yaml
+
+
 ## Citation information
 
 If you use our code or otherwise find this work useful, please cite our paper:
