@@ -140,6 +140,7 @@ def main():
         cfg["batch_size"] = args.batch_size
         cfg["train_filelist_path"] = str(os.path.join(root_path, cfg["train_filelist_path"]))
         cfg["valid_filelist_path"] = str(os.path.join(root_path, cfg["valid_filelist_path"]))
+        cfg["load_durations"] = False
 
     if args.output_folder is not None:
         output_folder = Path(args.output_folder)
