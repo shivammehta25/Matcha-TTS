@@ -13,3 +13,4 @@ n_feats: 80
 data_statistics: ${data.data_statistics}
 out_size: null # Must be divisible by 4
 prior_loss: true
+use_precomputed_durations: ${data.load_durations}

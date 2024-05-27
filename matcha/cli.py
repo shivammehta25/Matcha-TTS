@@ -48,7 +48,7 @@ def plot_spectrogram_to_numpy(spectrogram, filename):
 def process_text(i: int, text: str, device: torch.device):
     print(f"[{i}] - Input text: {text}")
     x = torch.tensor(
-        intersperse(text_to_sequence(text, ["english_cleaners2"]), 0),
+        intersperse(text_to_sequence(text, ["english_cleaners2"])[0], 0),
         dtype=torch.long,
         device=device,
     )[None]
@@ -326,12 +326,13 @@ def batched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
     for i, batch in enumerate(dataloader):
         i = i + 1
         start_t = dt.datetime.now()
+        b = batch["x"].shape[0]
         output = model.synthesise(
             batch["x"].to(device),
             batch["x_lengths"].to(device),
             n_timesteps=args.steps,
             temperature=args.temperature,
-            spks=spk,
+            spks=spk.expand(b) if spk is not None else spk,
             length_scale=args.speaking_rate,
         )
 

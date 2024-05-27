@@ -38,6 +38,7 @@ setup(
             "matcha-data-stats=matcha.utils.generate_data_statistics:main",
             "matcha-tts=matcha.cli:cli",
             "matcha-tts-app=matcha.app:main",
+            "matcha-tts-get-durations=matcha.utils.get_durations_from_trained_model:main",
         ]
     },
     ext_modules=cythonize(exts, language_level=3),
