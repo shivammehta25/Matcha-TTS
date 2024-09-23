@@ -48,7 +48,7 @@ def plot_spectrogram_to_numpy(spectrogram, filename):
 def process_text(i: int, text: str, device: torch.device):
     print(f"[{i}] - Input text: {text}")
     x = torch.tensor(
-        intersperse(text_to_sequence(text, ["english_cleaners2"])[0], 0),
+        intersperse(text_to_sequence(text, ["jp_cleaners"])[0], 0),
         dtype=torch.long,
         device=device,
     )[None]
