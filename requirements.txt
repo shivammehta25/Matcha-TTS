@@ -42,3 +42,6 @@ gradio==3.43.2
 gdown
 wget
 seaborn
+
+# Additional library for japanese
+pyopenjtalk

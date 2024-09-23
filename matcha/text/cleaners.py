@@ -16,6 +16,7 @@ import re
 
 import phonemizer
 from unidecode import unidecode
+from matcha.text.jtalk import g2p
 
 # To avoid excessive logging we set the log level of the phonemizer package to Critical
 critical_logger = logging.getLogger("phonemizer")
@@ -103,6 +104,16 @@ def english_cleaners2(text):
     phonemes = global_phonemizer.phonemize([text], strip=True, njobs=1)[0]
     phonemes = collapse_whitespace(phonemes)
     return phonemes
+
+
+def jp_cleaners(text):
+    phonemes = g2p(text)
+    return phonemes
+
+
+if __name__ == "__main__":
+    text = "Hello, World!"
+    print(english_cleaners2(text))
 
 
 # I am removing this due to incompatibility with several version of python
