@@ -1,6 +1,6 @@
 _target_: matcha.data.text_mel_datamodule.TextMelDataModule
 name: ljspeech
-train_filelist_path: data/esd.clean.txt
+train_filelist_path: data/train.txt
 valid_filelist_path: data/val.txt
 batch_size: 32
 num_workers: 20
