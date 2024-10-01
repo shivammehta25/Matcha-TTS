@@ -1,5 +1,5 @@
 # taken from https://github.com/pytorch/audio/blob/main/src/torchaudio/datasets/utils.py
-# Copyright (c) 2017 Facebook Inc. (Soumith Chintala)
+# Copyright (c) 2017 Facebook Inc. (Soumith Chintala)
 # Licence: BSD 2-Clause
 import logging
 import os

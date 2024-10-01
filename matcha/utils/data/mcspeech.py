@@ -1,13 +1,13 @@
-
 #!/usr/bin/env python
-# coding: utf-8
 import argparse
+import random
 import tempfile
 from pathlib import Path
+
+import torchaudio
 from torch.hub import download_url_to_file
 from tqdm import tqdm
-import torchaudio
-import random
+
 from matcha.utils.data.utils import _extract_tar
 
 URL = "https://www.openslr.org/resources/142/mcspeech.tar.gz"
@@ -37,33 +37,21 @@ def decision():
 def get_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-s",
-        "--save-dir",
-        type=str,
-        default=None,
-        help="Place to store the downloaded zip files"
-    )
+    parser.add_argument("-s", "--save-dir", type=str, default=None, help="Place to store the downloaded zip files")
     parser.add_argument(
         "-r",
         "--skip-resampling",
         action="store_true",
         default=False,
-        help="Skip resampling the data (from 44.1 to 22.05)"
+        help="Skip resampling the data (from 44.1 to 22.05)",
     )
-    parser.add_argument(
-        "output_dir",
-        type=str,
-        help="Place to store the converted data"
-    )
+    parser.add_argument("output_dir", type=str, help="Place to store the converted data")
 
     return parser.parse_args()
 
 
 def process_tsv(infile, outpath: Path):
-    with open(infile) as inf,\
-         open(outpath / "train.tsv", "w") as tf,\
-         open(outpath / "valid.tsv", "w") as vf:
+    with open(infile) as inf, open(outpath / "train.tsv", "w") as tf, open(outpath / "valid.tsv", "w") as vf:
         for line in inf.readlines():
             line = line.strip()
             if line == "id\ttranscript":
