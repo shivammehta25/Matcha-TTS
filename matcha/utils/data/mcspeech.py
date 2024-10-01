@@ -105,7 +105,7 @@ def main():
         download_url_to_file(URL, tarfile, progress=True)
         process_files(tarfile, outpath, resample)
     else:
-        with tempfile.NamedTemporaryFile(suffix=".tgz", delete=False) as zf:
+        with tempfile.NamedTemporaryFile(suffix=".tgz", delete=True) as zf:
             download_url_to_file(URL, zf.name, progress=True)
             process_files(zf.name, outpath, resample)
 
