@@ -1,12 +1,10 @@
 import datetime as dt
 import math
 import random
+from typing import Optional
 
 import torch
-
 from huggingface_hub import hf_hub_download
-
-from typing import Optional
 from omegaconf import OmegaConf
 
 import matcha.utils.monotonic_align as monotonic_align
@@ -84,9 +82,20 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         """
         c = OmegaConf.load(cfg)
 
-        model = cls(n_vocab=c.n_vocab, n_feats=c.n_feats, n_spks=c.n_spks, spk_emb_dim=c.spk_emb_dim,
-                    optimizer=c.optimizer, out_size=c.out_size, prior_loss=c.prior_loss, scheduler=c.scheduler,
-                    cfm=c.cfm, data_statistics=c.data_statistics, decoder=c.decoder, encoder=c.encoder)
+        model = cls(
+            n_vocab=c.n_vocab,
+            n_feats=c.n_feats,
+            n_spks=c.n_spks,
+            spk_emb_dim=c.spk_emb_dim,
+            optimizer=c.optimizer,
+            out_size=c.out_size,
+            prior_loss=c.prior_loss,
+            scheduler=c.scheduler,
+            cfm=c.cfm,
+            data_statistics=c.data_statistics,
+            decoder=c.decoder,
+            encoder=c.encoder,
+        )
         return model
 
     @classmethod
