@@ -64,7 +64,7 @@ def get_languages():
 
 def get_per_voice():
     output = {}
-    for lang in URLS.keys():
+    for lang in URLS:  # pylint: disable=consider-using-dict-items
         for voice in URLS[lang]:
             output[voice] = URLS[lang][voice]
     # only one non-ASCII name
