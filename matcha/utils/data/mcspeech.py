@@ -51,7 +51,7 @@ def get_args():
         type=str,
         nargs='?',
         default="data/mcspeech",
-        help="Place to store the converted data"
+        help="Place to store the converted data, usually a subdirectory of data/"
     )
 
     return parser.parse_args()
