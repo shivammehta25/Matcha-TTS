@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import random
+import sys
 import tempfile
 from pathlib import Path
 
@@ -51,7 +52,7 @@ def get_args():
 
 
 def process_tsv(infile, outpath: Path):
-    with open(infile) as inf, open(outpath / "train.tsv", "w") as tf, open(outpath / "valid.tsv", "w") as vf:
+    with open(infile, encoding="utf-8") as inf, open(outpath / "train.tsv", "w", encoding="utf-8") as tf, open(outpath / "valid.tsv", "w", encoding="utf-8") as vf:
         for line in inf.readlines():
             line = line.strip()
             if line == "id\ttranscript":
@@ -70,7 +71,7 @@ def process_files(tarfile, outpath, resample=True):
             if filename.endswith(".tsv"):
                 process_tsv(filename, outpath)
             else:
-                filepart = filename.split("/")[-1]
+                filepart = filename.rsplit('/', maxsplit=1)[-1]
                 outfile = str(outpath / filepart)
                 arr, sr = torchaudio.load(filename)
                 if resample:
@@ -89,7 +90,7 @@ def main():
 
     if not args.output_dir:
         print("output directory not specified, exiting")
-        exit(1)
+        sys.exit(1)
 
     outpath = Path(args.output_dir)
     if not outpath.is_dir():
@@ -100,7 +101,7 @@ def main():
         resample = False
 
     if save_dir:
-        tarname = URL.split("/")[-1]
+        tarname = URL.rsplit('/', maxsplit=1)[-1]
         tarfile = str(save_dir / tarname)
         download_url_to_file(URL, tarfile, progress=True)
         process_files(tarfile, outpath, resample)
