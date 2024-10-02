@@ -1,7 +1,7 @@
 import argparse
+import sys
 import tempfile
 from pathlib import Path
-import sys
 
 import torchaudio
 from torch.hub import download_url_to_file
