@@ -112,9 +112,10 @@ def main():
 
     if save_dir:
         tarname = URL.rsplit("/", maxsplit=1)[-1]
-        tarfile = str(save_dir / tarname)
-        download_url_to_file(URL, tarfile, progress=True)
-        process_files(tarfile, outpath, resample)
+        tarfile = save_dir / tarname
+        if not tarfile.exists():
+            download_url_to_file(URL, str(tarfile), progress=True)
+        process_files(str(tarfile), outpath, resample)
     else:
         with tempfile.NamedTemporaryFile(suffix=".tgz", delete=True) as zf:
             download_url_to_file(URL, zf.name, progress=True)
