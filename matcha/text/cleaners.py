@@ -38,7 +38,7 @@ _whitespace_re = re.compile(r"\s+")
 
 # List of (regular expression, replacement) pairs for abbreviations:
 _abbreviations = [
-    (re.compile("\\b%s\\." % x[0], re.IGNORECASE), x[1])
+    (re.compile(f"\\b{x[0]}\\.", re.IGNORECASE), x[1])
     for x in [
         ("mrs", "misess"),
         ("mr", "mister"),
