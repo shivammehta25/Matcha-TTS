@@ -3,6 +3,7 @@ import argparse
 import sys
 import tempfile
 from pathlib import Path
+import os
 
 import torchaudio
 from torch.hub import download_url_to_file
@@ -94,15 +95,19 @@ def process_text(infile, outpath: Path):
 def process_files(zipfile, outpath, resample=True):
     with tempfile.TemporaryDirectory() as tmpdirname:
         for filename in tqdm(_extract_zip(zipfile, tmpdirname)):
+            if not filename.startswith(tmpdirname):
+                filename = os.path.join(tmpdirname, filename)
             if filename.endswith(".txt"):
                 process_text(filename, outpath)
-            else:
-                filepart = filename.rsplit('/', maxsplit=1)[-1]
+            elif filename.endswith(".wav"):
+                filepart = filename.rsplit("/", maxsplit=1)[-1]
                 outfile = str(outpath / filepart)
                 arr, sr = torchaudio.load(filename)
                 if resample:
                     arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
                 torchaudio.save(outfile, arr, 22050)
+            else:
+                continue
 
 
 def main():
@@ -133,11 +138,11 @@ def main():
         resample = False
 
     if save_dir:
-        tarname = URL.rsplit('/', maxsplit=1)[-1]
-        tarfile = save_dir / tarname
-        if not tarfile.exists():
-            download_url_to_file(URL, tarfile, progress=True)
-        process_files(tarfile, outpath, resample)
+        zipname = URL.rsplit('/', maxsplit=1)[-1]
+        zipfile = save_dir / zipname
+        if not zipfile.exists():
+            download_url_to_file(URL, zipfile, progress=True)
+        process_files(zipfile, outpath, resample)
     else:
         with tempfile.NamedTemporaryFile(suffix=".zip", delete=True) as zf:
             download_url_to_file(URL, zf.name, progress=True)
