@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import os
 import random
 import sys
 import tempfile
@@ -78,6 +79,8 @@ def process_tsv(infile, outpath: Path):
 def process_files(tarfile, outpath, resample=True):
     with tempfile.TemporaryDirectory() as tmpdirname:
         for filename in tqdm(_extract_tar(tarfile, tmpdirname)):
+            if not filename.startswith(tmpdirname):
+                filename = os.path.join(tmpdirname, filename)
             if filename.endswith(".tsv"):
                 process_tsv(filename, outpath)
             else:
