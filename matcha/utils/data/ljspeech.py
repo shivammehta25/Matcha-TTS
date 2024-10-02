@@ -53,8 +53,8 @@ def process_csv(ljpath: Path):
 
     with (
         open(csvpath, encoding="utf-8") as csvf,
-        open(basepath / "train.txt", encoding="utf-8") as tf,
-        open(basepath / "val.txt", encoding="utf-8") as vf,
+        open(basepath / "train.txt", "w", encoding="utf-8") as tf,
+        open(basepath / "val.txt", "w", encoding="utf-8") as vf,
     ):
         for line in csvf.readlines():
             line = line.strip()
