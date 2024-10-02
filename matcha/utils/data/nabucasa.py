@@ -1,6 +1,7 @@
 import argparse
 import tempfile
 from pathlib import Path
+import sys
 
 import torchaudio
 from torch.hub import download_url_to_file
@@ -62,7 +63,7 @@ def get_languages():
 
 def get_per_voice():
     output = {}
-    for lang in URLS:
+    for lang in URLS.keys():
         for voice in URLS[lang]:
             output[voice] = URLS[lang][voice]
     # only one non-ASCII name
@@ -144,14 +145,14 @@ def main():
     languages = get_languages()
     if args.list_languages:
         print_languages(languages, True)
-        exit(1)
+        sys.exit(1)
 
     if args.list_voices:
         voices = _get_voice_names(args.list_voices, languages)
         if voices == []:
             print("Language", args.list_voices, "not available")
             print_languages(languages, True)
-            exit(1)
+            sys.exit(1)
         print(", ".join(voices))
 
     save_dir = None
@@ -164,7 +165,7 @@ def main():
         all_voices = get_per_voice()
         if not args.voice in all_voices:
             print("Voice", args.voice, "not available")
-            exit(1)
+            sys.exit(1)
         url = all_voices[args.voice]
         zipfilename = url.split("/")[-1]
         if save_dir:
@@ -175,6 +176,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print(torchaudio.utils.sox_utils.list_read_formats())
-    exit(0)
     main()
