@@ -3,8 +3,8 @@
 import math
 
 import torch
+import torch.nn as nn  # pylint: disable=consider-using-from-import
 from einops import rearrange
-from torch import nn
 
 from matcha import utils
 from matcha.utils.model import sequence_mask
