@@ -21,7 +21,7 @@ def text_to_sequence(text, cleaner_names):
     for symbol in clean_text:
         symbol_id = _symbol_to_id[symbol]
         sequence += [symbol_id]
-    return sequence
+    return sequence, clean_text
 
 
 def cleaned_text_to_sequence(cleaned_text):
@@ -48,6 +48,6 @@ def _clean_text(text, cleaner_names):
     for name in cleaner_names:
         cleaner = getattr(cleaners, name)
         if not cleaner:
-            raise Exception("Unknown cleaner: %s" % name)
+            raise Exception(f"Unknown cleaner: {name}")
         text = cleaner(text)
     return text

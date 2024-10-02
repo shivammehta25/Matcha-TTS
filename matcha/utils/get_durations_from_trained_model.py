@@ -5,6 +5,7 @@ when needed.
 Parameters from hparam.py will be used
 """
 import argparse
+import json
 import os
 import sys
 from pathlib import Path
@@ -22,13 +23,20 @@ from matcha.cli import get_device
 from matcha.data.text_mel_datamodule import TextMelDataModule
 from matcha.models.matcha_tts import MatchaTTS
 from matcha.utils.logging_utils import pylogger
+from matcha.utils.utils import get_phoneme_durations
 
 log = pylogger.get_pylogger(__name__)
 
 
-def save_durations_to_folder(attn: torch.Tensor, x_length: int, y_length: int, filepath: str, output_folder: Path):
+def save_durations_to_folder(
+    attn: torch.Tensor, x_length: int, y_length: int, filepath: str, output_folder: Path, text: str
+):
     durations = attn.squeeze().sum(1)[:x_length].numpy()
+    durations_json = get_phoneme_durations(durations, text)
     output = output_folder / Path(filepath).name.replace(".wav", ".npy")
+    with open(output.with_suffix(".json"), "w", encoding="utf-8") as f:
+        json.dump(durations_json, f, indent=4, ensure_ascii=False)
+
     np.save(output, durations)
 
 
@@ -62,7 +70,12 @@ def compute_durations(data_loader: torch.utils.data.DataLoader, model: nn.Module
         attn = attn.cpu()
         for i in range(attn.shape[0]):
             save_durations_to_folder(
-                attn[i], x_lengths[i].item(), y_lengths[i].item(), batch["filepaths"][i], output_folder
+                attn[i],
+                x_lengths[i].item(),
+                y_lengths[i].item(),
+                batch["filepaths"][i],
+                output_folder,
+                batch["x_texts"][i],
             )
 
 
@@ -73,7 +86,7 @@ def main():
         "-i",
         "--input-config",
         type=str,
-        default="vctk.yaml",
+        default="ljspeech.yaml",
         help="The name of the yaml config file under configs/data",
     )
 
@@ -127,11 +140,14 @@ def main():
         cfg["batch_size"] = args.batch_size
         cfg["train_filelist_path"] = str(os.path.join(root_path, cfg["train_filelist_path"]))
         cfg["valid_filelist_path"] = str(os.path.join(root_path, cfg["valid_filelist_path"]))
+        cfg["load_durations"] = False
 
     if args.output_folder is not None:
         output_folder = Path(args.output_folder)
     else:
-        output_folder = Path("data") / "processed_data" / cfg["name"] / "durations"
+        output_folder = Path(cfg["train_filelist_path"]).parent / "durations"
+
+    print(f"Output folder set to: {output_folder}")
 
     if os.path.exists(output_folder) and not args.force:
         print("Folder already exists. Use -f to force overwrite")
