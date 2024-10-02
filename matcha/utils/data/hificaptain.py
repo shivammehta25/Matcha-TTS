@@ -82,8 +82,8 @@ def process_text(infile, outpath: Path):
     ):
         for line in inf.readlines():
             line = line.strip()
-            id, rest = line.split(" ", maxsplit=1)
-            outfile = str(outpath / f"{id}.wav")
+            fileid, rest = line.split(" ", maxsplit=1)
+            outfile = str(outpath / f"{fileid}.wav")
             of.write(f"{outfile}|{rest}\n")
 
 
