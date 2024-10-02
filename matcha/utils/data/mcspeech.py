@@ -46,7 +46,12 @@ def get_args():
         default=False,
         help="Skip resampling the data (from 44.1 to 22.05)",
     )
-    parser.add_argument("output_dir", type=str, nargs='?', default="data/mcspeech", help="Place to store the converted data")
+    parser.add_argument(
+        "output_dir",
+        type=str, nargs='?',
+        default="data/mcspeech",
+        help="Place to store the converted data"
+    )
 
     return parser.parse_args()
 
@@ -55,7 +60,7 @@ def process_tsv(infile, outpath: Path):
     with (
         open(infile, encoding="utf-8") as inf,
         open(outpath / "train.tsv", "w", encoding="utf-8") as tf,
-        open(outpath / "valid.tsv", "w", encoding="utf-8") as vf
+        open(outpath / "valid.tsv", "w", encoding="utf-8") as vf,
     ):
         for line in inf.readlines():
             line = line.strip()
