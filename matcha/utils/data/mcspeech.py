@@ -49,9 +49,9 @@ def get_args():
     parser.add_argument(
         "output_dir",
         type=str,
-        nargs='?',
+        nargs="?",
         default="data/mcspeech",
-        help="Place to store the converted data, usually a subdirectory of data/"
+        help="Place to store the converted data, usually a subdirectory of data/",
     )
 
     return parser.parse_args()
