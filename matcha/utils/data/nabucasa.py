@@ -162,19 +162,23 @@ def main():
         if not save_dir.is_dir():
             save_dir.mkdir()
 
+
+    def process_single(voice, save_dir=None):
+        url = all_voices[voice]
+        zipfilename = url.split("/")[-1]
+        if save_dir:
+            download_url_to_file(all_voices[voice], str(save_dir / zipfilename), progress=True)
+        else:
+            with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as zf:
+                download_url_to_file(all_voices[voice], zf.name, progress=True)
+
+
     if args.voice:
         all_voices = get_per_voice()
         if not args.voice in all_voices:
             print("Voice", args.voice, "not available")
             sys.exit(1)
-        url = all_voices[args.voice]
-        zipfilename = url.split("/")[-1]
-        if save_dir:
-            download_url_to_file(all_voices[args.voice], str(save_dir / zipfilename), progress=True)
-        else:
-            with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as zf:
-                download_url_to_file(all_voices[args.voice], zf.name, progress=True)
-
+        process_single(args.voice, save_dir)
 
 if __name__ == "__main__":
     main()
