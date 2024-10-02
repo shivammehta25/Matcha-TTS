@@ -3,10 +3,10 @@
 import math
 
 import torch
-import torch.nn as nn
+from torch import nn
 from einops import rearrange
 
-import matcha.utils as utils
+from matcha import utils
 from matcha.utils.model import sequence_mask
 
 log = utils.get_pylogger(__name__)

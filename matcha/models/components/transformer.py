@@ -1,7 +1,7 @@
 from typing import Any, Dict, Optional
 
 import torch
-import torch.nn as nn
+from torch import nn
 from diffusers.models.attention import (
     GEGLU,
     GELU,
