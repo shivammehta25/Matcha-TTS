@@ -46,7 +46,7 @@ def get_args():
         default=False,
         help="Skip resampling the data (from 44.1 to 22.05)",
     )
-    parser.add_argument("output_dir", type=str, help="Place to store the converted data")
+    parser.add_argument("output_dir", type=str, nargs='?', default="data/mcspeech", help="Place to store the converted data")
 
     return parser.parse_args()
 
