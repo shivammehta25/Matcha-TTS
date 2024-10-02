@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import argparse
 import random
-import sys
 import tempfile
 from pathlib import Path
 
@@ -37,11 +36,34 @@ def get_args():
         "output_dir",
         type=str,
         nargs="?",
-        default="data/LJSpeech-1.1",
-        help="Place to store the converted data, usually a subdirectory of data/",
+        default="data",
+        help="Place to store the converted data (subdirectory LJSpeech-1.1 will be created)",
     )
 
     return parser.parse_args()
+
+
+def process_csv(ljpath: Path):
+    if (ljpath / "metadata.csv").exists():
+        basepath = ljpath
+    elif (ljpath / "LJSpeech-1.1" / "metadata.csv").exists():
+        basepath = ljpath / "LJSpeech-1.1"
+    csvpath = basepath / "metadata.csv"
+    wavpath = basepath / "wavs"
+
+    with (
+        open(csvpath, encoding="utf-8") as csvf,
+        open(basepath / "train.txt", encoding="utf-8") as tf,
+        open(basepath / "val.txt", encoding="utf-8") as vf,
+    ):
+        for line in csvf.readlines():
+            line = line.strip()
+            parts = line.split("|")
+            wavfile = str(wavpath / f"{parts[0]}.wav")
+            if decision():
+                tf.write(f"{wavfile}|{parts[1]}\n")
+            else:
+                vf.write(f"{wavfile}|{parts[1]}\n")
 
 
 def main():
@@ -59,12 +81,16 @@ def main():
 
     if save_dir:
         tarname = URL.rsplit("/", maxsplit=1)[-1]
-        tarfile = str(save_dir / tarname)
+        tarfile = save_dir / tarname
+        if not tarfile.exists():
+            download_url_to_file(URL, str(tarfile), progress=True)
         _extract_tar(tarfile, outpath)
+        process_csv(outpath)
     else:
         with tempfile.NamedTemporaryFile(suffix=".tar.bz2", delete=True) as zf:
             download_url_to_file(URL, zf.name, progress=True)
             _extract_tar(zf.name, outpath)
+            process_csv(outpath)
 
 
 if __name__ == "__main__":
