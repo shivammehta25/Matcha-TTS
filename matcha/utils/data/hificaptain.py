@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import argparse
+import os
 import sys
 import tempfile
 from pathlib import Path
-import os
 
 import torchaudio
 from torch.hub import download_url_to_file
@@ -14,12 +14,12 @@ from matcha.utils.data.utils import _extract_zip
 URLS = {
     "en-US": {
         "female": "https://ast-astrec.nict.go.jp/release/hi-fi-captain/hfc_en-US_F.zip",
-        "male": "https://ast-astrec.nict.go.jp/release/hi-fi-captain/hfc_en-US_M.zip"
+        "male": "https://ast-astrec.nict.go.jp/release/hi-fi-captain/hfc_en-US_M.zip",
     },
     "ja-JP": {
         "female": "https://ast-astrec.nict.go.jp/release/hi-fi-captain/hfc_ja-JP_F.zip",
-        "male": "https://ast-astrec.nict.go.jp/release/hi-fi-captain/hfc_ja-JP_M.zip"
-    }
+        "male": "https://ast-astrec.nict.go.jp/release/hi-fi-captain/hfc_ja-JP_M.zip",
+    },
 }
 
 INFO_PAGE = "https://ast-astrec.nict.go.jp/en/release/hi-fi-captain/"
@@ -45,12 +45,7 @@ def get_args():
         help="Skip resampling the data (from 48 to 22.05)",
     )
     parser.add_argument(
-        "-l",
-        "--language",
-        type=str,
-        choices=["en-US", "ja-JP"],
-        default="en-US",
-        help="The language to download"
+        "-l", "--language", type=str, choices=["en-US", "ja-JP"], default="en-US", help="The language to download"
     )
     parser.add_argument(
         "-g",
@@ -65,7 +60,7 @@ def get_args():
         "--output_dir",
         type=str,
         default="data",
-        help="Place to store the converted data. Top-level only, the subdirectory will be created"
+        help="Place to store the converted data. Top-level only, the subdirectory will be created",
     )
 
     return parser.parse_args()
@@ -138,7 +133,7 @@ def main():
         resample = False
 
     if save_dir:
-        zipname = URL.rsplit('/', maxsplit=1)[-1]
+        zipname = URL.rsplit("/", maxsplit=1)[-1]
         zipfile = save_dir / zipname
         if not zipfile.exists():
             download_url_to_file(URL, zipfile, progress=True)

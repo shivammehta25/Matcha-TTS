@@ -1,8 +1,10 @@
 import argparse
 import tempfile
 from pathlib import Path
-from torch.hub import download_url_to_file
+
 import torchaudio
+from torch.hub import download_url_to_file
+
 # from match.utils.data.utils import _extract_zip
 
 URL = "https://github.com/NabuCasa/voice-datasets"
@@ -10,15 +12,11 @@ URL = "https://github.com/NabuCasa/voice-datasets"
 LICENCE = "CC0 (public domain)"
 
 URLS = {
-    "bg_BG": {
-        "dimitar": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/bg_BG-dimitar.zip"
-    },
-    "de_DE": {
-        "kerstin": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/de_DE-kerstin.zip"
-    },
+    "bg_BG": {"dimitar": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/bg_BG-dimitar.zip"},
+    "de_DE": {"kerstin": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/de_DE-kerstin.zip"},
     "en_US": {
         "joe": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/en_US-joe.zip",
-        "kathleen": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/en_US-kathleen.zip"
+        "kathleen": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/en_US-kathleen.zip",
     },
     "es_ES": {
         "dave": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/es_ES-dave.zip",
@@ -26,35 +24,25 @@ URLS = {
     "hu_HU": {
         "anna": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/hu_HU-anna.zip",
         "berta": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/hu_HU-berta.zip",
-        "imre": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/hu_HU-imre.zip"
+        "imre": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/hu_HU-imre.zip",
     },
-    "it_IT": {
-        "paola": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/it_IT-paola.zip"
-    },
+    "it_IT": {"paola": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/it_IT-paola.zip"},
     "nl_BE": {
         "flemishguy": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/nl_BE-flemishguy.zip",
-        "nathalie": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/nl_BE-nathalie.zip"
+        "nathalie": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/nl_BE-nathalie.zip",
     },
     "pl_PL": {
         "darkman": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/pl_PL-darkman.zip",
-        "gosia": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/pl_PL-gosia.zip"
+        "gosia": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/pl_PL-gosia.zip",
     },
-    "pt_BR": {
-        "faber": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/pt_BR-faber.zip"
-    },
-    "pt_PT": {
-        "tugão": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/pt_PT-tugao.zip"
-    },
-    "ro_RO": {
-        "mihai": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/ro_RO-mihai.zip"
-    },
+    "pt_BR": {"faber": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/pt_BR-faber.zip"},
+    "pt_PT": {"tugão": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/pt_PT-tugao.zip"},
+    "ro_RO": {"mihai": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/ro_RO-mihai.zip"},
     "ru_RU": {
         "denis": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/ru_RU-denis.zip",
-        "dmitri": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/ru_RU-dmitri.zip"
+        "dmitri": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/ru_RU-dmitri.zip",
     },
-    "sk_SK": {
-        "lili": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/sk_SK-lili.zip"
-    }
+    "sk_SK": {"lili": "https://github.com/NabuCasa/voice-datasets/releases/download/v1.0.0/sk_SK-lili.zip"},
 }
 
 
@@ -82,46 +70,17 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-l",
-        "--language",
-        type=str,
-        help="The name of the language to prepare (prepares all available voices)"
+        "-l", "--language", type=str, help="The name of the language to prepare (prepares all available voices)"
+    )
+    parser.add_argument("-v", "--voice", type=str, help="The name of the voice to prepare (single voice)")
+    parser.add_argument(
+        "-V", "--list-voices", type=str, default=None, help="List available voices for specified language"
     )
     parser.add_argument(
-        "-v",
-        "--voice",
-        type=str,
-        help="The name of the voice to prepare (single voice)"
+        "-L", "--list-languages", action="store_true", default=False, required=False, help="List available languages"
     )
-    parser.add_argument(
-        "-V",
-        "--list-voices",
-        type=str,
-        default=None,
-        help="List available voices for specified language"
-    )
-    parser.add_argument(
-        "-L",
-        "--list-languages",
-        action="store_true",
-        default=False,
-        required=False,
-        help="List available languages"
-    )
-    parser.add_argument(
-        "-s",
-        "--save-dir",
-        type=str,
-        default=None,
-        help="Place to store the downloaded zip files"
-    )
-    parser.add_argument(
-        "-o",
-        "--output-dir",
-        type=str,
-        default="/tmp/data",
-        help="Place to store the converted data"
-    )
+    parser.add_argument("-s", "--save-dir", type=str, default=None, help="Place to store the downloaded zip files")
+    parser.add_argument("-o", "--output-dir", type=str, default="/tmp/data", help="Place to store the converted data")
 
     return parser.parse_args()
 
@@ -197,4 +156,3 @@ if __name__ == "__main__":
     print(torchaudio.utils.sox_utils.list_read_formats())
     exit(0)
     main()
-
