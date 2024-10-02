@@ -7,6 +7,10 @@ _symbol_to_id = {s: i for i, s in enumerate(symbols)}
 _id_to_symbol = {i: s for i, s in enumerate(symbols)}  # pylint: disable=unnecessary-comprehension
 
 
+class UnknownCleanerException(Exception):
+    pass
+
+
 def text_to_sequence(text, cleaner_names):
     """Converts a string of text to a sequence of IDs corresponding to the symbols in the text.
     Args:
@@ -48,6 +52,6 @@ def _clean_text(text, cleaner_names):
     for name in cleaner_names:
         cleaner = getattr(cleaners, name)
         if not cleaner:
-            raise Exception("Unknown cleaner: %s" % name)
+            raise UnknownCleanerException(f"Unknown cleaner: {name}")
         text = cleaner(text)
     return text

@@ -16,8 +16,15 @@ with open("README.md", encoding="utf-8") as readme_file:
     README = readme_file.read()
 
 cwd = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(cwd, "matcha", "VERSION")) as fin:
+with open(os.path.join(cwd, "matcha", "VERSION"), encoding="utf-8") as fin:
     version = fin.read().strip()
+
+
+def get_requires():
+    requirements = os.path.join(os.path.dirname(__file__), "requirements.txt")
+    with open(requirements, encoding="utf-8") as reqfile:
+        return [str(r).strip() for r in reqfile]
+
 
 setup(
     name="matcha-tts",
@@ -28,7 +35,7 @@ setup(
     author="Shivam Mehta",
     author_email="shivam.mehta25@gmail.com",
     url="https://shivammehta25.github.io/Matcha-TTS",
-    install_requires=[str(r) for r in open(os.path.join(os.path.dirname(__file__), "requirements.txt"))],
+    install_requires=get_requires(),
     include_dirs=[numpy.get_include()],
     include_package_data=True,
     packages=find_packages(exclude=["tests", "tests/*", "examples", "examples/*"]),
