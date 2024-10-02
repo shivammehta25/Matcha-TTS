@@ -19,10 +19,12 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(cwd, "matcha", "VERSION"), encoding="utf-8") as fin:
     version = fin.read().strip()
 
+
 def get_requires():
     requirements = os.path.join(os.path.dirname(__file__), "requirements.txt")
     with open(requirements, encoding="utf-8") as reqfile:
-        return [str(r).strip() for r in reqfile]        
+        return [str(r).strip() for r in reqfile]
+
 
 setup(
     name="matcha-tts",
