@@ -1,7 +1,6 @@
 from typing import Any, Dict, Optional
 
 import torch
-from torch import nn
 from diffusers.models.attention import (
     GEGLU,
     GELU,
@@ -12,6 +11,7 @@ from diffusers.models.attention import (
 from diffusers.models.attention_processor import Attention
 from diffusers.models.lora import LoRACompatibleLinear
 from diffusers.utils.torch_utils import maybe_allow_in_graph
+from torch import nn
 
 
 class SnakeBeta(nn.Module):

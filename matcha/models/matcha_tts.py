@@ -4,11 +4,11 @@ import random
 
 import torch
 
-from matcha.utils import monotonic_align
 from matcha import utils
 from matcha.models.baselightningmodule import BaseLightningClass
 from matcha.models.components.flow_matching import CFM
 from matcha.models.components.text_encoder import TextEncoder
+from matcha.utils import monotonic_align
 from matcha.utils.model import (
     denormalize,
     duration_loss,

@@ -1,8 +1,8 @@
 """ from https://github.com/jik876/hifi-gan """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 from torch.nn import AvgPool1d, Conv1d, Conv2d, ConvTranspose1d
 from torch.nn.utils import remove_weight_norm, spectral_norm, weight_norm
 

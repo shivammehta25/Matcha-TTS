@@ -2,11 +2,11 @@ import math
 from typing import Optional
 
 import torch
-from torch import nn
 import torch.nn.functional as F
 from conformer import ConformerBlock
 from diffusers.models.activations import get_activation
 from einops import pack, rearrange, repeat
+from torch import nn
 
 from matcha.models.components.transformer import BasicTransformerBlock
 
