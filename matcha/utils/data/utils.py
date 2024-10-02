@@ -12,7 +12,7 @@ _LG = logging.getLogger(__name__)
 
 
 def _extract_tar(from_path: Union[str, Path], to_path: Optional[str] = None, overwrite: bool = False) -> List[str]:
-    if type(from_path) == Path:
+    if type(from_path) is Path:
         from_path = str(Path)
 
     if to_path is None:
@@ -33,7 +33,7 @@ def _extract_tar(from_path: Union[str, Path], to_path: Optional[str] = None, ove
 
 
 def _extract_zip(from_path: Union[str, Path], to_path: Optional[str] = None, overwrite: bool = False) -> List[str]:
-    if type(from_path) == Path:
+    if type(from_path) is Path:
         from_path = str(Path)
 
     if to_path is None:
