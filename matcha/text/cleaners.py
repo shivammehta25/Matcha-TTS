@@ -105,7 +105,7 @@ def english_cleaners2(text):
     return phonemes
 
 
-def mmconv_ipa_simplify(text):
+def ipa_simplifier(text):
     replacements = [
         ("ɐ", "ə"),
         ("ˈə", "ə"),
