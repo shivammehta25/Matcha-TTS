@@ -9,7 +9,7 @@ from torch.hub import download_url_to_file
 
 from matcha.utils.data.utils import _extract_zip
 
-URL = "https://github.com/NabuCasa/voice-datasets"
+INFO = "https://github.com/NabuCasa/voice-datasets"
 
 LICENCE = "CC0 (public domain)"
 
@@ -177,6 +177,19 @@ def main():
             print("Voice", args.voice, "not available")
             sys.exit(1)
         process_single(args.voice, save_dir)
+    elif args.language:
+        voices = _get_voice_names(args.list_voices, languages)
+        language = args.language
+        if not "_" in args.language:
+            if not args.language in languages:
+                print("Language", args.language, "not available")
+                sys.exit(1)
+            language = languages[args.language]
+        else:
+            if not args.language in URLS:
+                print("Language", args.language, "not available")
+                sys.exit(1)
+            language = languages[args.language]
 
 
 if __name__ == "__main__":
