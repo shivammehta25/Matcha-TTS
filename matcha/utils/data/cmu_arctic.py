@@ -35,47 +35,6 @@ cmu_arctic_speakers = {
 BASE_TPL = "http://festvox.org/cmu_arctic/packed/cmu_us_{}_arctic.tar.bz2"
 
 
-# From https://github.com/LCAV/pyroomacoustics/blob/master/pyroomacoustics/datasets/utils.py
-# Copyright (C) 2019 Robin Scheibler, MIT License.
-def download_uncompress(url, path=".", compression=None, context=None):
-    """
-    This functions download and uncompress on the fly a file
-    of type tar, tar.gz, tar.bz2.
-
-    Parameters
-    ----------
-    url: str
-        The URL of the file
-    path: str, optional
-        The path where to uncompress the file
-    compression: str, optional
-        The compression type (one of 'bz2', 'gz', 'tar'), infered from url
-        if not provided
-    context: SSL certification, optional
-        Default is to use none.
-    """
-
-    # infer compression from url
-    if compression is None:
-        compression = os.path.splitext(url)[1][1:]
-
-    # check compression format and set mode
-    if compression in ["gz", "bz2"]:
-        mode = "r|" + compression
-    elif compression == "tar":
-        mode = "r:"
-    else:
-        raise ValueError("The file must be of type tar/gz/bz2.")
-
-    # download and untar/uncompress at the same time
-    if context is not None:
-        stream = urlopen(url, context=context)
-    else:
-        stream = urlopen(url)
-    tf = tarfile.open(fileobj=stream, mode=mode)
-    tf.extractall(path)
-
-
 def _list_voices(given=""):
     if given != "":
         print(f"Voice {given} not available")
@@ -113,7 +72,8 @@ def main(args):
 
     print("Downloading and unpacking data")
     print("Using url", url)
-    download_uncompress(url, path="./data")
+    # FIXME: change to use the same download/extract as the others
+    # download_uncompress(url, path="./data")
     text = read_text(args.voice)
     random.shuffle(text)
 
