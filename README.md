@@ -115,31 +115,32 @@ matcha-tts --text "<INPUT TEXT>" --steps 10
 
 ## 自分のデータセットを使ってトレーニングする
 
-Let's assume we are training with LJ Speech
+JSUTデータセットを利用して、トレーニングしましょう！
 
-1. Download the dataset from [here](https://keithito.com/LJ-Speech-Dataset/), extract it to `data/LJSpeech-1.1`, and prepare the file lists to point to the extracted data like for [item 5 in the setup of the NVIDIA Tacotron 2 repo](https://github.com/NVIDIA/tacotron2#setup).
+1. まずJSUTをダウンロードして、data/jsutに配置してください。頑張って`train.txt`と`val.txt`に分けてください。
+※wavファイルのサンプリングレートは20040hzにすることをおすすめします。
 
-2. Clone and enter the Matcha-TTS repository
+2. Matcha-TTSをクローンして、移動する。
 
 ```bash
-git clone https://github.com/shivammehta25/Matcha-TTS.git
-cd Matcha-TTS
+git clone https://github.com/tuna2134/Matcha-TTS-JP.git
+cd Matcha-TTS-JP
 ```
 
-3. Install the package from source
+3. ソースからパッケージをインストールする
 
 ```bash
 pip install -e .
 ```
 
-4. Go to `configs/data/ljspeech.yaml` and change
+4. `configs/data/hi-fi_jsut.yaml`を編集する。
 
 ```yaml
 train_filelist_path: data/filelists/ljs_audio_text_train_filelist.txt
 valid_filelist_path: data/filelists/ljs_audio_text_val_filelist.txt
 ```
 
-5. Generate normalisation statistics with the yaml file of dataset configuration
+5. データセット設定のyamlファイルで正規化統計を生成する。
 
 ```bash
 matcha-data-stats -i ljspeech.yaml
@@ -147,7 +148,7 @@ matcha-data-stats -i ljspeech.yaml
 #{'mel_mean': -5.53662231756592, 'mel_std': 2.1161014277038574}
 ```
 
-Update these values in `configs/data/ljspeech.yaml` under `data_statistics` key.
+これらの値を `configs/data/hi-fi_jsut.yaml` の `data_statistics` キーで更新する。
 
 ```bash
 data_statistics:  # Computed for ljspeech dataset
@@ -155,39 +156,19 @@ data_statistics:  # Computed for ljspeech dataset
   mel_std: 2.116101
 ```
 
-to the paths of your train and validation filelists.
-
-6. Run the training script
+6. トレーニングスクリプトを実行してください。
 
 ```bash
-make train-ljspeech
+python matcha/train.py experiment=jsut
 ```
 
-or
-
-```bash
-python matcha/train.py experiment=ljspeech
-```
-
-- for a minimum memory run
-
-```bash
-python matcha/train.py experiment=ljspeech_min_memory
-```
-
-- for multi-gpu training, run
-
-```bash
-python matcha/train.py experiment=ljspeech trainer.devices=[0,1]
-```
-
-7. Synthesise from the custom trained model
+7. カスタムされたトレーニングモデルで音声を生成する。
 
 ```bash
 matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
 ```
 
-## ONNX support
+## ONNXのサポート
 
 > Special thanks to [@mush42](https://github.com/mush42) for implementing ONNX export and inference support.
 
