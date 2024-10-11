@@ -56,7 +56,7 @@ pip install matcha-tts
 
 ```bash
 pip install git+https://github.com/tuna2134/Matcha-TTS-JP.git
-cd Matcha-TTS
+cd Matcha-TTS-JP
 pip install -e .
 ```
 
