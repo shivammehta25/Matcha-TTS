@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🍵 Matcha-TTS: A fast TTS architecture with conditional flow matching
+# 🍵 Matcha-TTS: 条件付きフローマッチングによる高速TTSアーキテクチャ
 
 ### [Shivam Mehta](https://www.kth.se/profile/smehta), [Ruibo Tu](https://www.kth.se/profile/ruibo), [Jonas Beskow](https://www.kth.se/profile/beskow), [Éva Székely](https://www.kth.se/profile/szekely), and [Gustav Eje Henter](https://people.kth.se/~ghe/)
 
@@ -19,33 +19,34 @@
 
 > これは抹茶TTSの非公式日本語特化型コードです。
 
-We propose 🍵 Matcha-TTS, a new approach to non-autoregressive neural TTS, that uses [conditional flow matching](https://arxiv.org/abs/2210.02747) (similar to [rectified flows](https://arxiv.org/abs/2209.03003)) to speed up ODE-based speech synthesis. Our method:
+我々は、ODEに基づく音声合成を高速化するために、[条件付きフローマッチング](https://arxiv.org/abs/2210.02747) ([整流フロー](https://arxiv.org/abs/2209.03003) に類似)を使用する、非自己回帰的ニューラルTTSの新しいアプローチである🍵抹茶TTSを提案する。
+以下が利点です。
 
-- Is probabilistic
-- Has compact memory footprint
-- Sounds highly natural
-- Is very fast to synthesise from
+- 確率的である
+- コンパクトなメモリフットプリント
+- 非常に自然に聞こえる
+- 合成速度が速い
 
-Check out our [demo page](https://shivammehta25.github.io/Matcha-TTS) and read [our ICASSP 2024 paper](https://arxiv.org/abs/2309.03199) for more details.
+詳細は[デモページ](https://shivammehta25.github.io/Matcha-TTS)と[ICASSP 2024論文](https://arxiv.org/abs/2309.03199)をご覧ください。
 
-[Pre-trained models](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing) will be automatically downloaded with the CLI or gradio interface.
+[訓練済みモデル](https://drive.google.com/drive/folders/17C_gYgEHOxI5ZypcfE_k1piKCtyR0isJ?usp=sharing)はCLIまたはgradioインターフェイスで自動的にダウンロードされます。
 
-You can also [try 🍵 Matcha-TTS in your browser on HuggingFace 🤗 spaces](https://huggingface.co/spaces/shivammehta25/Matcha-TTS).
+また、[HuggingFace 🤗 spaces](https://huggingface.co/spaces/shivammehta25/Matcha-TTS)でブラウザ上で🍵Matcha-TTSを試すこともできます。
 
-## Teaser video
+## 解説動画
 
 [![Watch the video](https://img.youtube.com/vi/xmvJkz3bqw0/hqdefault.jpg)](https://youtu.be/xmvJkz3bqw0)
 
-## Installation
+## インストール
 
-1. Create an environment (suggested but optional)
+1. 環境を作る(オプション)
 
 ```
 conda create -n matcha-tts python=3.10 -y
 conda activate matcha-tts
 ```
 
-2. Install Matcha TTS using pip or from source
+2. Matcha TTSをpipまたはソースからインストール
 
 ```bash
 pip install matcha-tts
@@ -54,47 +55,45 @@ pip install matcha-tts
 from source
 
 ```bash
-pip install git+https://github.com/shivammehta25/Matcha-TTS.git
+pip install git+https://github.com/tuna2134/Matcha-TTS-JP.git
 cd Matcha-TTS
 pip install -e .
 ```
 
-3. Run CLI / gradio app / jupyter notebook
+3. CLIを実行 / gradio app / jupyter notebook
 
 ```bash
-# This will download the required models
+# 必要なモデルをダウンロードします。
 matcha-tts --text "<INPUT TEXT>"
 ```
-
-or
 
 ```bash
 matcha-tts-app
 ```
 
-or open `synthesis.ipynb` on jupyter notebook
+もしくはjupyter notebookで`synthesis.ipynb`を開きます。
 
-### CLI Arguments
+### CLI引数
 
-- To synthesise from given text, run:
+- テキストを与えての音声生成は以下の通りに実行してください。
 
 ```bash
 matcha-tts --text "<INPUT TEXT>"
 ```
 
-- To synthesise from a file, run:
+- ファイルから音声生成したい場合は以下の通りに実行してください。
 
 ```bash
 matcha-tts --file <PATH TO FILE>
 ```
 
-- To batch synthesise from a file, run:
+- バッチを利用してのファイルからの音声生成したい場合は以下の通りに実行してください。
 
 ```bash
 matcha-tts --file <PATH TO FILE> --batched
 ```
 
-Additional arguments
+追加の引数
 
 - Speaking rate
 
@@ -114,7 +113,7 @@ matcha-tts --text "<INPUT TEXT>" --temperature 0.667
 matcha-tts --text "<INPUT TEXT>" --steps 10
 ```
 
-## Train with your own dataset
+## 自分のデータセットを使ってトレーニングする
 
 Let's assume we are training with LJ Speech
 
