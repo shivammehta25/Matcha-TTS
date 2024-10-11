@@ -143,7 +143,7 @@ valid_filelist_path: data/val.txt
 5. データセット設定のyamlファイルで正規化統計を生成する。
 
 ```bash
-matcha-data-stats -i ljspeech.yaml
+matcha-data-stats -i jsut.yaml
 # Output:
 #{'mel_mean': -5.53662231756592, 'mel_std': 2.1161014277038574}
 ```
