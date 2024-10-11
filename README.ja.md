@@ -52,7 +52,7 @@ conda activate matcha-tts
 pip install matcha-tts
 ```
 
-from source
+ソースから
 
 ```bash
 pip install git+https://github.com/tuna2134/Matcha-TTS-JP.git
