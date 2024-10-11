@@ -136,8 +136,8 @@ pip install -e .
 4. `configs/data/hi-fi_jsut.yaml`を編集する。
 
 ```yaml
-train_filelist_path: data/filelists/ljs_audio_text_train_filelist.txt
-valid_filelist_path: data/filelists/ljs_audio_text_val_filelist.txt
+train_filelist_path: data/train.txt
+valid_filelist_path: data/val.txt
 ```
 
 5. データセット設定のyamlファイルで正規化統計を生成する。
