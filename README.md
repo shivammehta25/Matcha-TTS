@@ -188,8 +188,7 @@ pip install onnx
 python3 -m matcha.onnx.export matcha.ckpt model.onnx --n-timesteps 5
 ```
 
-(オプション) ONNX変換器は**vocoder-name**と**vocoder-checkpoint**引数を受け付けています。これは
-the ONNX exporter accepts **vocoder-name** and **vocoder-checkpoint** arguments. これにより、エクスポートしたグラフにボコーダーを組み込み、1回の実行で波形を生成することができます（エンドツーエンドのTTSシステムと同様）。
+(オプション) ONNX変換器は**vocoder-name**と**vocoder-checkpoint**引数を受け付けています。これにより、エクスポートしたグラフにボコーダーを組み込み、1回の実行で波形を生成することができます（エンドツーエンドのTTSシステムと同様）。
 
 **Note** `n_timesteps`はモデル入力ではなくハイパーパラメータとして扱われます。つまり、(推論時ではなく)エクスポート時に指定する必要があります。指定しない場合`n_timesteps`は**5**に設定されます。
 
