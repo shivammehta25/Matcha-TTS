@@ -270,9 +270,9 @@ load_durations: True
 or see an examples in configs/experiment/ljspeech_from_durations.yaml
 
 
-## Citation information
+## 引用元
 
-If you use our code or otherwise find this work useful, please cite our paper:
+私たちのコードを使用する場合、あるいはこの研究が役に立つと思われる場合は、私たちの論文を引用してください。
 
 ```text
 @inproceedings{mehta2024matcha,
@@ -283,7 +283,7 @@ If you use our code or otherwise find this work useful, please cite our paper:
 }
 ```
 
-## Acknowledgements
+## 謝辞
 
 Since this code uses [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template), you have all the powers that come with it.
 
