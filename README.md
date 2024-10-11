@@ -170,67 +170,68 @@ matcha-tts --text "<INPUT TEXT>" --checkpoint_path <PATH TO CHECKPOINT>
 
 ## ONNXのサポート
 
-> Special thanks to [@mush42](https://github.com/mush42) for implementing ONNX export and inference support.
+> ONNXエクスポートと推論サポートを実装してくれた[@mush42](https://github.com/mush42)に感謝します。
 
-It is possible to export Matcha checkpoints to [ONNX](https://onnx.ai/), and run inference on the exported ONNX graph.
+抹茶のチェックポイントを[ONNX](https://onnx.ai/)にエクスポートし、エクスポートされたONNXグラフに対して推論を実行することができます。
 
-### ONNX export
+### ONNXへ変換
 
-To export a checkpoint to ONNX, first install ONNX with
+チェックポイントをONNXに変換する前に以下の通りにONNXをインストールしてください。
 
 ```bash
 pip install onnx
 ```
 
-then run the following:
+その後に以下の通りに実行してください
 
 ```bash
 python3 -m matcha.onnx.export matcha.ckpt model.onnx --n-timesteps 5
 ```
 
-Optionally, the ONNX exporter accepts **vocoder-name** and **vocoder-checkpoint** arguments. This enables you to embed the vocoder in the exported graph and generate waveforms in a single run (similar to end-to-end TTS systems).
+(オプション) ONNX変換器は**vocoder-name**と**vocoder-checkpoint**引数を受け付けています。これは
+the ONNX exporter accepts **vocoder-name** and **vocoder-checkpoint** arguments. これにより、エクスポートしたグラフにボコーダーを組み込み、1回の実行で波形を生成することができます（エンドツーエンドのTTSシステムと同様）。
 
-**Note** that `n_timesteps` is treated as a hyper-parameter rather than a model input. This means you should specify it during export (not during inference). If not specified, `n_timesteps` is set to **5**.
+**Note** `n_timesteps`はモデル入力ではなくハイパーパラメータとして扱われます。つまり、(推論時ではなく)エクスポート時に指定する必要があります。指定しない場合`n_timesteps`は**5**に設定されます。
 
-**Important**: for now, torch>=2.1.0 is needed for export since the `scaled_product_attention` operator is not exportable in older versions. Until the final version is released, those who want to export their models must install torch>=2.1.0 manually as a pre-release.
+**Important**: 古いバージョンでは `scaled_product_attention` 演算子がエクスポートできないため、今のところエクスポートには torch>=2.1.0 が必要です。最終バージョンがリリースされるまでは、モデルをエクスポートしたい人はプレリリースとしてtorch>=2.1.0を手動でインストールする必要があります。
 
-### ONNX Inference
+### ONNX推論
 
-To run inference on the exported model, first install `onnxruntime` using
+エキスポートされたモデルを推論する前に`onnxruntime`以下の通りにインストールしてください。
 
 ```bash
 pip install onnxruntime
-pip install onnxruntime-gpu  # for GPU inference
+pip install onnxruntime-gpu  # GPU推論する場合
 ```
 
-then use the following:
+その後に以下の通りに実行して推論してください。
 
 ```bash
 python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs
 ```
 
-You can also control synthesis parameters:
+音声合成のパラメーターもコントロールできます。
 
 ```bash
 python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --temperature 0.4 --speaking_rate 0.9 --spk 0
 ```
 
-To run inference on **GPU**, make sure to install **onnxruntime-gpu** package, and then pass `--gpu` to the inference command:
+**GPU**上で推論を実行するには、必ず**onnxruntime-gpu**パッケージをインストールして、推論コマンドに--gpu`を渡してください：
 
 ```bash
 python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --gpu
 ```
 
-If you exported only Matcha to ONNX, this will write mel-spectrogram as graphs and `numpy` arrays to the output directory.
-If you embedded the vocoder in the exported graph, this will write `.wav` audio files to the output directory.
+MatchaだけをONNXにエクスポートした場合は、mel-spectrogramをグラフと`numpy`配列として出力ディレクトリに書き出します。
+エクスポートしたグラフにボコーダーを埋め込んだ場合、`.wav`オーディオファイルを出力ディレクトリに書き出します。
 
-If you exported only Matcha to ONNX, and you want to run a full TTS pipeline, you can pass a path to a vocoder model in `ONNX` format:
+MatchaだけをONNXにエクスポートし、完全なTTSパイプラインを実行したい場合は、`ONNX`フォーマットのボコーダーモデルへのパスを渡すことができます:
 
 ```bash
 python3 -m matcha.onnx.infer model.onnx --text "hey" --output-dir ./outputs --vocoder hifigan.small.onnx
 ```
 
-This will write `.wav` audio files to the output directory.
+outputディレクトリにwavファイルが書き込まれます。
 
 ## Extract phoneme alignments from Matcha-TTS
 
