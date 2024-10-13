@@ -205,6 +205,7 @@ class MultiHeadAttention(nn.Module):
 
         self.conv_o = torch.nn.Conv1d(channels, out_channels, 1)
         self.drop = torch.nn.Dropout(p_dropout)
+        self.lambda_param = nn.Parameter(torch.tensor(0.5))
 
         torch.nn.init.xavier_uniform_(self.conv_q.weight)
         torch.nn.init.xavier_uniform_(self.conv_k.weight)
@@ -229,17 +230,28 @@ class MultiHeadAttention(nn.Module):
         key = rearrange(key, "b (h c) t-> b h t c", h=self.n_heads)
         value = rearrange(value, "b (h c) t-> b h t c", h=self.n_heads)
 
-        query = self.query_rotary_pe(query)
-        key = self.key_rotary_pe(key)
+        query_1, query_2 = torch.chunk(query, 2, dim=-1)
+        key_1, key_2 = torch.chunk(key, 2, dim=-1)
 
-        scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(self.k_channels)
+        query_1 = self.query_rotary_pe(query_1)
+        query_2 = self.query_rotary_pe(query_2)
+
+        key_1 = self.key_rotary_pe(key_1)
+        key_2 = self.key_rotary_pe(key_2)
+
+        scores_1 = torch.matmul(query_1, key_1.transpose(-2, -1)) / math.sqrt(self.k_channels)
+        scores_2 = torch.matmul(query_2, key_2.transpose(-2, -1)) / math.sqrt(self.k_channels)
 
         if self.proximal_bias:
             assert t_s == t_t, "Proximal bias is only available for self-attention."
-            scores = scores + self._attention_bias_proximal(t_s).to(device=scores.device, dtype=scores.dtype)
+            scores_1 = scores_1 + self._attention_bias_proximal(t_s).to(device=scores_1.device, dtype=scores_1.dtype)
+            scores_2 = scores_2 + self._attention_bias_proximal(t_s).to(device=scores_2.device, dtype=scores_2.dtype)
         if mask is not None:
-            scores = scores.masked_fill(mask == 0, -1e4)
-        p_attn = torch.nn.functional.softmax(scores, dim=-1)
+            scores_1 = scores_1.masked_fill(mask == 0, -1e4)
+            scores_2 = scores_2.masked_fill(mask == 0, -1e4)
+        p_attn_1 = torch.nn.functional.softmax(scores, dim=-1)
+        p_attn_2 = torch.nn.functional.softmax(scores, dim=-1)
+        p_attn = p_attn_1 - self.lambda_param * p_attn_2
         p_attn = self.drop(p_attn)
         output = torch.matmul(p_attn, value)
         output = output.transpose(2, 3).contiguous().view(b, d, t_t)

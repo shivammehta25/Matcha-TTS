@@ -44,4 +44,4 @@ wget
 seaborn
 
 # Additional library for japanese
-pyopenjtalk
+pyopenjtalk-dict
