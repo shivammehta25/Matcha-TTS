@@ -249,8 +249,8 @@ class MultiHeadAttention(nn.Module):
         if mask is not None:
             scores_1 = scores_1.masked_fill(mask == 0, -1e4)
             scores_2 = scores_2.masked_fill(mask == 0, -1e4)
-        p_attn_1 = torch.nn.functional.softmax(scores, dim=-1)
-        p_attn_2 = torch.nn.functional.softmax(scores, dim=-1)
+        p_attn_1 = torch.nn.functional.softmax(scores_1, dim=-1)
+        p_attn_2 = torch.nn.functional.softmax(scores_2, dim=-1)
         p_attn = p_attn_1 - self.lambda_param * p_attn_2
         p_attn = self.drop(p_attn)
         output = torch.matmul(p_attn, value)
