@@ -93,7 +93,7 @@ def main():
         outpath.mkdir()
 
     if save_dir:
-        zipname = URL.rsplit("/", maxsplit=1)[-1].split('?', maxsplit=1)[0]
+        zipname = URL.rsplit("/", maxsplit=1)[-1].split("?", maxsplit=1)[0]
         zipfile = save_dir / zipname
         if not zipfile.exists():
             download_url_to_file(URL, str(zipfile), progress=True)

@@ -9,7 +9,6 @@ from torch.hub import download_url_to_file
 
 from matcha.utils.data.utils import _extract_zip
 
-
 INFO = "https://www.openslr.org/83/"
 
 URLS = {
@@ -26,16 +25,16 @@ URLS = {
     },
     "scottish": {
         "female": "https://www.openslr.org/resources/83/scottish_english_female.zip",
-        "male": "https://www.openslr.org/resources/83/scottish_english_male.zip"
+        "male": "https://www.openslr.org/resources/83/scottish_english_male.zip",
     },
     "southern": {
         "female": "https://www.openslr.org/resources/83/southern_english_female.zip",
-        "male": "https://www.openslr.org/resources/83/southern_english_male.zip"
+        "male": "https://www.openslr.org/resources/83/southern_english_male.zip",
     },
     "welsh": {
         "female": "https://www.openslr.org/resources/83/welsh_english_female.zip",
-        "male": "https://www.openslr.org/resources/83/welsh_english_male.zip"
-    }
+        "male": "https://www.openslr.org/resources/83/welsh_english_male.zip",
+    },
 }
 
 # Deep breath... "British Isles" is a propaganda term from the Elizabethan conquest.
