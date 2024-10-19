@@ -86,7 +86,7 @@ def get_args():
         "-L", "--list-languages", action="store_true", default=False, required=False, help="List available languages"
     )
     parser.add_argument("-s", "--save-dir", type=str, default=None, help="Place to store the downloaded zip files")
-    parser.add_argument("-o", "--output-dir", type=str, default="/tmp/data", help="Place to store the converted data")
+    parser.add_argument("-o", "--output-dir", type=str, default="data", help="Place to store the converted data")
 
     return parser.parse_args()
 
@@ -140,6 +140,25 @@ def convert_zip_contents(filename, outpath, resample=True):
                     vf.write(f"{outfile}|{text}\n")
 
 
+def merge_voices(voices, datapath, outpath):
+    with (
+        open(outpath / "train.txt", "w", encoding="utf-8") as tf,
+        open(outpath / "valid.txt", "w", encoding="utf-8") as vf,
+    ):
+        for i, v in enumerate(voices, 1):
+            voicepath = datapath / f"nabucasa_{v}"
+            with (
+                open(voicepath / "train.txt", encoding="utf-8") as t_inf,
+                open(voicepath / "valid.txt", encoding="utf-8") as v_inf,
+            ):
+                for line in t_inf.readlines():
+                    parts = line.strip().split("|")
+                    tf.write(f"{parts[0]}|{i}|{parts[1]}\n")
+                for line in v_inf.readlines():
+                    parts = line.strip().split("|")
+                    vf.write(f"{parts[0]}|{i}|{parts[1]}\n")
+
+
 def main():
     args = get_args()
 
@@ -162,23 +181,30 @@ def main():
         if not save_dir.is_dir():
             save_dir.mkdir()
 
-    def process_single(voice, save_dir=None):
+    def process_single(voice, outdir, all_voices, save_dir=None, resample=True):
         url = all_voices[voice]
         zipfilename = url.split("/")[-1]
+        voicedir = Path(outdir) / f"nabucasa_{voice}"
+        if not voicedir.is_dir():
+            voicedir.mkdir()
         if save_dir:
-            download_url_to_file(all_voices[voice], str(save_dir / zipfilename), progress=True)
+            zfile = str(save_dir / zipfilename)
+            if not (save_dir / zipfilename).exists():
+                download_url_to_file(all_voices[voice], zfile, progress=True)
+            convert_zip_contents(zfile, voicedir, resample)
         else:
             with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as zf:
                 download_url_to_file(all_voices[voice], zf.name, progress=True)
+                convert_zip_contents(zf.name, voicedir, resample)
 
+    all_voices = get_per_voice()
     if args.voice:
-        all_voices = get_per_voice()
         if args.voice not in all_voices:
             print("Voice", args.voice, "not available")
             sys.exit(1)
-        process_single(args.voice, save_dir)
+        process_single(args.voice, args.output_dir, all_voices, save_dir)
     elif args.language:
-        voices = _get_voice_names(args.list_voices, languages)
+        voices = _get_voice_names(args.language, languages)
         language = args.language
         if not "_" in args.language:
             if args.language not in languages:
@@ -190,6 +216,11 @@ def main():
                 print("Language", args.language, "not available")
                 sys.exit(1)
             language = languages[args.language]
+        for voice in voices:
+            process_single(voice, args.output_dir, all_voices, save_dir)
+        outdir = Path(args.output_dir)
+        langdir = outdir / f"nabucasa_{args.language}"
+        merge_voices(voices, outdir, langdir)
 
 
 if __name__ == "__main__":
