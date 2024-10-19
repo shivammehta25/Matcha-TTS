@@ -3,6 +3,7 @@ import random
 import sys
 import tempfile
 from pathlib import Path
+import os
 
 import torchaudio
 from torch.hub import download_url_to_file
@@ -116,28 +117,33 @@ def _get_voice_names(language, languages):
 
 
 def convert_zip_contents(filename, outpath, resample=True):
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        _extract_zip(filename, tmpdirname)
-        for webmfile in Path(tmpdirname).glob("*.webm"):
-            filepart = webmfile.rsplit("/", maxsplit=1)[-1]
-            outfile = str(outpath / filepart).replace(".webm", ".wav")
-            arr, sr = torchaudio.load(webmfile)
-            if resample:
-                arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
-            torchaudio.save(outfile, arr, 22050)
-        with (
-            open(outpath / "train.txt", "w", encoding="utf-8") as tf,
-            open(outpath / "valid.txt", "w", encoding="utf-8") as vf,
-        ):
-            for textfile in Path(tmpdirname).glob("*.txt"):
-                filepart = textfile.rsplit("/", maxsplit=1)[-1]
+    with (
+        tempfile.TemporaryDirectory() as tmpdirname,
+        open(outpath / "train.txt", "w", encoding="utf-8") as tf,
+        open(outpath / "valid.txt", "w", encoding="utf-8") as vf,
+    ):
+        for file in _extract_zip(filename, tmpdirname):
+            if not file.startswith(tmpdirname):
+                file = os.path.join(tmpdirname, file)
+            filepart = file.rsplit("/", maxsplit=1)[-1]
+            if file.endswith(".webm"):
+                outfile = str(outpath / filepart).replace(".webm", ".wav")
+                arr, sr = torchaudio.load(file)
+                if resample:
+                    arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
+                torchaudio.save(outfile, arr, 22050)
+
+            elif file.endswith(".txt"):
                 outfile = str(outpath / filepart).replace(".txt", ".wav")
-                with open(textfile, encoding="utf-8") as txtf:
+                with open(file, encoding="utf-8") as txtf:
                     text = txtf.read().strip()
                 if decision():
                     tf.write(f"{outfile}|{text}\n")
                 else:
                     vf.write(f"{outfile}|{text}\n")
+        
+            else:
+                continue
 
 
 def merge_voices(voices, datapath, outpath):
@@ -220,6 +226,8 @@ def main():
             process_single(voice, args.output_dir, all_voices, save_dir)
         outdir = Path(args.output_dir)
         langdir = outdir / f"nabucasa_{args.language}"
+        if not langdir.is_dir():
+            langdir.mkdir()
         merge_voices(voices, outdir, langdir)
 
 
