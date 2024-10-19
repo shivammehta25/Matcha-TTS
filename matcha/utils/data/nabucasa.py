@@ -173,7 +173,7 @@ def main():
 
     if args.voice:
         all_voices = get_per_voice()
-        if not args.voice in all_voices:
+        if args.voice not in all_voices:
             print("Voice", args.voice, "not available")
             sys.exit(1)
         process_single(args.voice, save_dir)
@@ -181,12 +181,12 @@ def main():
         voices = _get_voice_names(args.list_voices, languages)
         language = args.language
         if not "_" in args.language:
-            if not args.language in languages:
+            if args.language not in languages:
                 print("Language", args.language, "not available")
                 sys.exit(1)
             language = languages[args.language]
         else:
-            if not args.language in URLS:
+            if args.language not in URLS:
                 print("Language", args.language, "not available")
                 sys.exit(1)
             language = languages[args.language]
