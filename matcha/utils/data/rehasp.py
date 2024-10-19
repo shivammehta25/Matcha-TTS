@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 import argparse
+import os
 import random
 import tempfile
 from pathlib import Path
-import torchaudio
-from tqdm import tqdm
-import os
 
+import torchaudio
 from torch.hub import download_url_to_file
+from tqdm import tqdm
 
 from matcha.utils.data.utils import _extract_zip
 
@@ -105,7 +105,7 @@ def main():
         outpath.mkdir()
 
     if save_dir:
-        zipname = URL.rsplit("/", maxsplit=1)[-1].split('?', maxsplit=1)[0]
+        zipname = URL.rsplit("/", maxsplit=1)[-1].split("?", maxsplit=1)[0]
         zipfile = save_dir / zipname
         if not zipfile.exists():
             download_url_to_file(URL, str(zipfile), progress=True)

@@ -1,8 +1,8 @@
-import os
-import tarfile
 import argparse
-import sys
+import os
 import random
+import sys
+import tarfile
 
 try:
     from urllib.request import urlopen
@@ -50,11 +50,11 @@ def read_text(voice):
     textdata = []
     with open(f"data/cmu_us_{voice}_arctic/etc/txt.done.data") as txtdone:
         for line in txtdone.readlines():
-            first_paren = line.find('(')
+            first_paren = line.find("(")
             first_quote = line.find('"')
             last_quote = line.rfind('"')
-            fileid = line[first_paren+1:first_quote].strip()
-            text = line[first_quote+1:last_quote].strip()
+            fileid = line[first_paren + 1 : first_quote].strip()
+            text = line[first_quote + 1 : last_quote].strip()
             textdata.append(f"data/cmu_us_{voice}_arctic/wav/{fileid}.wav|{text}")
     return textdata
 
@@ -107,14 +107,12 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--voice', type=str, default="rms",
-                        required=True, help='ID of voice to use')
-    parser.add_argument('-s', '--split', type=int, default=5,
-                        required=False, help='Size of test(/validation) split')
-    parser.add_argument('-V', '--valid', action='store_true',
-                        default=False, required=False, help='Create a validation set')
-    parser.add_argument('-l', '--list', action='store_true',
-                        default=False, required=False, help='List speakers')
+    parser.add_argument("-v", "--voice", type=str, default="rms", required=True, help="ID of voice to use")
+    parser.add_argument("-s", "--split", type=int, default=5, required=False, help="Size of test(/validation) split")
+    parser.add_argument(
+        "-V", "--valid", action="store_true", default=False, required=False, help="Create a validation set"
+    )
+    parser.add_argument("-l", "--list", action="store_true", default=False, required=False, help="List speakers")
     args = parser.parse_args()
 
     main(args)
