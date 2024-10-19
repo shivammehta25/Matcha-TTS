@@ -3,6 +3,9 @@ import argparse
 import random
 import tempfile
 from pathlib import Path
+import torchaudio
+from tqdm import tqdm
+import os
 
 from torch.hub import download_url_to_file
 
@@ -45,31 +48,36 @@ def get_args():
     return parser.parse_args()
 
 
-def make_csv(rehasppath: Path):
-    if (rehasppath / "prompt_ids").exists():
-        basepath = rehasppath
-    elif (rehasppath / "rehasp_0.5" / "prompt_ids").exists():
-        basepath = rehasppath / "rehasp_0.5"
-    promptpath = basepath / "prompts"
-    wavpath = basepath / "96k" / "lucy"
-
+def process_data(zipfile, rehasppath: Path, resample=True):
     def slurp(filename):
         with open(filename) as inf:
             return inf.read().strip()
 
     prompts = {}
+    wavfiles = []
 
-    for promptfile in promptpath.glob("*.txt"):
-        stem = promptfile.stem
-        text = slurp(str(promptfile))
-        prompts[stem] = text
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        for filename in tqdm(_extract_zip(zipfile, tmpdirname)):
+            stem = filename.rsplit("/", maxsplit=1)[1].rsplit(".", maxsplit=1)[0]
+            if not filename.startswith(tmpdirname):
+                filename = os.path.join(tmpdirname, filename)
+            if "96k/lucy" in filename and filename.endswith(".wav"):
+                outfile = rehasppath / f"{stem}.wav"
+                arr, sr = torchaudio.load(filename)
+                if resample:
+                    arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
+                torchaudio.save(outfile, arr, 22050)
+                wavfiles.append(str(outfile))
+            elif "prompts" in filename and filename.endswith(".txt"):
+                text = slurp(filename)
+                prompts[stem] = text
 
     with (
-        open(basepath / "train.txt", "w", encoding="utf-8") as tf,
-        open(basepath / "val.txt", "w", encoding="utf-8") as vf,
+        open(rehasppath / "train.txt", "w", encoding="utf-8") as tf,
+        open(rehasppath / "val.txt", "w", encoding="utf-8") as vf,
     ):
-        for wavfile in wavpath.glob("**/*.wav"):
-            wavstem = wavfile.stem
+        for wavfile in wavfiles:
+            wavstem = wavfile.rsplit("/", maxsplit=1)[1].rsplit(".", maxsplit=1)[0]
             parts = wavstem.split("_")
             text = prompts[parts[3]]
 
@@ -88,7 +96,11 @@ def main():
         if not save_dir.is_dir():
             save_dir.mkdir()
 
-    outpath = Path(args.output_dir)
+    dirname = "rehasp_0.5"
+    outbasepath = Path(args.output_dir)
+    if not outbasepath.is_dir():
+        outbasepath.mkdir()
+    outpath = outbasepath / dirname
     if not outpath.is_dir():
         outpath.mkdir()
 
@@ -97,13 +109,11 @@ def main():
         zipfile = save_dir / zipname
         if not zipfile.exists():
             download_url_to_file(URL, str(zipfile), progress=True)
-        _extract_zip(zipfile, outpath)
-        make_csv(outpath)
+        process_data(zipfile, outpath)
     else:
         with tempfile.NamedTemporaryFile(suffix=".zip", delete=True) as zf:
             download_url_to_file(URL, zf.name, progress=True)
-            _extract_zip(zf.name, outpath)
-            make_csv(outpath)
+            process_data(zf.name, outpath)
 
 
 if __name__ == "__main__":
