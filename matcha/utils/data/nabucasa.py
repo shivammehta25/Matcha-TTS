@@ -129,16 +129,20 @@ def convert_zip_contents(filename, outpath, resample=True):
             if file.endswith(".webm"):
                 outfile = str(outpath / filepart).replace(".webm", ".wav")
                 arr, sr = torchaudio.load(file)
+                out_sr = sr
                 if resample:
                     arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
-                torchaudio.save(outfile, arr, 22050)
+                    out_sr = 22050
+                torchaudio.save(outfile, arr, out_sr)
 
             elif file.endswith(".flac"):
                 outfile = str(outpath / filepart).replace(".flac", ".wav")
                 arr, sr = torchaudio.load(file)
+                out_sr = sr
                 if resample:
                     arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
-                torchaudio.save(outfile, arr, 22050)
+                    out_sr = 22050
+                torchaudio.save(outfile, arr, out_sr)
 
             elif file.endswith(".txt"):
                 outfile = str(outpath / filepart).replace(".txt", ".wav")
