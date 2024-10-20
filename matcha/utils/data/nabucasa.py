@@ -1,9 +1,9 @@
 import argparse
+import os
 import random
 import sys
 import tempfile
 from pathlib import Path
-import os
 
 import torchaudio
 from torch.hub import download_url_to_file
@@ -141,7 +141,7 @@ def convert_zip_contents(filename, outpath, resample=True):
                     tf.write(f"{outfile}|{text}\n")
                 else:
                     vf.write(f"{outfile}|{text}\n")
-        
+
             else:
                 continue
 
