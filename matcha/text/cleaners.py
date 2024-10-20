@@ -124,6 +124,23 @@ def polish_cleaners(text):
     return phonemes
 
 
+def hungarian_cleaners(text):
+    text = lowercase(text)
+    if not "hungarian_cleaners" in global_phonemizers:
+        global_phonemizers["hungarian_cleaners"] = phonemizer.backend.EspeakBackend(
+            language="hu",
+            preserve_punctuation=True,
+            with_stress=True,
+            language_switch="remove-flags",
+            logger=critical_logger,
+        )
+    phonemes = global_phonemizers["hungarian_cleaners"].phonemize([text], strip=True, njobs=1)[0]
+    # symbols doesn't contain the combining tilde, so replace it with the closest unused character
+    # (because the nasal component of Polish "nasal vowels" is 'w', but that's used)
+    phonemes = collapse_whitespace(phonemes)
+    return phonemes
+
+
 # I am removing this due to incompatibility with several version of python
 # However, if you want to use it, you can uncomment it
 # and install piper-phonemize with the following command:
