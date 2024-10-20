@@ -117,6 +117,9 @@ def polish_cleaners(text):
             logger=critical_logger,
         )
     phonemes = global_phonemizers["polish_cleaners"].phonemize([text], strip=True, njobs=1)[0]
+    # symbols doesn't contain the combining tilde, so replace it with the closest unused character
+    # (because the nasal component of Polish "nasal vowels" is 'w', but that's used)
+    phonemes = phonemes.replace("\u0303", "ʷ")
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
