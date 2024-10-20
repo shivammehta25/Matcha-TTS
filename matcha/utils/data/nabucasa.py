@@ -133,6 +133,13 @@ def convert_zip_contents(filename, outpath, resample=True):
                     arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
                 torchaudio.save(outfile, arr, 22050)
 
+            elif file.endswith(".flac"):
+                outfile = str(outpath / filepart).replace(".flac", ".wav")
+                arr, sr = torchaudio.load(file)
+                if resample:
+                    arr = torchaudio.functional.resample(arr, orig_freq=sr, new_freq=22050)
+                torchaudio.save(outfile, arr, 22050)
+
             elif file.endswith(".txt"):
                 outfile = str(outpath / filepart).replace(".txt", ".wav")
                 with open(file, encoding="utf-8") as txtf:
