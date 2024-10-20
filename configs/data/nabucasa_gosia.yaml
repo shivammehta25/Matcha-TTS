@@ -10,6 +10,6 @@ batch_size: 32
 add_blank: True
 cleaners: [polish_cleaners]
 n_spks: 1
-data_statistics:  # Computed for vctk dataset
-  mel_mean: -6.630575
-  mel_std: 2.482914
+data_statistics:  # Computed for NabuCasa's "gosia" voice
+  mel_mean: -6.247935771942139
+  mel_std: 2.750697612762451
