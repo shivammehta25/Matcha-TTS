@@ -1,8 +1,6 @@
 import argparse
-import os
 import random
 import sys
-import tarfile
 
 try:
     from urllib.request import urlopen
@@ -91,27 +89,12 @@ def main(args):
     with open(f"data/filelists/cmu_us_{args.voice}_arctic_test_filelist.txt", "w") as val:
         val.write("\n".join(test_sents))
 
-    print("Finished writing data")
-    if args.valid:
-        print("Change these lines in src/hparams.py")
-    else:
-        print("Change this line in src/hparams.py")
-    print("        training_files='data/filelists/ljs_audio_text_train_filelist.txt',")
-    if args.valid:
-        print("        validation_files='data/filelists/ljs_audio_text_val_filelist.txt',")
-    print("to:")
-    print(f"        training_files='data/filelists/cmu_us_{args.voice}_arctic_train_filelist.txt',")
-    if args.valid:
-        print(f"        validation_files='data/filelists/cmu_us_{args.voice}_arctic_val_filelist.txt',")
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--voice", type=str, default="rms", required=True, help="ID of voice to use")
     parser.add_argument("-s", "--split", type=int, default=5, required=False, help="Size of test(/validation) split")
-    parser.add_argument(
-        "-V", "--valid", action="store_true", default=False, required=False, help="Create a validation set"
-    )
+    parser.add_argument("-V", "--valid", action="store_true", default=False, required=False, help="Create a validation set")
     parser.add_argument("-l", "--list", action="store_true", default=False, required=False, help="List speakers")
     args = parser.parse_args()
 
