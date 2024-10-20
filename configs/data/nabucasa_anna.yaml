@@ -10,6 +10,6 @@ batch_size: 32
 add_blank: True
 cleaners: [hungarian_cleaners]
 n_spks: 1
-data_statistics:  # Computed for NabuCasa's "darkman" voice
-  mel_mean: -6.495212078094482
-  mel_std: 2.473719835281372
+data_statistics:  # Computed for NabuCasa's "anna" voice
+  mel_mean: -6.346419334411621
+  mel_std: 2.677656650543213
