@@ -9,6 +9,6 @@ valid_filelist_path: data/mm-conv/valid.txt
 batch_size: 32
 add_blank: True
 n_spks: 6
-data_statistics:  # Computed for vctk dataset
-  mel_mean: -6.630575
-  mel_std: 2.482914
+data_statistics:  # Computed for mm-conv dataset
+  mel_mean: -6.404342174530029
+  mel_std: 2.0323033332824707
