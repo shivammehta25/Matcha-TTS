@@ -10,5 +10,5 @@ batch_size: 32
 add_blank: True
 n_spks: 1
 data_statistics:  # Computed for mm-conv dataset
-  mel_mean: -6.404342174530029
-  mel_std: 2.0323033332824707
+  mel_mean: -6.570133209228516
+  mel_std: 1.950340747833252
