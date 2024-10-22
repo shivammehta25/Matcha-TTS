@@ -1,0 +1,14 @@
+defaults:
+  - ljspeech
+  - _self_
+
+_target_: matcha.data.text_mel_datamodule.TextMelDataModule
+name: mm-conv
+train_filelist_path: data/mm-conv/train.txt
+valid_filelist_path: data/mm-conv/valid.txt
+batch_size: 32
+add_blank: True
+n_spks: 6
+data_statistics:  # Computed for vctk dataset
+  mel_mean: -6.630575
+  mel_std: 2.482914
