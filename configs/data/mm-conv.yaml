@@ -6,7 +6,7 @@ _target_: matcha.data.text_mel_datamodule.TextMelDataModule
 name: mm-conv
 train_filelist_path: data/mm-conv/train.txt
 valid_filelist_path: data/mm-conv/valid.txt
-batch_size: 32
+batch_size: 16
 add_blank: True
 n_spks: 6
 data_statistics:  # Computed for mm-conv dataset
