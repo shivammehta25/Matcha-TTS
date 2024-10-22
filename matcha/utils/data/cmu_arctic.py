@@ -94,7 +94,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--voice", type=str, default="rms", required=True, help="ID of voice to use")
     parser.add_argument("-s", "--split", type=int, default=5, required=False, help="Size of test(/validation) split")
-    parser.add_argument("-V", "--valid", action="store_true", default=False, required=False, help="Create a validation set")
+    parser.add_argument(
+        "-V", "--valid", action="store_true", default=False, required=False, help="Create a validation set"
+    )
     parser.add_argument("-l", "--list", action="store_true", default=False, required=False, help="List speakers")
     args = parser.parse_args()
 
