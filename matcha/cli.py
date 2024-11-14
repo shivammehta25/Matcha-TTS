@@ -114,10 +114,10 @@ def load_matcha(model_name, checkpoint_path, device):
     return model
 
 
-def to_waveform(mel, vocoder, denoiser=None):
+def to_waveform(mel, vocoder, denoiser=None, denoiser_strength=0.00025):
     audio = vocoder(mel).clamp(-1, 1)
     if denoiser is not None:
-        audio = denoiser(audio.squeeze(), strength=0.00025).cpu().squeeze()
+        audio = denoiser(audio.squeeze(), strength=denoiser_strength).cpu().squeeze()
 
     return audio.cpu().squeeze()
 
@@ -336,7 +336,7 @@ def batched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
             length_scale=args.speaking_rate,
         )
 
-        output["waveform"] = to_waveform(output["mel"], vocoder, denoiser)
+        output["waveform"] = to_waveform(output["mel"], vocoder, denoiser, args.denoiser_strength)
         t = (dt.datetime.now() - start_t).total_seconds()
         rtf_w = t * 22050 / (output["waveform"].shape[-1])
         print(f"[🍵-Batch: {i}] Matcha-TTS RTF: {output['rtf']:.4f}")
@@ -377,7 +377,7 @@ def unbatched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
             spks=spk,
             length_scale=args.speaking_rate,
         )
-        output["waveform"] = to_waveform(output["mel"], vocoder, denoiser)
+        output["waveform"] = to_waveform(output["mel"], vocoder, denoiser, args.denoiser_strength)
         # RTF with HiFiGAN
         t = (dt.datetime.now() - start_t).total_seconds()
         rtf_w = t * 22050 / (output["waveform"].shape[-1])
