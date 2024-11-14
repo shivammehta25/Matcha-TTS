@@ -36,6 +36,9 @@ global_phonemizer = phonemizer.backend.EspeakBackend(
 # Regular expression matching whitespace:
 _whitespace_re = re.compile(r"\s+")
 
+# Remove brackets
+_brackets_re = re.compile(r"[\[\]\(\)\{\}]")
+
 # List of (regular expression, replacement) pairs for abbreviations:
 _abbreviations = [
     (re.compile("\\b%s\\." % x[0], re.IGNORECASE), x[1])
@@ -71,6 +74,8 @@ def expand_abbreviations(text):
 def lowercase(text):
     return text.lower()
 
+def remove_brackets(text):
+    return re.sub(_brackets_re, "", text)
 
 def collapse_whitespace(text):
     return re.sub(_whitespace_re, " ", text)
@@ -101,6 +106,8 @@ def english_cleaners2(text):
     text = lowercase(text)
     text = expand_abbreviations(text)
     phonemes = global_phonemizer.phonemize([text], strip=True, njobs=1)[0]
+    # Added in some cases espeak is not removing brackets
+    phonemes = remove_brackets(phonemes) 
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
