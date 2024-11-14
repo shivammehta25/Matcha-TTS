@@ -114,6 +114,20 @@ def english_cleaners2(text):
     return phonemes
 
 
+def ipa_simplifier(text):
+    replacements = [
+        ("ɐ", "ə"),
+        ("ˈə", "ə"),
+        ("ʤ", "dʒ"),
+        ("ʧ", "tʃ"),
+        ("ᵻ", "ɪ"),
+    ]
+    for replacement in replacements:
+        text = text.replace(replacement[0], replacement[1])
+    phonemes = collapse_whitespace(text)
+    return phonemes
+
+
 # I am removing this due to incompatibility with several version of python
 # However, if you want to use it, you can uncomment it
 # and install piper-phonemize with the following command:
