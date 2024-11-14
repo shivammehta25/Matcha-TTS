@@ -74,8 +74,10 @@ def expand_abbreviations(text):
 def lowercase(text):
     return text.lower()
 
+
 def remove_brackets(text):
     return re.sub(_brackets_re, "", text)
+
 
 def collapse_whitespace(text):
     return re.sub(_whitespace_re, " ", text)
@@ -107,7 +109,7 @@ def english_cleaners2(text):
     text = expand_abbreviations(text)
     phonemes = global_phonemizer.phonemize([text], strip=True, njobs=1)[0]
     # Added in some cases espeak is not removing brackets
-    phonemes = remove_brackets(phonemes) 
+    phonemes = remove_brackets(phonemes)
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
