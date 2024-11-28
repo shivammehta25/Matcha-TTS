@@ -102,10 +102,8 @@ def main():
     log.info("Dataloader loaded! Now computing stats...")
     params = compute_data_statistics(data_loader, cfg["n_feats"])
     print(params)
-    json.dump(
-        params,
-        open(output_file, "w"),
-    )
+    with open(output_file, "w", encoding="utf-8") as dumpfile:
+        json.dump(params, dumpfile)
 
 
 if __name__ == "__main__":

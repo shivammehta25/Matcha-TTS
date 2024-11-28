@@ -2,7 +2,7 @@ import math
 from typing import Optional
 
 import torch
-import torch.nn as nn
+import torch.nn as nn  # pylint: disable=consider-using-from-import
 import torch.nn.functional as F
 from conformer import ConformerBlock
 from diffusers.models.activations import get_activation

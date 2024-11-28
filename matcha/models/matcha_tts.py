@@ -7,7 +7,7 @@ import torch
 from huggingface_hub import hf_hub_download
 from omegaconf import OmegaConf
 
-import matcha.utils.monotonic_align as monotonic_align
+import matcha.utils.monotonic_align as monotonic_align  # pylint: disable=consider-using-from-import
 from matcha import utils
 from matcha.models.baselightningmodule import BaseLightningClass
 from matcha.models.components.flow_matching import CFM
