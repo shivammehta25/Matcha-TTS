@@ -1,7 +1,7 @@
 from typing import Any, Dict, Optional
 
 import torch
-import torch.nn as nn
+import torch.nn as nn  # pylint: disable=consider-using-from-import
 from diffusers.models.attention import (
     GEGLU,
     GELU,

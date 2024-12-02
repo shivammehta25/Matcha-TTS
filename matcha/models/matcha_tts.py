@@ -4,7 +4,7 @@ import random
 
 import torch
 
-import matcha.utils.monotonic_align as monotonic_align
+import matcha.utils.monotonic_align as monotonic_align  # pylint: disable=consider-using-from-import
 from matcha import utils
 from matcha.models.baselightningmodule import BaseLightningClass
 from matcha.models.components.flow_matching import CFM
@@ -106,6 +106,7 @@ class MatchaTTS(BaseLightningClass):  # 🍵
                 # Lengths of mel spectrograms
                 "rtf": float,
                 # Real-time factor
+            }
         """
         # For RTF computation
         t = dt.datetime.now()
@@ -152,7 +153,7 @@ class MatchaTTS(BaseLightningClass):  # 🍵
     def forward(self, x, x_lengths, y, y_lengths, spks=None, out_size=None, cond=None, durations=None):
         """
         Computes 3 losses:
-            1. duration loss: loss between predicted token durations and those extracted by Monotinic Alignment Search (MAS).
+            1. duration loss: loss between predicted token durations and those extracted by Monotonic Alignment Search (MAS).
             2. prior loss: loss between mel-spectrogram and encoder outputs.
             3. flow matching loss: loss between mel-spectrogram and decoder outputs.
 
