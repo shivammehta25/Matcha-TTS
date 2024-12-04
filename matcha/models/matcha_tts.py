@@ -1,8 +1,11 @@
 import datetime as dt
 import math
 import random
+from typing import Optional
 
 import torch
+from huggingface_hub import hf_hub_download
+from omegaconf import OmegaConf
 
 import matcha.utils.monotonic_align as monotonic_align  # pylint: disable=consider-using-from-import
 from matcha import utils
@@ -71,6 +74,43 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         )
 
         self.update_data_statistics(data_statistics)
+
+    @classmethod
+    def from_hparams(cls, cfg: str):
+        """
+        Class method to create a new Matcha-TTS model instance from hyperparameters stored in a yaml configuration file.
+        """
+        c = OmegaConf.load(cfg)
+
+        model = cls(
+            n_vocab=c.n_vocab,
+            n_feats=c.n_feats,
+            n_spks=c.n_spks,
+            spk_emb_dim=c.spk_emb_dim,
+            optimizer=c.optimizer,
+            out_size=c.out_size,
+            prior_loss=c.prior_loss,
+            scheduler=c.scheduler,
+            cfm=c.cfm,
+            data_statistics=c.data_statistics,
+            decoder=c.decoder,
+            encoder=c.encoder,
+        )
+        return model
+
+    @classmethod
+    def from_pretrained(cls, repo_id: str, revision: Optional[str] = None):
+        """
+        Class method to create a new Matcha-TTS model instance from a pre-trained model stored in the Hugging Face
+        model hub.
+        """
+        config_path = hf_hub_download(repo_id=repo_id, filename="config.yaml", revision=revision)
+        model_path = hf_hub_download(repo_id=repo_id, filename="pytorch_model.bin", revision=revision)
+        model = cls.from_hparams(config_path)
+        state_dict = torch.load(model_path, map_location="cpu")
+        model.load_state_dict(state_dict)
+        model.eval()
+        return model
 
     @torch.inference_mode()
     def synthesise(self, x, x_lengths, n_timesteps, temperature=1.0, spks=None, length_scale=1.0):
