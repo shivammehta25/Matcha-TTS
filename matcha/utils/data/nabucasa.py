@@ -104,11 +104,11 @@ def print_languages(languages, concise=True):
 
 def _get_voice_names(language, languages):
     if "_" in language:
-        if not language in URLS:
+        if language not in URLS:
             return []
         return URLS[language]
     else:
-        if not language in languages:
+        if language not in languages:
             return []
         voices = []
         for sublang in languages[language]:
@@ -223,7 +223,7 @@ def main():
     elif args.language:
         voices = _get_voice_names(args.language, languages)
         language = args.language
-        if not "_" in args.language:
+        if "_" not in args.language:
             if args.language not in languages:
                 print("Language", args.language, "not available")
                 sys.exit(1)
