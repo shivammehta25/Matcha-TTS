@@ -1,0 +1,15 @@
+defaults:
+  - ljspeech
+  - _self_
+
+_target_: matcha.data.text_mel_datamodule.TextMelDataModule
+name: nabucasa_darkman
+train_filelist_path: data/nabucasa_darkman/train.txt
+valid_filelist_path: data/nabucasa_darkman/valid.txt
+batch_size: 32
+add_blank: True
+cleaners: [polish_cleaners]
+n_spks: 1
+data_statistics:  # Computed for NabuCasa's "darkman" voice
+  mel_mean: -6.495212078094482
+  mel_std: 2.473719835281372
