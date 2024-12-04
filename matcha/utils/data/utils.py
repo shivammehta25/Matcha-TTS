@@ -1,6 +1,8 @@
 # taken from https://github.com/pytorch/audio/blob/main/src/torchaudio/datasets/utils.py
 # Copyright (c) 2017 Facebook Inc. (Soumith Chintala)
 # Licence: BSD 2-Clause
+# pylint: disable=C0123
+
 import logging
 import os
 import tarfile
