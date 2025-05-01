@@ -209,7 +209,7 @@ class TextMelDataset(torch.utils.data.Dataset):
             self.f_min,
             self.f_max,
             center=False,
-        ).squeeze()
+        ).squeeze(dim=0)
         mel = normalize(mel, self.data_parameters["mel_mean"], self.data_parameters["mel_std"])
         return mel
 
