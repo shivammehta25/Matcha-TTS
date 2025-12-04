@@ -14,3 +14,13 @@ data_statistics: ${data.data_statistics}
 out_size: null # Must be divisible by 4
 prior_loss: true
 use_precomputed_durations: ${data.load_durations}
+
+scheduler:
+  scheduler:
+    _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+    _partial_: true
+    T_max: 200000
+    eta_min: 0.0
+  lightning_args:
+    interval: step
+    frequency: 1
