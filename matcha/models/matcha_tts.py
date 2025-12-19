@@ -3,6 +3,7 @@ import math
 import random
 
 import torch
+import torch.nn.functional as F
 
 import matcha.utils.monotonic_align as monotonic_align  # pylint: disable=consider-using-from-import
 from matcha import utils
@@ -36,6 +37,8 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         scheduler=None,
         prior_loss=True,
         use_precomputed_durations=False,
+        n_langs=1,
+        lang_emb_dim=64,
     ):
         super().__init__()
 
@@ -48,9 +51,14 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         self.out_size = out_size
         self.prior_loss = prior_loss
         self.use_precomputed_durations = use_precomputed_durations
+        self.n_langs = n_langs
+        self.lang_emb_dim = lang_emb_dim
 
         if n_spks > 1:
             self.spk_emb = torch.nn.Embedding(n_spks, spk_emb_dim)
+
+        if n_langs > 1:
+            self.lang_emb = torch.nn.Embedding(n_langs, lang_emb_dim)
 
         self.encoder = TextEncoder(
             encoder.encoder_type,
@@ -59,6 +67,8 @@ class MatchaTTS(BaseLightningClass):  # 🍵
             n_vocab,
             n_spks,
             spk_emb_dim,
+            n_langs,
+            lang_emb_dim,
         )
 
         self.decoder = CFM(
@@ -68,12 +78,14 @@ class MatchaTTS(BaseLightningClass):  # 🍵
             decoder_params=decoder,
             n_spks=n_spks,
             spk_emb_dim=spk_emb_dim,
+            n_langs=n_langs,
+            lang_emb_dim=lang_emb_dim,
         )
 
         self.update_data_statistics(data_statistics)
 
     @torch.inference_mode()
-    def synthesise(self, x, x_lengths, n_timesteps, temperature=1.0, spks=None, length_scale=1.0):
+    def synthesise(self, x, x_lengths, n_timesteps, temperature=1.0, spks=None, length_scale=1.0, langs=None):
         """
         Generates mel-spectrogram from text. Returns:
             1. encoder outputs
@@ -87,10 +99,12 @@ class MatchaTTS(BaseLightningClass):  # 🍵
                 shape: (batch_size,)
             n_timesteps (int): number of steps to use for reverse diffusion in decoder.
             temperature (float, optional): controls variance of terminal distribution.
-            spks (bool, optional): speaker ids.
+            spks (torch.Tensor, optional): speaker ids.
                 shape: (batch_size,)
             length_scale (float, optional): controls speech pace.
                 Increase value to slow down generated speech and vice versa.
+            langs (torch.Tensor, optional): language ids.
+                shape: (batch_size,)
 
         Returns:
             dict: {
@@ -114,9 +128,15 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         if self.n_spks > 1:
             # Get speaker embedding
             spks = self.spk_emb(spks.long())
+            spks = F.normalize(spks, p=2, dim=-1)
+
+        if self.n_langs > 1:
+            # Get speaker embedding
+            langs = self.lang_emb(langs.long())
+            langs = F.normalize(langs, p=2, dim=-1)
 
         # Get encoder_outputs `mu_x` and log-scaled token durations `logw`
-        mu_x, logw, x_mask = self.encoder(x, x_lengths, spks)
+        mu_x, logw, x_mask = self.encoder(x, x_lengths, spks, langs)
 
         w = torch.exp(logw) * x_mask
         w_ceil = torch.ceil(w) * length_scale
@@ -135,7 +155,7 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         encoder_outputs = mu_y[:, :, :y_max_length]
 
         # Generate sample tracing the probability flow
-        decoder_outputs = self.decoder(mu_y, y_mask, n_timesteps, temperature, spks)
+        decoder_outputs = self.decoder(mu_y, y_mask, n_timesteps, temperature, spks, langs)
         decoder_outputs = decoder_outputs[:, :, :y_max_length]
 
         t = (dt.datetime.now() - t).total_seconds()
@@ -150,7 +170,7 @@ class MatchaTTS(BaseLightningClass):  # 🍵
             "rtf": rtf,
         }
 
-    def forward(self, x, x_lengths, y, y_lengths, spks=None, out_size=None, cond=None, durations=None):
+    def forward(self, x, x_lengths, y, y_lengths, spks=None, out_size=None, cond=None, durations=None, langs=None):
         """
         Computes 3 losses:
             1. duration loss: loss between predicted token durations and those extracted by Monotonic Alignment Search (MAS).
@@ -170,13 +190,21 @@ class MatchaTTS(BaseLightningClass):  # 🍵
                 Should be divisible by 2^{num of UNet downsamplings}. Needed to increase batch size.
             spks (torch.Tensor, optional): speaker ids.
                 shape: (batch_size,)
+            langs (torch.Tensor, optional): language ids.
+                shape: (batch_size,)
         """
         if self.n_spks > 1:
             # Get speaker embedding
             spks = self.spk_emb(spks)
+            spks = F.normalize(spks, p=2, dim=-1)
+
+        if self.n_langs > 1:
+            # Get speaker embedding
+            langs = self.lang_emb(langs)
+            langs = F.normalize(langs, p=2, dim=-1)
 
         # Get encoder_outputs `mu_x` and log-scaled token durations `logw`
-        mu_x, logw, x_mask = self.encoder(x, x_lengths, spks)
+        mu_x, logw, x_mask = self.encoder(x, x_lengths, spks, langs)
         y_max_length = y.shape[-1]
 
         y_mask = sequence_mask(y_lengths, y_max_length).unsqueeze(1).to(x_mask)
@@ -234,7 +262,7 @@ class MatchaTTS(BaseLightningClass):  # 🍵
         mu_y = mu_y.transpose(1, 2)
 
         # Compute loss of the decoder
-        diff_loss, _ = self.decoder.compute_loss(x1=y, mask=y_mask, mu=mu_y, spks=spks, cond=cond)
+        diff_loss, _ = self.decoder.compute_loss(x1=y, mask=y_mask, mu=mu_y, spks=spks, cond=cond, langs=langs)
 
         if self.prior_loss:
             prior_loss = torch.sum(0.5 * ((y - mu_y) ** 2 + math.log(2 * math.pi)) * y_mask)

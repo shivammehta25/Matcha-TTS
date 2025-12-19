@@ -333,7 +333,9 @@ class TextEncoder(nn.Module):
         duration_predictor_params,
         n_vocab,
         n_spks=1,
+        n_langs=1,
         spk_emb_dim=128,
+        lang_emb_dim=128,
     ):
         super().__init__()
         self.encoder_type = encoder_type
@@ -342,15 +344,17 @@ class TextEncoder(nn.Module):
         self.n_channels = encoder_params.n_channels
         self.spk_emb_dim = spk_emb_dim
         self.n_spks = n_spks
+        self.lang_emb_dim = lang_emb_dim
+        self.n_langs = n_langs
 
         self.emb = torch.nn.Embedding(n_vocab, self.n_channels)
         torch.nn.init.normal_(self.emb.weight, 0.0, self.n_channels**-0.5)
 
         if encoder_params.prenet:
             self.prenet = ConvReluNorm(
-                self.n_channels,
-                self.n_channels,
-                self.n_channels,
+                self.n_channels + (lang_emb_dim if n_langs > 1 else 0),
+                self.n_channels + (lang_emb_dim if n_langs > 1 else 0),
+                self.n_channels + (lang_emb_dim if n_langs > 1 else 0),
                 kernel_size=5,
                 n_layers=3,
                 p_dropout=0.5,
@@ -359,7 +363,7 @@ class TextEncoder(nn.Module):
             self.prenet = lambda x, x_mask: x
 
         self.encoder = Encoder(
-            encoder_params.n_channels + (spk_emb_dim if n_spks > 1 else 0),
+            encoder_params.n_channels + (lang_emb_dim if n_langs > 1 else 0) + (spk_emb_dim if n_spks > 1 else 0),
             encoder_params.filter_channels,
             encoder_params.n_heads,
             encoder_params.n_layers,
@@ -367,15 +371,17 @@ class TextEncoder(nn.Module):
             encoder_params.p_dropout,
         )
 
-        self.proj_m = torch.nn.Conv1d(self.n_channels + (spk_emb_dim if n_spks > 1 else 0), self.n_feats, 1)
+        self.proj_m = torch.nn.Conv1d(
+            self.n_channels + (spk_emb_dim if n_spks > 1 else 0) + (lang_emb_dim if n_langs > 1 else 0),
+            self.n_feats, 1)
         self.proj_w = DurationPredictor(
-            self.n_channels + (spk_emb_dim if n_spks > 1 else 0),
+            self.n_channels + (spk_emb_dim if n_spks > 1 else 0) + (lang_emb_dim if n_langs > 1 else 0),
             duration_predictor_params.filter_channels_dp,
             duration_predictor_params.kernel_size,
             duration_predictor_params.p_dropout,
         )
 
-    def forward(self, x, x_lengths, spks=None):
+    def forward(self, x, x_lengths, spks=None, langs=None):
         """Run forward pass to the transformer based encoder and duration predictor
 
         Args:
@@ -398,6 +404,8 @@ class TextEncoder(nn.Module):
         x = torch.transpose(x, 1, -1)
         x_mask = torch.unsqueeze(sequence_mask(x_lengths, x.size(2)), 1).to(x.dtype)
 
+        if self.n_langs > 1:
+            x = torch.cat([x, langs.unsqueeze(-1).repeat(1, 1, x.shape[-1])], dim=1)
         x = self.prenet(x, x_mask)
         if self.n_spks > 1:
             x = torch.cat([x, spks.unsqueeze(-1).repeat(1, 1, x.shape[-1])], dim=1)

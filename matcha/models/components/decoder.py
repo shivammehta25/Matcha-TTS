@@ -360,7 +360,7 @@ class Decoder(nn.Module):
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
 
-    def forward(self, x, mask, mu, t, spks=None, cond=None):
+    def forward(self, x, mask, mu, t, spks=None, langs=None, cond=None):
         """Forward pass of the UNet1DConditional model.
 
         Args:
@@ -386,6 +386,10 @@ class Decoder(nn.Module):
         if spks is not None:
             spks = repeat(spks, "b c -> b c t", t=x.shape[-1])
             x = pack([x, spks], "b * t")[0]
+
+        if langs is not None:
+            langs = repeat(langs, "b c -> b c t", t=x.shape[-1])
+            x = pack([x, langs], "b * t")[0]
 
         hiddens = []
         masks = [mask]

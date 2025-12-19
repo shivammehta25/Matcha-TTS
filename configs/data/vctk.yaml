@@ -9,6 +9,7 @@ valid_filelist_path: data/filelists/vctk_audio_sid_text_val_filelist.txt
 batch_size: 32
 add_blank: True
 n_spks: 109
+n_langs: 1
 data_statistics:  # Computed for vctk dataset
   mel_mean: -6.630575
   mel_std: 2.482914

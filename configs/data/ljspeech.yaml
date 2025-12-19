@@ -8,6 +8,7 @@ pin_memory: True
 cleaners: [english_cleaners2]
 add_blank: True
 n_spks: 1
+n_langs: 1
 n_fft: 1024
 n_feats: 80
 sample_rate: 22050

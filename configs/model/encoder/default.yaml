@@ -10,6 +10,8 @@ encoder_params:
   p_dropout: 0.1
   spk_emb_dim: 64
   n_spks: 1
+  lang_emb_dim: 64
+  n_langs: 1
   prenet: true
 
 duration_predictor_params:

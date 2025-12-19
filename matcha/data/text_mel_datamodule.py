@@ -42,6 +42,8 @@ class TextMelDataModule(LightningDataModule):
         data_statistics,
         seed,
         load_durations,
+        n_vocab=None,
+        n_langs=None,
     ):
         super().__init__()
 
@@ -72,6 +74,7 @@ class TextMelDataModule(LightningDataModule):
             self.hparams.data_statistics,
             self.hparams.seed,
             self.hparams.load_durations,
+            n_langs=self.hparams.n_langs,
         )
         self.validset = TextMelDataset(  # pylint: disable=attribute-defined-outside-init
             self.hparams.valid_filelist_path,
@@ -88,6 +91,7 @@ class TextMelDataModule(LightningDataModule):
             self.hparams.data_statistics,
             self.hparams.seed,
             self.hparams.load_durations,
+            n_langs=self.hparams.n_langs,
         )
 
     def train_dataloader(self):
@@ -97,7 +101,7 @@ class TextMelDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=True,
-            collate_fn=TextMelBatchCollate(self.hparams.n_spks),
+            collate_fn=TextMelBatchCollate(self.hparams.n_spks, self.hparams.n_langs),
         )
 
     def val_dataloader(self):
@@ -107,7 +111,7 @@ class TextMelDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
-            collate_fn=TextMelBatchCollate(self.hparams.n_spks),
+            collate_fn=TextMelBatchCollate(self.hparams.n_spks, self.hparams.n_langs),
         )
 
     def teardown(self, stage: Optional[str] = None):
@@ -140,6 +144,7 @@ class TextMelDataset(torch.utils.data.Dataset):
         data_parameters=None,
         seed=None,
         load_durations=False,
+        n_langs=1,
     ):
         self.filepaths_and_text = parse_filelist(filelist_path)
         self.n_spks = n_spks
@@ -153,6 +158,7 @@ class TextMelDataset(torch.utils.data.Dataset):
         self.f_min = f_min
         self.f_max = f_max
         self.load_durations = load_durations
+        self.n_langs = n_langs
 
         if data_parameters is not None:
             self.data_parameters = data_parameters
@@ -161,23 +167,36 @@ class TextMelDataset(torch.utils.data.Dataset):
         random.seed(seed)
         random.shuffle(self.filepaths_and_text)
 
+        if n_langs > 1:
+            all_langs = sorted(set([filepath_and_text[2] for filepath_and_text in self.filepaths_and_text]))
+            assert len(all_langs) == n_langs
+            self.lang_dict = {lang: i for i, lang in enumerate(all_langs)}
+            print('lang_dict:', self.lang_dict)
+
     def get_datapoint(self, filepath_and_text):
-        if self.n_spks > 1:
-            filepath, spk, text = (
-                filepath_and_text[0],
-                int(filepath_and_text[1]),
-                filepath_and_text[2],
-            )
-        else:
-            filepath, text = filepath_and_text[0], filepath_and_text[1]
-            spk = None
+        filepath = filepath_and_text[0]
+        spk = None
+        lang = None
+        text = filepath_and_text[-1]
+
+        # format: filepath|spk|lang|text
+        if self.n_spks > 1 and self.n_langs > 1:
+            spk = int(filepath_and_text[1])
+            lang = self.lang_dict[filepath_and_text[2]]
+        # format: filepath|spk|text
+        elif self.n_spks > 1:
+            spk = int(filepath_and_text[1])
+        # format: filepath|lang|text
+        elif self.n_langs > 1:
+            lang = self.lang_dict[filepath_and_text[1]]
 
         text, cleaned_text = self.get_text(text, add_blank=self.add_blank)
         mel = self.get_mel(filepath)
 
         durations = self.get_durations(filepath, text) if self.load_durations else None
 
-        return {"x": text, "y": mel, "spk": spk, "filepath": filepath, "x_text": cleaned_text, "durations": durations}
+        return {"x": text, "y": mel, "spk": spk, "filepath": filepath, "x_text": cleaned_text, "durations": durations,
+                "lang": lang}
 
     def get_durations(self, filepath, text):
         filepath = Path(filepath)
@@ -229,8 +248,9 @@ class TextMelDataset(torch.utils.data.Dataset):
 
 
 class TextMelBatchCollate:
-    def __init__(self, n_spks):
+    def __init__(self, n_spks, n_langs):
         self.n_spks = n_spks
+        self.n_langs = n_langs
 
     def __call__(self, batch):
         B = len(batch)
@@ -244,7 +264,7 @@ class TextMelBatchCollate:
         durations = torch.zeros((B, x_max_length), dtype=torch.long)
 
         y_lengths, x_lengths = [], []
-        spks = []
+        spks, langs = [], []
         filepaths, x_texts = [], []
         for i, item in enumerate(batch):
             y_, x_ = item["y"], item["x"]
@@ -253,6 +273,7 @@ class TextMelBatchCollate:
             y[i, :, : y_.shape[-1]] = y_
             x[i, : x_.shape[-1]] = x_
             spks.append(item["spk"])
+            langs.append(item["lang"])
             filepaths.append(item["filepath"])
             x_texts.append(item["x_text"])
             if item["durations"] is not None:
@@ -261,6 +282,7 @@ class TextMelBatchCollate:
         y_lengths = torch.tensor(y_lengths, dtype=torch.long)
         x_lengths = torch.tensor(x_lengths, dtype=torch.long)
         spks = torch.tensor(spks, dtype=torch.long) if self.n_spks > 1 else None
+        langs = torch.tensor(langs, dtype=torch.long) if self.n_langs > 1 else None
 
         return {
             "x": x,
@@ -268,6 +290,7 @@ class TextMelBatchCollate:
             "y": y,
             "y_lengths": y_lengths,
             "spks": spks,
+            "langs": langs,
             "filepaths": filepaths,
             "x_texts": x_texts,
             "durations": durations if not torch.eq(durations, 0).all() else None,

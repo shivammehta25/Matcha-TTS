@@ -234,6 +234,7 @@ def cli():
     parser.add_argument("--text", type=str, default=None, help="Text to synthesize")
     parser.add_argument("--file", type=str, default=None, help="Text file to synthesize")
     parser.add_argument("--spk", type=int, default=None, help="Speaker ID")
+    parser.add_argument("--lang", type=int, default=None, help="Language ID")
     parser.add_argument(
         "--temperature",
         type=float,
@@ -283,10 +284,11 @@ def cli():
     texts = get_texts(args)
 
     spk = torch.tensor([args.spk], device=device, dtype=torch.long) if args.spk is not None else None
+    lang = torch.tensor([args.lang], device=device, dtype=torch.long) if args.lang is not None else None
     if len(texts) == 1 or not args.batched:
-        unbatched_synthesis(args, device, model, vocoder, denoiser, texts, spk)
+        unbatched_synthesis(args, device, model, vocoder, denoiser, texts, spk, lang)
     else:
-        batched_synthesis(args, device, model, vocoder, denoiser, texts, spk)
+        batched_synthesis(args, device, model, vocoder, denoiser, texts, spk, lang)
 
 
 class BatchedSynthesisDataset(torch.utils.data.Dataset):
@@ -313,7 +315,7 @@ def batched_collate_fn(batch):
     return {"x": x, "x_lengths": x_lengths}
 
 
-def batched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
+def batched_synthesis(args, device, model, vocoder, denoiser, texts, spk, lang):
     total_rtf = []
     total_rtf_w = []
     processed_text = [process_text(i, text, "cpu") for i, text in enumerate(texts)]
@@ -333,6 +335,7 @@ def batched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
             n_timesteps=args.steps,
             temperature=args.temperature,
             spks=spk.expand(b) if spk is not None else spk,
+            langs=lang.expand(b) if lang is not None else lang,
             length_scale=args.speaking_rate,
         )
 
@@ -356,7 +359,7 @@ def batched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
     print("[🍵] Enjoy the freshly whisked 🍵 Matcha-TTS!")
 
 
-def unbatched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
+def unbatched_synthesis(args, device, model, vocoder, denoiser, texts, spk, lang):
     total_rtf = []
     total_rtf_w = []
     for i, text in enumerate(texts):
@@ -375,6 +378,7 @@ def unbatched_synthesis(args, device, model, vocoder, denoiser, texts, spk):
             n_timesteps=args.steps,
             temperature=args.temperature,
             spks=spk,
+            langs=lang,
             length_scale=args.speaking_rate,
         )
         output["waveform"] = to_waveform(output["mel"], vocoder, denoiser, args.denoiser_strength)
@@ -403,6 +407,7 @@ def print_config(args):
     print(f"\t- Speaking rate: {args.speaking_rate}")
     print(f"\t- Number of ODE steps: {args.steps}")
     print(f"\t- Speaker: {args.spk}")
+    print(f"\t- Language: {args.lang}")
 
 
 def get_device(args):
