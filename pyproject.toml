@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools", "wheel", "cython==0.29.35", "numpy==1.24.3", "packaging"]
+requires = ["setuptools", "wheel", "cython==3.2.4", "numpy==1.26.4", "packaging"]
 
 [tool.black]
 line-length = 120
-target-version = ['py310']
+target-version = ['py312']
 exclude = '''
 
 (
