@@ -1,0 +1,11 @@
+# @package _global_
+
+# Fine-tune the pretrained English LJSpeech Matcha model on the copied
+# synthetic English single-speaker subset.
+
+defaults:
+  - override /data: synthetic_en_single_speaker.yaml
+
+tags: ["synthetic_en_single_speaker", "finetune"]
+
+run_name: synthetic_en_single_speaker

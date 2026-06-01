@@ -11,7 +11,7 @@ from lightning import LightningModule
 from lightning.pytorch.utilities import grad_norm
 
 from matcha import utils
-from matcha.utils.utils import plot_tensor
+from matcha.utils.utils import get_user_data_dir, plot_tensor
 
 log = utils.get_pylogger(__name__)
 
@@ -166,7 +166,24 @@ class BaseLightningClass(LightningModule, ABC):
         return total_loss
 
     def on_validation_end(self) -> None:
+        if self.trainer.sanity_checking:
+            return
+
         if self.trainer.is_global_zero:
+            log_step = self.global_step
+            if "_log_vocoder" not in self.__dict__:
+                from matcha.cli import (
+                    load_vocoder,  # pylint: disable=import-outside-toplevel
+                )
+
+                log_vocoder, log_denoiser = load_vocoder(
+                    "hifigan_T2_v1",
+                    get_user_data_dir() / "hifigan_T2_v1",
+                    self.device,
+                )
+                self.__dict__["_log_vocoder"] = log_vocoder
+                self.__dict__["_log_denoiser"] = log_denoiser
+
             one_batch = next(iter(self.trainer.val_dataloaders))
             if self.current_epoch == 0:
                 log.debug("Plotting original samples")
@@ -175,7 +192,7 @@ class BaseLightningClass(LightningModule, ABC):
                     self.logger.experiment.add_image(
                         f"original/{i}",
                         plot_tensor(y.squeeze().cpu()),
-                        self.current_epoch,
+                        log_step,
                         dataformats="HWC",
                     )
 
@@ -187,22 +204,33 @@ class BaseLightningClass(LightningModule, ABC):
                 output = self.synthesise(x[:, :x_lengths], x_lengths, n_timesteps=10, spks=spks)
                 y_enc, y_dec = output["encoder_outputs"], output["decoder_outputs"]
                 attn = output["attn"]
+                from matcha.cli import (
+                    to_waveform,  # pylint: disable=import-outside-toplevel
+                )
+
+                waveform = to_waveform(output["mel"], self.__dict__["_log_vocoder"], self.__dict__["_log_denoiser"])
                 self.logger.experiment.add_image(
                     f"generated_enc/{i}",
                     plot_tensor(y_enc.squeeze().cpu()),
-                    self.current_epoch,
+                    log_step,
                     dataformats="HWC",
+                )
+                self.logger.experiment.add_audio(
+                    f"generated_audio/{i}",
+                    waveform,
+                    log_step,
+                    sample_rate=22050,
                 )
                 self.logger.experiment.add_image(
                     f"generated_dec/{i}",
                     plot_tensor(y_dec.squeeze().cpu()),
-                    self.current_epoch,
+                    log_step,
                     dataformats="HWC",
                 )
                 self.logger.experiment.add_image(
                     f"alignment/{i}",
                     plot_tensor(attn.squeeze().cpu()),
-                    self.current_epoch,
+                    log_step,
                     dataformats="HWC",
                 )
 

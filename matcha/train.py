@@ -1,8 +1,10 @@
+import os
 from typing import Any, Dict, List, Optional, Tuple
 
 import hydra
 import lightning as L
 import rootutils
+import torch
 from lightning import Callback, LightningDataModule, LightningModule, Trainer
 from lightning.pytorch.loggers import Logger
 from omegaconf import DictConfig
@@ -10,6 +12,7 @@ from omegaconf import DictConfig
 from matcha import utils
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
+os.environ.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
 # ------------------------------------------------------------------------------------ #
 # the setup_root above is equivalent to:
 # - adding project root dir to PYTHONPATH
@@ -51,6 +54,11 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     log.info(f"Instantiating model <{cfg.model._target_}>")  # pylint: disable=protected-access
     model: LightningModule = hydra.utils.instantiate(cfg.model)
+
+    if cfg.get("pretrained_ckpt_path"):
+        log.info(f"Loading pretrained weights from <{cfg.pretrained_ckpt_path}>")
+        checkpoint = torch.load(cfg.pretrained_ckpt_path, map_location="cpu", weights_only=False)
+        model.load_state_dict(checkpoint["state_dict"], strict=True)
 
     log.info("Instantiating callbacks...")
     callbacks: List[Callback] = utils.instantiate_callbacks(cfg.get("callbacks"))
