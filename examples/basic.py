@@ -13,7 +13,6 @@ from matcha.cli import (
 )
 from matcha.models.matcha_tts import MatchaTTS
 
-
 TEXT = "Hello from Matcha TTS."
 OUTPUT = Path("outputs/basic.wav")
 

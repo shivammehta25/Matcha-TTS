@@ -1,14 +1,18 @@
 import argparse
+import json
 import random
 from pathlib import Path
 
 import numpy as np
+import onnx
 import torch
 from lightning import LightningModule
 
 from matcha.cli import VOCODER_URLS, load_matcha, load_vocoder
+from matcha.text.symbols import symbols
 
 DEFAULT_OPSET = 15
+DEFAULT_SAMPLE_RATE = 22050
 
 SEED = 1234
 random.seed(SEED)
@@ -86,6 +90,24 @@ def get_inputs(is_multi_speaker):
         input_names.append("spks")
 
     return tuple(model_inputs), input_names
+
+
+def add_metadata(model_path, args, matcha, output_names):
+    model = onnx.load(model_path)
+    metadata = {
+        "matcha.symbols": json.dumps(symbols, ensure_ascii=False),
+        "matcha.sample_rate": str(DEFAULT_SAMPLE_RATE),
+        "matcha.n_timesteps": str(args.n_timesteps),
+        "matcha.opset": str(args.opset),
+        "matcha.embedded_vocoder": str("wav" in output_names).lower(),
+        "matcha.n_spks": str(matcha.n_spks),
+    }
+    existing = {item.key: item for item in model.metadata_props}
+    for key, value in metadata.items():
+        item = existing.get(key) or model.metadata_props.add()
+        item.key = key
+        item.value = value
+    onnx.save(model, model_path)
 
 
 def main():
@@ -175,6 +197,7 @@ def main():
         do_constant_folding=True,
         dynamo=False,
     )
+    add_metadata(args.output, args, matcha, output_names)
     print(f"[🍵] ONNX model exported to  {args.output}")
 
 

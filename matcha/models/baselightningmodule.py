@@ -172,7 +172,9 @@ class BaseLightningClass(LightningModule, ABC):
         if self.trainer.is_global_zero:
             log_step = self.global_step
             if "_log_vocoder" not in self.__dict__:
-                from matcha.cli import load_vocoder  # pylint: disable=import-outside-toplevel
+                from matcha.cli import (
+                    load_vocoder,  # pylint: disable=import-outside-toplevel
+                )
 
                 log_vocoder, log_denoiser = load_vocoder(
                     "hifigan_T2_v1",
@@ -202,7 +204,9 @@ class BaseLightningClass(LightningModule, ABC):
                 output = self.synthesise(x[:, :x_lengths], x_lengths, n_timesteps=10, spks=spks)
                 y_enc, y_dec = output["encoder_outputs"], output["decoder_outputs"]
                 attn = output["attn"]
-                from matcha.cli import to_waveform  # pylint: disable=import-outside-toplevel
+                from matcha.cli import (
+                    to_waveform,  # pylint: disable=import-outside-toplevel
+                )
 
                 waveform = to_waveform(output["mel"], self.__dict__["_log_vocoder"], self.__dict__["_log_denoiser"])
                 self.logger.experiment.add_image(
