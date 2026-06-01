@@ -173,6 +173,7 @@ def main():
         opset_version=args.opset,
         export_params=True,
         do_constant_folding=True,
+        dynamo=False,
     )
     print(f"[🍵] ONNX model exported to  {args.output}")
 

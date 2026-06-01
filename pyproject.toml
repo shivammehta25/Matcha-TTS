@@ -1,5 +1,64 @@
 [build-system]
-requires = ["setuptools", "wheel", "cython==0.29.35", "numpy==1.24.3", "packaging"]
+requires = ["setuptools", "wheel", "packaging", "tomli; python_version < '3.11'"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "matcha-tts"
+dynamic = ["version"]
+description = "Matcha-TTS: A fast TTS architecture with conditional flow matching"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Shivam Mehta", email = "shivam.mehta25@gmail.com" }]
+dependencies = [
+  "torch>=2.0.0",
+  "torchvision>=0.15.0",
+  "lightning>=2.0.0",
+  "torchmetrics>=0.11.4",
+  "hydra-core==1.3.2",
+  "hydra-colorlog==1.2.0",
+  "hydra-optuna-sweeper==1.2.0",
+  "rootutils",
+  "pre-commit",
+  "rich",
+  "pytest",
+  "phonemizer",
+  "tensorboard",
+  "librosa",
+  "numpy>=1.26,<2",
+  "monotonic-alignment-search>=0.2.1",
+  "einops",
+  "inflect",
+  "Unidecode",
+  "scipy",
+  "torchaudio",
+  "torchcodec",
+  "matplotlib",
+  "pandas",
+  "conformer==0.3.2",
+  "diffusers",
+  "notebook",
+  "ipywidgets",
+  "gradio==3.43.2",
+  "gdown",
+  "wget",
+  "seaborn",
+]
+
+[project.scripts]
+matcha-data-stats = "matcha.utils.generate_data_statistics:main"
+matcha-tts = "matcha.cli:cli"
+matcha-tts-app = "matcha.app:main"
+matcha-tts-get-durations = "matcha.utils.get_durations_from_trained_model:main"
+
+[tool.setuptools.dynamic]
+version = { file = "matcha/VERSION" }
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "tests.*", "examples", "examples.*"]
+
+[tool.setuptools.package-data]
+matcha = ["VERSION"]
+
 
 [tool.black]
 line-length = 120

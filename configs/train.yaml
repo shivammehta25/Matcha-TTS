@@ -47,5 +47,8 @@ test: True
 # simply provide checkpoint path to resume training
 ckpt_path: null
 
+# provide a checkpoint path to initialize model weights for fine-tuning
+pretrained_ckpt_path: null
+
 # seed for random number generators in pytorch, numpy and python.random
 seed: 1234

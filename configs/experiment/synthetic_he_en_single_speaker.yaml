@@ -1,0 +1,10 @@
+# @package _global_
+
+# Fine-tune on Hebrew stress-normalized phonemes with 10% English replay.
+
+defaults:
+  - override /data: synthetic_he_en_single_speaker.yaml
+
+tags: ["synthetic_he_en_single_speaker", "finetune"]
+
+run_name: synthetic_he_en_single_speaker

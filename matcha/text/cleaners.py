@@ -114,6 +114,13 @@ def english_cleaners2(text):
     return phonemes
 
 
+def phoneme_cleaners(text):
+    """Pipeline for pre-phonemized text."""
+    text = remove_brackets(text)
+    text = collapse_whitespace(text)
+    return text
+
+
 def ipa_simplifier(text):
     replacements = [
         ("ɐ", "ə"),
