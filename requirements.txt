@@ -38,7 +38,7 @@ conformer==0.3.2
 diffusers # developed using version ==0.25.0
 notebook
 ipywidgets
-gradio==3.43.2
+gradio==5.34.2
 gdown
 wget
 seaborn

@@ -24,7 +24,8 @@ critical_logger.setLevel(logging.CRITICAL)
 # Intializing the phonemizer globally significantly reduces the speed
 # now the phonemizer is not initialising at every call
 # Might be less flexible, but it is much-much faster
-global_phonemizer = phonemizer.backend.EspeakBackend(
+global_phonemizers = {}
+global_phonemizers["english_cleaners2"] = phonemizer.backend.EspeakBackend(
     language="en-us",
     preserve_punctuation=True,
     with_stress=True,
@@ -107,7 +108,44 @@ def english_cleaners2(text):
     text = convert_to_ascii(text)
     text = lowercase(text)
     text = expand_abbreviations(text)
-    phonemes = global_phonemizer.phonemize([text], strip=True, njobs=1)[0]
+    phonemes = global_phonemizers["english_cleaners2"].phonemize([text], strip=True, njobs=1)[0]
+    # Added in some cases espeak is not removing brackets
+    phonemes = remove_brackets(phonemes)
+    phonemes = collapse_whitespace(phonemes)
+    return phonemes
+
+
+def polish_cleaners(text):
+    text = lowercase(text)
+    if not "polish_cleaners" in global_phonemizers:
+        global_phonemizers["polish_cleaners"] = phonemizer.backend.EspeakBackend(
+            language="pl",
+            preserve_punctuation=True,
+            with_stress=True,
+            language_switch="remove-flags",
+            logger=critical_logger,
+        )
+    phonemes = global_phonemizers["polish_cleaners"].phonemize([text], strip=True, njobs=1)[0]
+    # symbols doesn't contain the combining tilde, so replace it with the closest unused character
+    # (because the nasal component of Polish "nasal vowels" is 'w', but that's used)
+    phonemes = phonemes.replace("\u0303", "ʷ")
+    # Added in some cases espeak is not removing brackets
+    phonemes = remove_brackets(phonemes)
+    phonemes = collapse_whitespace(phonemes)
+    return phonemes
+
+
+def hungarian_cleaners(text):
+    text = lowercase(text)
+    if not "hungarian_cleaners" in global_phonemizers:
+        global_phonemizers["hungarian_cleaners"] = phonemizer.backend.EspeakBackend(
+            language="hu",
+            preserve_punctuation=True,
+            with_stress=True,
+            language_switch="remove-flags",
+            logger=critical_logger,
+        )
+    phonemes = global_phonemizers["hungarian_cleaners"].phonemize([text], strip=True, njobs=1)[0]
     # Added in some cases espeak is not removing brackets
     phonemes = remove_brackets(phonemes)
     phonemes = collapse_whitespace(phonemes)

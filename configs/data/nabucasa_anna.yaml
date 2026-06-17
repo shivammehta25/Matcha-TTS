@@ -1,0 +1,15 @@
+defaults:
+  - ljspeech
+  - _self_
+
+_target_: matcha.data.text_mel_datamodule.TextMelDataModule
+name: nabucasa_anna
+train_filelist_path: data/nabucasa_anna/train.txt
+valid_filelist_path: data/nabucasa_anna/valid.txt
+batch_size: 32
+add_blank: True
+cleaners: [hungarian_cleaners]
+n_spks: 1
+data_statistics:  # Computed for NabuCasa's "anna" voice
+  mel_mean: -6.346419334411621
+  mel_std: 2.677656650543213

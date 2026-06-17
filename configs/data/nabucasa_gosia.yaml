@@ -1,0 +1,15 @@
+defaults:
+  - ljspeech
+  - _self_
+
+_target_: matcha.data.text_mel_datamodule.TextMelDataModule
+name: nabucasa_gosia
+train_filelist_path: data/nabucasa_gosia/train.txt
+valid_filelist_path: data/nabucasa_gosia/valid.txt
+batch_size: 32
+add_blank: True
+cleaners: [polish_cleaners]
+n_spks: 1
+data_statistics:  # Computed for NabuCasa's "gosia" voice
+  mel_mean: -6.247935771942139
+  mel_std: 2.750697612762451
