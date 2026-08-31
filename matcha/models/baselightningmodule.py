@@ -2,6 +2,7 @@
 This is a base lightning module that can be used to train a model.
 The benefit of this abstraction is that all the logic outside of model definition can be reused for different models.
 """
+
 import inspect
 from abc import ABC
 from typing import Any, Dict
