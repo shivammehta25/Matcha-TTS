@@ -1,6 +1,7 @@
 # Code modified from Rafael Valle's implementation https://github.com/NVIDIA/waveglow/blob/5bc2a53e20b3b533362f974cfa1ea0267ae1c2b1/denoiser.py
 
 """Waveglow style denoiser can be used to remove the artifacts from the HiFiGAN generated audio."""
+
 import torch
 
 
