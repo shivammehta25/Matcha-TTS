@@ -1,4 +1,4 @@
-""" from https://github.com/jik876/hifi-gan """
+"""from https://github.com/jik876/hifi-gan"""
 
 import torch
 import torch.nn as nn  # pylint: disable=consider-using-from-import
